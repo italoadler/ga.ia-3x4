@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090909"><link rel="icon" href="data:,">
+  <title>GA.IA/3x4 — retratos computacionais de uma Terra em trabalho</title>
+  <link rel="stylesheet" href="/surface/style.css">
+</head>
+<body>
+  <header class="inscription"><div class="work-name">GA.IA<span>/3x4</span></div><div class="work-subtitle">retratos computacionais<br>de uma Terra em trabalho</div>
+    <div class="clock"><span id="clock">T 0001</span><span id="revision">REV 01</span><span id="pulse">EM CURSO</span></div></header>
+  <main class="instrument">
+    <section class="field-space" aria-label="Retrato tridimensional e fora de quadro">
+      <div class="field-caption"><span id="mode">RETRATO / TERRA SINTÉTICA</span><span id="backend">INICIALIZANDO</span></div>
+      <div id="earth-space"><span class="stage-folio">01<br>IDENTIFICAÇÃO</span><span class="stage-ratio">3:4</span><span class="stage-left">FORA<br>DO QUADRO</span>
+        <span class="stage-right">O RESTO<br>PERMANECE</span><span class="stage-bottom">144 VALORES / NENHUMA ORIGEM NEUTRA</span><span id="stage-message" role="status"></span></div>
+      <div id="inspector-space" hidden><canvas id="field" role="img" aria-label="Grade 2D do runtime"></canvas>
+        <div class="history-caption"><span>↶ RECORTES RETIDOS</span><span id="history-count"></span></div><canvas id="history" role="img" aria-label="Valores dos recortes anteriores"></canvas></div>
+      <div class="partition-readout"><span id="inside-count">108 DENTRO</span><span id="outside-count">36 FORA</span><span id="frame-id"></span></div>
+      <div class="world-readout"><span id="origin-readout"></span><span id="memory-readout"></span><span id="history-readout"></span></div><p id="consequence" aria-live="polite">⧉ ENQUADRAR</p>
+    </section>
+    <section class="score-space" aria-label="Partitura de live coding">
+      <div class="score-caption"><span>PARTITURA / EXECUÇÃO ←</span><span id="source-state">FONTE APLICADA</span></div><div id="source" class="score-editor"></div>
+      <div class="palette-caption"><span>SETE GESTOS</span><span>ALT 1—7 / INSERIR</span></div><div id="glyph-palette" role="group" aria-label="Paleta dos sete glifos"></div>
+      <p id="diagnostic" role="status" aria-live="polite"></p><div class="consequence-readout"><span>⊘ AUSÊNCIA DECLARADA</span><span id="loss-count"></span><p id="loss-reason"></p><p id="relation-readout"></p></div>
+      <p class="situation-note">Mesmos dados sintéticos; outra condição de visibilidade.<br>O detalhe desta esfera não é um mapa da Terra.</p>
+    </section>
+  </main>
+  <footer class="performance-keys"><span><kbd>CTRL ↵</kbd> linha / seleção</span><span><kbd>CTRL SHIFT ↵</kbd> toda a fonte</span><span><kbd>ALT ↵</kbd> tick</span>
+    <span><kbd>P</kbd> suspender</span><span><kbd>I</kbd> Inspector</span><span><kbd>T</kbd> rastros</span><span class="retention" id="retention"></span></footer>
+  <dialog id="trace-reader" aria-label="Leitura integral dos rastros"><div class="reader-caption"><span>⋮ REGISTRO INTEGRAL DO MUNDO</span><span>ESC FECHA / S SALVA</span></div><pre id="trace-json" tabindex="0"></pre></dialog>
+  <script type="module" src="/dist/instrument.mjs"></script>
+</body>
+</html>

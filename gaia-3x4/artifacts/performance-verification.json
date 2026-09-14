@@ -1,0 +1,98 @@
+{
+  "ok": true,
+  "browser": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+  "defaultBackend": "webgl2",
+  "fallbackBackend": "webgl2",
+  "renderer": "WebGPURenderer",
+  "shading": "TSL",
+  "checks": [
+    "seven glyphs from actual CodeMirror insertion to visual consequence",
+    "palette",
+    "autocomplete",
+    "hover from registry",
+    "single line execution",
+    "selected block with invalid text elsewhere",
+    "transactional diagnostics",
+    "stable 3D scene identity",
+    "frame centre changes membership",
+    "previous frame remains accessible",
+    "actual historical ghost",
+    "visible accountable discard",
+    "observe changes selection",
+    "Inspector does not mutate world, including discarded portrait",
+    "highlight confirmed by rendered frame",
+    "WebGL 2 fallback uses same TSL graph",
+    "no browser/shader errors"
+  ],
+  "glyphs": [
+    {
+      "glyph": "⊙",
+      "id": "situate",
+      "editor": "Alt-1",
+      "consequence": "duas testemunhas de origem distintas, mesmo vetor",
+      "tick": 3,
+      "stageHash": "2c7e9c46aa0b4da20dbd69cf2e0df475919b1b95f520a53166bceb74fe77d618"
+    },
+    {
+      "glyph": "⇄",
+      "id": "relate",
+      "editor": "Alt-2",
+      "consequence": "superfície alterada, identidade persistente",
+      "tick": 4,
+      "stageHash": "454c293354704590fbc9dd3f4fa2a4299e024b3c03397422c74ce97e2f51de13"
+    },
+    {
+      "glyph": "⧉",
+      "id": "frame",
+      "editor": "paleta",
+      "consequence": "centro alterado; células entram/saem; recorte anterior retido",
+      "tick": 5,
+      "stageHash": "f6e835586b51b6f422eaf2181089e533db4804884f5284aafa37861b6f3eaa39"
+    },
+    {
+      "glyph": "↶",
+      "id": "remember",
+      "editor": "Alt-4",
+      "consequence": "fantasma corresponde ao snapshot de dois ticks atrás",
+      "tick": 6,
+      "stageHash": "ca3a2946962ea4e1258876094c4ce6b4250c71e56ca52244af1d9d6c9bd5d83e"
+    },
+    {
+      "glyph": "⋮",
+      "id": "trace",
+      "editor": "autocomplete de tr",
+      "consequence": "malha retida e contorno anterior associados ao ID histórico",
+      "tick": 7,
+      "stageHash": "40c9c5d46dc860dc5e4cc9ec55da3c2fe5619d149509f1a436390b37fc77ae9c"
+    },
+    {
+      "glyph": "⊘",
+      "id": "discard",
+      "editor": "Alt-6",
+      "consequence": "108 superfícies ausentes, 36 fragmentos e fantasma permanecem, perda registrada",
+      "tick": 8,
+      "stageHash": "3a03e94f1a719d3ba3cf85bc519b0d1d5e4788f15f3c4393be6b4b5ffc1bde9b"
+    },
+    {
+      "glyph": "◉",
+      "id": "observe",
+      "editor": "Alt-7",
+      "consequence": "observação deixa de selecionar memória; fantasma some, snapshot permanece",
+      "tick": 9,
+      "stageHash": "d47c09e890853eb267979c7beede633d9f94f11c4dc15770f1c0f056b49ba6f7"
+    }
+  ],
+  "vertices": 41616,
+  "warnings": [
+    "THREE.WebGPURenderer: WebGPU is not available, running under WebGL2 backend."
+  ],
+  "screenshots": [
+    "microperformance-frame.png",
+    "microperformance-memory.png",
+    "microperformance-discard.png",
+    "microperformance-invalid.png",
+    "microperformance-inspector.png",
+    "microperformance-inspector-absence.png",
+    "microperformance-webgl2.png"
+  ]
+}

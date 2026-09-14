@@ -1,0 +1,37 @@
+{
+  "ok": true,
+  "browser": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+  "initialTick": 2,
+  "liveEditTick": 3,
+  "continuedTickAfterInvalidEdit": 4,
+  "checks": [
+    "actual Canvas observation",
+    "equal data, different provenance",
+    "included and excluded visible",
+    "keyboard live edit",
+    "stable field and relation IDs",
+    "portrait changed",
+    "historical frame retained",
+    "explicit tick memory",
+    "loss record and tombstone",
+    "syntax error rollback",
+    "clock continued after invalid edit",
+    "diagnostic persisted while clock ran",
+    "trace reader",
+    "responsive resize preserves world",
+    "no browser errors"
+  ],
+  "screenshots": [
+    "initial.png",
+    "performance.png",
+    "invalid-edit.png",
+    "performance-narrow.png"
+  ],
+  "canvas": {
+    "painted": 161412,
+    "width": 883,
+    "height": 520,
+    "label": "Retrato 9 por 12, 108 células incluídas; 36 células externas preservadas. trace:10, tick 2."
+  },
+  "server": "GA.IA/3x4 — http://127.0.0.1:3134"
+}
