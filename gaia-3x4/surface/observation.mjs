@@ -8,6 +8,7 @@ export function portraitObservation(observation, traces) {
   const frame = values.find(v => v?.kind === 'trace' && v.operation === 'frame') ?? records.get(inside?.partition?.traceId ?? outside?.partition?.traceId);
   const memory = values.find(v => v?.kind === 'memory' && v.available && v.field?.partition?.role === 'included');
   const history = values.find(v => v?.kind === 'trace-view' && v.operation === 'frame' && v.available);
+  const environment = inside?.environment ?? outside?.environment ?? values.find(v => v?.environment)?.environment ?? null;
   const lossIds = new Set([
     ...values.filter(v => v?.operation === 'discard').map(v => v.id),
     ...values.filter(v => v?.discarded).map(v => v.lossId),
@@ -20,6 +21,7 @@ export function portraitObservation(observation, traces) {
     inputShape: frame?.inputShape ?? null, included, excluded, ghosts,
     memoryTick: memory?.requestedTick ?? null, memoryTraceId: memory?.field?.partition?.traceId ?? null,
     historicalFrame: history?.latest ?? null,
+    environment,
     absentIndices: inside?.discarded ? inside.partition.sourceIndices : [],
     losses: [...lossIds].map(id => records.get(id)).filter(Boolean),
     sources: values.filter(v => v?.kind === 'field' && v.origin === 'situate').map(v => ({ id: v.id, provenance: v.provenance, shape: v.shape, discarded: v.discarded })),

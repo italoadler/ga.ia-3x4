@@ -130,3 +130,18 @@ Score é uma apresentação de ASTs reais, com patches de fonte, CodeMirror e
 o mesmo Interpreter. Uma operação seguida imediatamente por `◉` pode ser
 executada como bloco literal da partitura. Não há comandos semânticos novos.
 Ver [dados e privacidade](labour-data.md) e [partitura principal](labour-performance.md).
+
+## Entrada ambiental específica v0
+
+O vocabulário semântico continua com sete operações. `source` é um terceiro
+alias de `situate`, ao lado de `situate` e `⊙`; tem a mesma aridade e chama o
+mesmo método transacional. A execução pode fornecer um conjunto explícito de
+nomes externos ao parser. Esses nomes não se tornam globais: fora daquela
+execução continuam produzindo `E_UNKNOWN`.
+
+Na fatia NASA POWER, `nasa_power_brasilia` referencia uma observação externa
+imutável já normalizada. `situate` confere sua declaração e conserva a resposta
+normalizada e a proveniência no campo. Um valor ambiental desconhecido usa
+`null`; `blend` o propaga e `frame` normaliza apenas os números conhecidos,
+registrando `knownCount` e `missingCount`. Campos antigos mantêm a exigência de
+números completos. Ver [Data-born Earth v0](data-born-earth.md).

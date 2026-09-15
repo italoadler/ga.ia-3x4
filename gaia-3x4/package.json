@@ -15,7 +15,9 @@
     "demo": "node scripts/demo.mjs",
     "verify:browser": "npm run build && node scripts/verify-browser.mjs",
     "verify:performance": "npm run build && node scripts/verify-performance.mjs",
-    "verify:labour": "npm run build && node scripts/verify-labour.mjs"
+    "verify:labour": "npm run build && node scripts/verify-labour.mjs",
+    "verify:data-born": "npm run build && node scripts/verify-data-born.mjs",
+    "capture:power": "node scripts/capture-nasa-power.mjs"
   },
   "dependencies": {
     "@codemirror/autocomplete": "^6.20.3",

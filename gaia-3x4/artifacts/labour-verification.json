@@ -83,7 +83,7 @@
       "excluded": 0,
       "discarded": 0,
       "remembered": 0,
-      "imageHash": "e09ffc7ab2a8fa4c99d0a0992442efddb1f514eade179b84c3d819950e620a37"
+      "imageHash": "dd73f2ef0c2b9f1bdeab7e71e05761ed15c68d3c5f3846dd2a30668e6861c998"
     },
     {
       "name": "labour-04-frame-residue.png",
@@ -92,7 +92,7 @@
       "excluded": 36,
       "discarded": 0,
       "remembered": 0,
-      "imageHash": "3ec4441f0c1fd53b25be05297b2cdb6e06ba658cf20eefd22764794e4518f6e3"
+      "imageHash": "de7d98cebdb77007f420c2405de48e7bdb1ac8603ed4c01f464eab7bc2b2357e"
     },
     {
       "name": "labour-05-material-absence.png",
@@ -101,7 +101,7 @@
       "excluded": 24,
       "discarded": 24,
       "remembered": 0,
-      "imageHash": "651c1d909d770a0136be39b4d2af68314454ea2cc9cc25fa787fd32f67b3d1ae"
+      "imageHash": "b03ffbea2a2fa285a8b55ecdaf527bbb4a34ef50b6897a3373c94fe6a6d1e8d8"
     },
     {
       "name": "labour-06-memory-damaged-present.png",
@@ -110,7 +110,7 @@
       "excluded": 24,
       "discarded": 24,
       "remembered": 144,
-      "imageHash": "646076ffa3208e03aba171b841b34f1c57cf725f2549ba4f0ac6acd8aefc9e34"
+      "imageHash": "7e48a09ac51174b0d3683bfd2f2b2e6dac20e2437b7365e5102f765ce8b001e9"
     },
     {
       "name": "labour-09-webgl2-complete.png",
@@ -119,7 +119,7 @@
       "excluded": 24,
       "discarded": 24,
       "remembered": 144,
-      "imageHash": "48f5c4bf15653bd085f1d306765acca25b2b35db2251358b7e1df9b338f890d4"
+      "imageHash": "72862939cd76796c90a7727aaf8eb249817505b5ca2c3b607b9da1f70556451f"
     }
   ],
   "warnings": [

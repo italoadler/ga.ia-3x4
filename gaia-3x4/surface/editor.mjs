@@ -154,7 +154,7 @@ export function createEditor(parent, source, callbacks) {
       callbacks.change();
       clearTimeout(syntaxTimer);
       syntaxTimer = setTimeout(() => {
-        try { parse(view.state.doc.toString()); showDiagnostic(null); }
+        try { parse(view.state.doc.toString(), { externalNames: callbacks.externalNames ?? [] }); showDiagnostic(null); }
         catch (error) { if (error.code) showDiagnostic(error.toJSON()); }
       }, 250);
     }),

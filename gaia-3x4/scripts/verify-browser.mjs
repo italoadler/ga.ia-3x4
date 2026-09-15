@@ -90,7 +90,7 @@ try {
   };
   await cdp('Page.enable'); await cdp('Runtime.enable'); await cdp('Log.enable');
   await cdp('Emulation.setDeviceMetricsOverride', { width: 1600, height: 1040, deviceScaleFactor: 1, mobile: false });
-  await cdp('Page.navigate', { url: `http://127.0.0.1:${port}/?score=legacy` });
+  await cdp('Page.navigate', { url: `http://127.0.0.1:${port}/legacy.html?score=legacy` });
   await until(() => evaluate('Boolean(window.gaia)'), 'A superfície não inicializou');
   await key('p', 'KeyP');
   assert.equal(await evaluate('window.gaia.paused'), true);

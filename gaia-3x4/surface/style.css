@@ -60,3 +60,22 @@ dialog::backdrop { background: var(--black); }.reader-caption { border-bottom: 1
 @media (min-width: 1700px) { .cm-editor { font-size: 15px; } #earth-space, #inspector-space { height: 740px; } }
 @media (max-width: 1050px) { .inscription { padding: 25px 24px; }.instrument { grid-template-columns: 1fr; }.field-space { padding: 24px; }.score-space { border-left: 0; border-top: 1px solid var(--line); padding: 24px; }.performance-keys { margin: 10px 24px 24px; } }
 @media (max-width: 600px) { .inscription { flex-wrap: wrap; gap: 18px; }.work-name { font-size: 26px; }.work-subtitle { padding-left: 15px; font-size: 9px; }.clock { width: 100%; margin: 0; }.field-space { padding: 20px 15px; } #earth-space { height: 600px; }.stage-ratio { font-size: 36px !important; }.stage-left, .stage-right { font-size: 7px !important; }.score-space { padding: 24px 12px; }.cm-editor { font-size: 13px; }.world-readout { gap: 12px; font-size: 9px; } #memory-readout { margin-left: 0; }.retention { width: 100%; margin: 4px 0 0; } }
+
+/* Data-born Earth v0: one field, one editor, one source. Legacy pages keep the rules above. */
+#territory-space { height: 690px; margin-top: 12px; overflow: hidden; background: #080a08; border-inline: 1px solid #181c18; }
+#territory-field { display: block; width: 100%; height: 100%; }
+.run-strip { display: flex; align-items: center; gap: 15px; margin: -9px 0 20px 7px; color: #757b74; font-size: 9px; letter-spacing: .08em; }
+#run, #provenance-toggle { border: 1px solid #697068; border-radius: 0; background: #0b0d0b; color: #e2e6de; font: 11px/1.1 Consolas, monospace; letter-spacing: .12em; cursor: pointer; }
+#run { min-width: 94px; padding: 11px 19px; }
+#run:hover, #run:focus-visible, #provenance-toggle:hover, #provenance-toggle:focus-visible { background: #d8ddd4; color: #111410; outline: 0; }
+#provenance-toggle { width: calc(100% - 14px); margin: 0 7px 12px; padding: 9px 12px; text-align: left; color: #a8aea5; }
+#provenance { max-height: 190px; overflow: auto; margin: 0 7px 18px; padding: 13px 14px; border: 1px solid #303630; background: #070907; color: #aeb5aa; white-space: pre-wrap; overflow-wrap: anywhere; font: 9px/1.7 Consolas, monospace; }
+#source-state { color: #a0a79d; }
+.data-born .score-editor { height: 420px; margin-bottom: 22px; }
+.data-born .instrument { grid-template-columns: minmax(500px, 1.35fr) minmax(500px, 1fr); }
+.data-born .field-space { padding-bottom: 10px; }
+.data-born .world-readout { justify-content: space-between; }
+.data-born .consequence-readout { margin-top: 2px; }
+.data-born #diagnostic { margin-bottom: 12px; }
+@media (max-width: 1050px) { #territory-space { height: 650px; } .data-born .instrument { grid-template-columns: 1fr; } }
+@media (max-width: 600px) { #territory-space { height: 560px; } .data-born .score-editor { height: 470px; } }

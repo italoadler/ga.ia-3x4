@@ -46,6 +46,7 @@ export class World {
     this.fields = new Map();
     this.bindings = new Map();
     this.relations = new Map();
+    this.sourceObservations = new Map();
     this.traces = [];
     this.revisions = [];
     this.snapshots = new Map([[0, { fields: new Map(), bindings: new Map() }]]);
@@ -60,6 +61,7 @@ export class World {
     return {
       tick: this.tick, fields: Object.fromEntries(this.fields), bindings: Object.fromEntries(this.bindings),
       relations: Object.fromEntries(this.relations), traces: this.traces,
+      sourceObservations: Object.fromEntries(this.sourceObservations),
       revisions: this.revisions, snapshotTicks: [...this.snapshots.keys()],
       ...(this.labourInput ? { labourInput: this.labourInput, recordLosses: Object.fromEntries(this.recordLosses) } : {}),
     };
@@ -67,12 +69,13 @@ export class World {
 }
 
 class Transaction {
-  constructor(world, program, source, patch) {
+  constructor(world, program, source, patch, inputs = {}) {
     this.base = world;
     this.tick = world.tick + 1;
     this.fields = new Map(world.fields);
     this.bindings = new Map(world.bindings);
     this.relations = new Map(world.relations);
+    this.sourceObservations = new Map(world.sourceObservations);
     this.traces = [...world.traces];
     this.revisions = [...world.revisions];
     this.snapshots = new Map(world.snapshots);
@@ -88,6 +91,7 @@ class Transaction {
     this.effects = [];
     this.operations = [];
     this.executionLocation = null;
+    this.inputs = new Map(Object.entries(inputs).map(([name, value]) => [name, freeze(value)]));
   }
 
   fail(code, message, location) { throw new Diagnostic(code, message, location); }
@@ -104,6 +108,7 @@ class Transaction {
 
   resolve(value, location) {
     if (value?.kind !== 'reference') return value;
+    if (this.inputs.has(value.name)) return this.inputs.get(value.name);
     if (!this.assigned.has(value.name))
       this.fail('E_ORDER', `${value.name} ainda não foi executado nesta revisão; as linhas seguem de cima para baixo.`, location);
     return this.bindings.get(value.name);
@@ -139,22 +144,28 @@ class Transaction {
   }
 
   situate(args, names, location) {
-    const [source, time, scale, domain, shape, values] = args.map(a => this.literal(a, location));
-    if (![source, time, scale, domain].every(v => typeof v === 'string' && v.length))
+    const [declaredSource, time, scale, domain, shape, suppliedValues] = args.map(a => this.literal(a, location));
+    const environmental = suppliedValues?.kind === 'environmental-observation' ? suppliedValues : null;
+    const values = environmental ? environmental.values : suppliedValues;
+    const source = environmental?.source?.provider ?? declaredSource;
+    if (![declaredSource, time, scale, domain].every(v => typeof v === 'string' && v.length))
       this.fail('E_SITUATION', 'Origem, tempo, escala e domínio devem ser strings explícitas.', location);
     if (!Array.isArray(shape) || shape.length !== 2 || !shape.every(n => Number.isSafeInteger(n) && n > 0) || shape[0] * shape[1] > 1_000_000)
       this.fail('E_SHAPE', 'A forma exige [largura altura], positiva, com no máximo 1.000.000 de células.', location);
-    if (!Array.isArray(values) || values.length !== shape[0] * shape[1] || !values.every(v => typeof v === 'string' || (typeof v === 'number' && Number.isFinite(v))))
+    if (!Array.isArray(values) || values.length !== shape[0] * shape[1] || !values.every(v => typeof v === 'string' || (typeof v === 'number' && Number.isFinite(v)) || (environmental && v === null)))
       this.fail('E_VALUES', 'Os valores numéricos ou simbólicos devem preencher exatamente a forma.', location);
+    if (environmental && !same(environmental.declaration, { source: declaredSource, time, scale, domain, shape }))
+      this.fail('E_OBSERVATION_MISMATCH', 'A observação externa não corresponde à fonte, data, janela, variável e forma declaradas.', location);
     const name = names[0], existing = this.fields.get(name);
     const labour = domain === LABOUR_DOMAIN && values.every(v => typeof v === 'string') ? labourSituation(values, this.base.labourInput, location) : null;
-    const seed = freeze({ source, time, scale, domain, shape, values });
+    const seed = freeze({ source, time, scale, domain, shape, values, ...(environmental ? { declaredSource } : {}) });
     if (existing) {
       if (existing.origin !== 'situate') this.fail('E_INCOMPATIBLE_FIELD', `${name} já é um campo derivado. Use outro nome para esta origem.`, location);
       const old = existing.seed;
       if (!same([old.source, old.time, old.scale, old.domain, old.shape], [source, time, scale, domain, shape]))
         this.fail('E_INCOMPATIBLE_FIELD', `Mudança incompatível em ${name}: origem, tempo, escala, domínio ou forma. Declare um novo nome.`, location);
-      if (same(old.values, values)) {
+      const observationChanged = environmental && !same(existing.environment, environmental);
+      if (same(old.values, values) && !observationChanged) {
         this.usedFields.add(name);
         if (!existing.active) {
           const event = this.trace('situate', { action: 'reactivate', sourceIds: [existing.id], parameters: seed });
@@ -165,16 +176,23 @@ class Transaction {
       if (existing.discarded) this.fail('E_DISCARDED_FIELD_RESEED', `${name} foi descartado e não pode receber novos valores silenciosamente. Use outro nome.`, location);
     }
     const event = this.trace('situate', {
-      action: existing ? 'value-edit' : 'attach', sourceIds: [existing?.id ?? `field:${name}`],
-      parameters: { source, time, scale, domain, shape },
+      action: existing ? same(existing.seed.values, values) ? 'observation-refresh' : 'value-edit' : 'attach', sourceIds: [existing?.id ?? `field:${name}`],
+      parameters: { source, declaredSource, time, scale, domain, shape, ...(environmental ? { observationStatus: environmental.status, adapter: environmental.adapter } : {}) },
       beforeFingerprint: existing ? fingerprint(existing.value) : null, afterFingerprint: fingerprint(values),
     });
     return [this.putField(name, {
       value: labour ? values.map(() => 1) : [...values], shape: [...shape], domain, scale, time, origin: 'situate', seed,
-      ...(labour ? { labour } : {}),
-      provenance: [{ source, observedAt: time, fieldId: existing?.id ?? `field:${name}` }, ...(labour ? labour.records.map(r => ({ recordId: r.id, evidenceStatus: r.evidenceStatus, ...r.provenance, observedAt: r.observedAt })) : [])],
+      ...(labour ? { labour } : {}), ...(environmental ? { environment: environmental } : {}),
+      provenance: [environmental ? { source, originalSource: environmental.source.requestUrl, observedAt: time,
+        retrievedAt: environmental.retrieval.retrievedAt, status: environmental.status, attribution: environmental.source.attribution,
+        reportedSources: environmental.source.reportedSources, variable: environmental.variable, fieldId: existing?.id ?? `field:${name}` }
+        : { source, observedAt: time, fieldId: existing?.id ?? `field:${name}` },
+        ...(labour ? labour.records.map(r => ({ recordId: r.id, evidenceStatus: r.evidenceStatus, ...r.provenance, observedAt: r.observedAt })) : [])],
       history: [...(existing?.history ?? []), event.id],
-    })];
+    })].map(field => {
+      if (environmental) this.sourceObservations.set(environmental.adapter, environmental);
+      return field;
+    });
   }
 
   relate(args, names, location) {
@@ -188,12 +206,13 @@ class Transaction {
     if (transformation === 'blend') {
       if (!Array.isArray(parameters) || parameters.length !== 2 || !Number.isFinite(parameters[0]) || parameters[0] < 0 || parameters[0] > 1 || !Number.isSafeInteger(parameters[1]))
         this.fail('E_PARAMETERS', 'blend exige [peso deslocamento_inteiro], com peso entre 0 e 1.', location);
-      if (![left, right].every(f => f.value.every(v => typeof v === 'number' && Number.isFinite(v))))
+      const environmental = Boolean(left.environment && right.environment);
+      if (![left, right].every(f => f.value.every(v => (typeof v === 'number' && Number.isFinite(v)) || (environmental && v === null))))
         this.fail('E_NUMERIC', 'blend exige campos numéricos completos.', location);
       const [weight, shift] = parameters, [width] = left.shape;
       const modulo = x => ((x % width) + width) % width;
       correspondence = left.value.map((_, index) => Math.floor(index / width) * width + modulo(index % width + shift));
-      value = left.value.map((v, index) => (1 - weight) * v + weight * right.value[correspondence[index]]);
+      value = left.value.map((v, index) => v === null || right.value[correspondence[index]] === null ? null : (1 - weight) * v + weight * right.value[correspondence[index]]);
     } else if (transformation === 'transfer') {
       if (!Array.isArray(parameters) || parameters.length) this.fail('E_PARAMETERS', 'transfer exige um vetor de parâmetros vazio: [].', location);
       value = [...right.value];
@@ -227,6 +246,7 @@ class Transaction {
       time: { tick: this.tick, observations: unique([left.time, right.time].map(t => JSON.stringify(t))).map(t => JSON.parse(t)) },
       provenance: provenanceUnion([left, right]), history: unique([...historyUnion([left, right]), ...(oldField?.history ?? []), event.id]),
       relationId,
+      ...(left.environment && right.environment && left.environment.adapter === right.environment.adapter ? { environment: left.environment } : {}),
       ...(surface ? { surface } : {}),
     });
     this.relations.set(relationId, new Relation({
@@ -245,7 +265,8 @@ class Transaction {
     if (ratio?.kind !== 'ratio') this.fail('E_RATIO', 'frame exige uma proporção como 3:4.', location);
     if (![anchorX, anchorY].every(v => typeof v === 'number' && Number.isFinite(v) && v >= 0 && v <= 1))
       this.fail('E_ANCHOR', 'As âncoras do recorte devem estar entre 0 e 1.', location);
-    if (!input.value.every(v => typeof v === 'number' && Number.isFinite(v))) this.fail('E_NUMERIC_FRAME', 'A normalização de frame v0 exige números completos.', location);
+    const environmental = Boolean(input.environment);
+    if (!input.value.every(v => (typeof v === 'number' && Number.isFinite(v)) || (environmental && v === null))) this.fail('E_NUMERIC_FRAME', 'A normalização de frame v0 exige números completos.', location);
     const gcd = (a, b) => b ? gcd(b, a % b) : a;
     const divisor = gcd(ratio.width, ratio.height), rw = ratio.width / divisor, rh = ratio.height / divisor;
     const [width, height] = input.shape, factor = Math.floor(Math.min(width / rw, height / rh));
@@ -258,11 +279,11 @@ class Transaction {
       if (col >= x && col < x + cropWidth && row >= y && row < y + cropHeight) { indices.push(index); mask[index] = true; }
       else outside.push(index);
     }
-    const selected = indices.map(i => input.value[i]);
-    let min = Infinity, max = -Infinity;
-    for (const v of selected) { min = Math.min(min, v); max = Math.max(max, v); }
-    if (max !== min && !Number.isFinite(max - min)) this.fail('E_NORMALIZATION_RANGE', 'A amplitude excede a normalização numérica de v0; nenhum recorte foi aplicado.', location);
-    const normalized = selected.map(v => max === min ? 0 : (v - min) / (max - min));
+    const selected = indices.map(i => input.value[i]), known = selected.filter(v => v !== null);
+    let min = known.length ? Infinity : null, max = known.length ? -Infinity : null;
+    for (const v of known) { min = Math.min(min, v); max = Math.max(max, v); }
+    if (known.length && max !== min && !Number.isFinite(max - min)) this.fail('E_NORMALIZATION_RANGE', 'A amplitude excede a normalização numérica de v0; nenhum recorte foi aplicado.', location);
+    const normalized = selected.map(v => v === null ? null : max === min ? 0 : (v - min) / (max - min));
     const [includedName, excludedName] = names;
     for (const name of [includedName, excludedName]) {
       const old = this.fields.get(name);
@@ -283,12 +304,14 @@ class Transaction {
         chain: ['situated-records', input.relationId, input.id, 'viewpoint', 'ranked-orthographic-projection', '3:4-frame'],
         retainedSurface: input.surface,
       } : {}),
-      normalization: { method: 'min-max', minimum: min, maximum: max, constant: min === max, constantResult: min === max ? 0 : null },
+      normalization: { method: 'min-max-known-values', minimum: min, maximum: max, constant: known.length > 0 && min === max,
+        constantResult: known.length > 0 && min === max ? 0 : null, knownCount: known.length, missingCount: selected.length - known.length },
       consequence: { includedCount: indices.length, excludedCount: outside.length, resampled: false, excludedValuesRetained: true },
       // Enough retained material to inspect a prior portrait without recomputing it.
       retained: { included: normalized, includedShape: [cropWidth, cropHeight], excluded: outside.map(i => ({ index: i, value: input.value[i] })) },
     });
-    const common = { origin: 'frame', domain: input.domain, scale: input.scale, time: { tick: this.tick, sourceTime: input.time }, provenance: input.provenance };
+    const common = { origin: 'frame', domain: input.domain, scale: input.scale, time: { tick: this.tick, sourceTime: input.time }, provenance: input.provenance,
+      ...(input.environment ? { environment: input.environment } : {}) };
     const included = this.putField(includedName, {
       ...common, value: normalized, shape: [cropWidth, cropHeight],
       history: unique([...input.history, ...(this.fields.get(includedName)?.history ?? []), event.id]),
@@ -433,7 +456,7 @@ class Transaction {
     Object.assign(this.base, {
       tick: this.tick, fields: this.fields, bindings: this.bindings, relations: this.relations,
       traces: this.traces, revisions: this.revisions, snapshots: this.snapshots,
-      recordLosses: this.recordLosses,
+      recordLosses: this.recordLosses, sourceObservations: this.sourceObservations,
     });
     return this.base.observe(this.observedNames);
   }
@@ -447,12 +470,13 @@ export class Interpreter {
     this.observation = this.world.observe([]);
     this.diagnostic = null;
     this.execution = null;
+    this.inputs = {};
   }
-  run(program, source, patch) {
+  run(program, source, patch, inputs = this.inputs) {
     try {
-      const tx = new Transaction(this.world, program, source, patch);
+      const tx = new Transaction(this.world, program, source, patch, inputs);
       const observation = tx.execute();
-      if (patch) { this.program = program; this.source = source; }
+      if (patch) { this.program = program; this.source = source; this.inputs = inputs; }
       this.observation = observation;
       this.execution = freeze({ tick: this.world.tick, revision: this.world.revisions.length, operations: tx.operations });
       this.diagnostic = null;
@@ -463,8 +487,8 @@ export class Interpreter {
       return { ok: false, world: this.world, diagnostic: this.diagnostic };
     }
   }
-  apply(source) {
-    try { return this.run(parse(source), source, true); }
+  apply(source, { inputs = {} } = {}) {
+    try { return this.run(parse(source, { externalNames: Object.keys(inputs) }), source, true, inputs); }
     catch (error) {
       if (!(error instanceof Diagnostic)) throw error;
       this.diagnostic = error.toJSON();

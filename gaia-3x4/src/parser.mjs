@@ -72,8 +72,9 @@ export function tokenize(source) {
   return tokens;
 }
 
-export function parse(source) {
+export function parse(source, { externalNames = [] } = {}) {
   const tokens = tokenize(source), lines = [];
+  const externals = new Set(externalNames);
   let row = [];
   for (const token of [...tokens, { type: 'newline' }]) {
     if (token.type === 'newline') { if (row.length) lines.push(row); row = []; }
@@ -137,12 +138,14 @@ export function parse(source) {
   const definitions = new Map();
   statements.forEach((s, index) => s.names.forEach(name => {
     if (definitions.has(name)) throw new Diagnostic('E_DUPLICATE', `Nome repetido: ${name}.`, s.location);
+    if (externals.has(name)) throw new Diagnostic('E_EXTERNAL_SHADOW', `O nome externo ${name} não pode ser redeclarado.`, s.location);
     definitions.set(name, index);
   }));
   const dependencies = statements.map(() => new Set());
   const visit = (node, index, delayed = false) => {
     if (node.kind === 'reference') {
-      if (!definitions.has(node.name)) throw new Diagnostic('E_UNKNOWN', `Nome não declarado: ${node.name}.`, node.location);
+      if (!definitions.has(node.name) && !externals.has(node.name)) throw new Diagnostic('E_UNKNOWN', `Nome não declarado: ${node.name}.`, node.location);
+      if (externals.has(node.name)) return;
       if (!delayed) dependencies[index].add(definitions.get(node.name));
     }
     if (node.kind === 'vector') node.items.forEach(n => visit(n, index, delayed));

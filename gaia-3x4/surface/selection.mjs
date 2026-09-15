@@ -39,7 +39,7 @@ export function statementRanges(source) {
   return ranges;
 }
 
-export function selectionPatch(committed, draft, from, to = from) {
+export function selectionPatch(committed, draft, from, to = from, parseOptions = {}) {
   const selected = statementRanges(draft).filter(s => from === to ? from >= s.from && from <= s.to : s.from < to && s.to > from);
   if (!selected.length) throw new Diagnostic('E_SELECTION', 'Selecione uma declaração ou posicione o cursor em uma linha executável.');
   const old = statementRanges(committed).map(s => ({ ...s, origin: null, insertion: false }));
@@ -70,7 +70,7 @@ export function selectionPatch(committed, draft, from, to = from) {
     const origin = mapping?.origin ?? statementRanges(draft).find(s => s.names.join(' ') === mapping?.committedNames.join(' '));
     return origin ? { ...location, line: origin.line + location.line - mapping.patchedLine } : location;
   };
-  try { parse(source); } catch (error) {
+  try { parse(source, parseOptions); } catch (error) {
     if (error instanceof Diagnostic) Object.assign(error, mapLocation(error.toJSON()));
     throw error;
   }

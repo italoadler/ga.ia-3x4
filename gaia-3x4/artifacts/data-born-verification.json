@@ -1,0 +1,874 @@
+{
+  "timestamp": "2026-09-15T07:46:14.799Z",
+  "browser": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+  "checks": {
+    "startup": {
+      "tick": 0,
+      "visual": {
+        "renderer": "Canvas2D territorial field",
+        "state": "blank",
+        "frameAspect": 0.75,
+        "tick": 0,
+        "includedIndices": [],
+        "excludedIndices": [],
+        "absentIndices": [],
+        "historicalTraceId": null,
+        "sourceStatus": null,
+        "adapter": null,
+        "missingCount": 0,
+        "drawnCells": 0,
+        "dataDerived": false
+      },
+      "earthCanvas": false,
+      "editor": {
+        "visible": true,
+        "text": "# TERRITORY — Brasília is the declared regional window; change 0.35 or 1 below, then RUN again.\nterritorio_brasilia = source \"NASA POWER / captured\" \"2025-01-15\" \"bbox -49,-17,-46.5,-14\" \"PRECTOTCORR mm/day\" [4 7] nasa_power_brasilia\ncampo_precipitacao = relate blend [0.35 1] territorio_brasilia territorio_brasilia\nretrato fora recorte = frame 3:4 0 0.5 campo_precipitacao\nanterior = trace frame\n# REMOVE — delete the leading # on the next line, then RUN; the outside residue remains.\n# ausencia = discard \"resultado explicitamente excluído\" retrato\nobserve [territorio_brasilia campo_precipitacao retrato fora recorte anterior]\n",
+        "aria": null
+      },
+      "runVisible": true
+    },
+    "firstObservation": {
+      "visual": {
+        "renderer": "Canvas2D territorial field",
+        "state": "observed",
+        "frameAspect": 0.75,
+        "tick": 1,
+        "includedIndices": [
+          8,
+          9,
+          10,
+          12,
+          13,
+          14,
+          16,
+          17,
+          18,
+          20,
+          21,
+          22
+        ],
+        "excludedIndices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          11,
+          15,
+          19,
+          23,
+          24,
+          25,
+          26,
+          27
+        ],
+        "absentIndices": [],
+        "historicalTraceId": null,
+        "sourceStatus": "captured-real",
+        "adapter": "nasa-power-daily-regional-v0",
+        "missingCount": 0,
+        "drawnCells": 12,
+        "dataDerived": true
+      },
+      "source": {
+        "kind": "environmental-observation",
+        "adapter": "nasa-power-daily-regional-v0",
+        "mode": "captured",
+        "status": "captured-real",
+        "declaration": {
+          "source": "NASA POWER / captured",
+          "time": "2025-01-15",
+          "scale": "bbox -49,-17,-46.5,-14",
+          "domain": "PRECTOTCORR mm/day",
+          "shape": [
+            4,
+            7
+          ]
+        },
+        "source": {
+          "provider": "NASA POWER",
+          "endpoint": "https://power.larc.nasa.gov/api/temporal/daily/regional",
+          "requestUrl": "https://power.larc.nasa.gov/api/temporal/daily/regional?latitude-min=-17&latitude-max=-14&longitude-min=-49&longitude-max=-46.5&parameters=PRECTOTCORR&community=AG&start=20250115&end=20250115&format=JSON&time-standard=UTC",
+          "documentation": "https://power.larc.nasa.gov/docs/services/api/temporal/daily/",
+          "rights": "https://www.earthdata.nasa.gov/engage/open-data-services-software/data-use-policy",
+          "attribution": "NASA POWER; underlying meteorological source reported by the response.",
+          "reportedSources": [
+            "MERRA2"
+          ]
+        },
+        "retrieval": {
+          "retrievedAt": "2026-09-15T07:21:14.744Z",
+          "httpStatus": 200,
+          "fixturePath": "/data/nasa-power-brasilia-2025-01-15.raw.json",
+          "capturedAt": "2026-09-15T07:21:14.744Z",
+          "sha256": "0df4509a860984b8cf9d8e91e61fd3730d2eca2619dc3465f954c41e76c5955a"
+        },
+        "variable": {
+          "id": "PRECTOTCORR",
+          "longName": "Precipitation Corrected",
+          "unit": "mm/day"
+        },
+        "time": {
+          "start": "20250115",
+          "end": "20250115",
+          "standard": "UTC"
+        },
+        "space": {
+          "requestedBounds": {
+            "longitudeMin": -49,
+            "latitudeMin": -17,
+            "longitudeMax": -46.5,
+            "latitudeMax": -14
+          },
+          "longitudes": [
+            -48.75,
+            -48.125,
+            -47.5,
+            -46.875
+          ],
+          "latitudes": [
+            -17,
+            -16.5,
+            -16,
+            -15.5,
+            -15,
+            -14.5,
+            -14
+          ],
+          "coordinates": [
+            [
+              -48.75,
+              -17
+            ],
+            [
+              -48.125,
+              -17
+            ],
+            [
+              -47.5,
+              -17
+            ],
+            [
+              -46.875,
+              -17
+            ],
+            [
+              -48.75,
+              -16.5
+            ],
+            [
+              -48.125,
+              -16.5
+            ],
+            [
+              -47.5,
+              -16.5
+            ],
+            [
+              -46.875,
+              -16.5
+            ],
+            [
+              -48.75,
+              -16
+            ],
+            [
+              -48.125,
+              -16
+            ],
+            [
+              -47.5,
+              -16
+            ],
+            [
+              -46.875,
+              -16
+            ],
+            [
+              -48.75,
+              -15.5
+            ],
+            [
+              -48.125,
+              -15.5
+            ],
+            [
+              -47.5,
+              -15.5
+            ],
+            [
+              -46.875,
+              -15.5
+            ],
+            [
+              -48.75,
+              -15
+            ],
+            [
+              -48.125,
+              -15
+            ],
+            [
+              -47.5,
+              -15
+            ],
+            [
+              -46.875,
+              -15
+            ],
+            [
+              -48.75,
+              -14.5
+            ],
+            [
+              -48.125,
+              -14.5
+            ],
+            [
+              -47.5,
+              -14.5
+            ],
+            [
+              -46.875,
+              -14.5
+            ],
+            [
+              -48.75,
+              -14
+            ],
+            [
+              -48.125,
+              -14
+            ],
+            [
+              -47.5,
+              -14
+            ],
+            [
+              -46.875,
+              -14
+            ]
+          ],
+          "elevations": [
+            863.54,
+            859.68,
+            900.86,
+            715.91,
+            970.61,
+            908.39,
+            916.35,
+            725.93,
+            979.72,
+            984.96,
+            945.25,
+            809.43,
+            820.1,
+            886.8,
+            947.71,
+            817.69,
+            628.01,
+            852.58,
+            799.69,
+            690.07,
+            575.84,
+            757.28,
+            853.34,
+            525.63,
+            589.02,
+            614.37,
+            901.99,
+            607.82
+          ],
+          "longitudeSteps": [
+            0.625,
+            0.625,
+            0.625
+          ],
+          "latitudeSteps": [
+            0.5,
+            0.5,
+            0.5,
+            0.5,
+            0.5,
+            0.5
+          ]
+        },
+        "shape": [
+          4,
+          7
+        ],
+        "values": [
+          3.49,
+          3.24,
+          7.72,
+          13.11,
+          6.94,
+          3.92,
+          6.8,
+          6.75,
+          13.83,
+          6,
+          6.49,
+          8.82,
+          25.52,
+          8.44,
+          17.43,
+          11.75,
+          35.82,
+          7.36,
+          8.13,
+          9.69,
+          26.78,
+          10.16,
+          2.82,
+          4.47,
+          17.23,
+          7.74,
+          2.39,
+          2.93
+        ],
+        "missing": [],
+        "sourceMetadata": {
+          "title": "NASA/POWER Source Native Resolution Daily Data",
+          "api": {
+            "version": "v2.9.7",
+            "name": "POWER Daily API"
+          },
+          "fillValue": -999,
+          "messages": []
+        }
+      },
+      "provenance": {
+        "source": "NASA POWER",
+        "originalSource": "https://power.larc.nasa.gov/api/temporal/daily/regional?latitude-min=-17&latitude-max=-14&longitude-min=-49&longitude-max=-46.5&parameters=PRECTOTCORR&community=AG&start=20250115&end=20250115&format=JSON&time-standard=UTC",
+        "observedAt": "2025-01-15",
+        "retrievedAt": "2026-09-15T07:21:14.744Z",
+        "status": "captured-real",
+        "attribution": "NASA POWER; underlying meteorological source reported by the response.",
+        "reportedSources": [
+          "MERRA2"
+        ],
+        "variable": {
+          "id": "PRECTOTCORR",
+          "longName": "Precipitation Corrected",
+          "unit": "mm/day"
+        },
+        "fieldId": "field:territorio_brasilia"
+      },
+      "sourceState": "CAPTURED-REAL / PRECTOTCORR / 20250115"
+    },
+    "parameterEdit": {
+      "ok": true,
+      "sameWorld": true,
+      "tick": 2,
+      "relation": [
+        0.72,
+        2
+      ],
+      "visual": {
+        "renderer": "Canvas2D territorial field",
+        "state": "observed",
+        "frameAspect": 0.75,
+        "tick": 2,
+        "includedIndices": [
+          8,
+          9,
+          10,
+          12,
+          13,
+          14,
+          16,
+          17,
+          18,
+          20,
+          21,
+          22
+        ],
+        "excludedIndices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          11,
+          15,
+          19,
+          23,
+          24,
+          25,
+          26,
+          27
+        ],
+        "absentIndices": [],
+        "historicalTraceId": "trace:3",
+        "sourceStatus": "captured-real",
+        "adapter": "nasa-power-daily-regional-v0",
+        "missingCount": 0,
+        "drawnCells": 12,
+        "dataDerived": true
+      },
+      "trace": {
+        "kind": "trace-view",
+        "operation": "frame",
+        "available": true,
+        "latest": {
+          "kind": "trace",
+          "id": "trace:3",
+          "operation": "frame",
+          "tick": 1,
+          "revision": 1,
+          "sourceIds": [
+            "field:campo_precipitacao"
+          ],
+          "sourceProvenance": [
+            {
+              "source": "NASA POWER",
+              "originalSource": "https://power.larc.nasa.gov/api/temporal/daily/regional?latitude-min=-17&latitude-max=-14&longitude-min=-49&longitude-max=-46.5&parameters=PRECTOTCORR&community=AG&start=20250115&end=20250115&format=JSON&time-standard=UTC",
+              "observedAt": "2025-01-15",
+              "retrievedAt": "2026-09-15T07:21:14.744Z",
+              "status": "captured-real",
+              "attribution": "NASA POWER; underlying meteorological source reported by the response.",
+              "reportedSources": [
+                "MERRA2"
+              ],
+              "variable": {
+                "id": "PRECTOTCORR",
+                "longName": "Precipitation Corrected",
+                "unit": "mm/day"
+              },
+              "fieldId": "field:territorio_brasilia"
+            }
+          ],
+          "sourceTime": {
+            "tick": 1,
+            "observations": [
+              "2025-01-15"
+            ]
+          },
+          "scale": "bbox -49,-17,-46.5,-14",
+          "domain": "PRECTOTCORR mm/day",
+          "inputShape": [
+            4,
+            7
+          ],
+          "transformation": [
+            "integer-rectangular-selection",
+            "min-max-normalization"
+          ],
+          "parameters": {
+            "ratio": [
+              3,
+              4
+            ],
+            "anchor": [
+              0,
+              0.5
+            ],
+            "bounds": {
+              "x": 0,
+              "y": 2,
+              "width": 3,
+              "height": 4
+            }
+          },
+          "includedId": "field:retrato",
+          "excludedId": "field:fora",
+          "includedIndices": [
+            8,
+            9,
+            10,
+            12,
+            13,
+            14,
+            16,
+            17,
+            18,
+            20,
+            21,
+            22
+          ],
+          "excludedIndices": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            11,
+            15,
+            19,
+            23,
+            24,
+            25,
+            26,
+            27
+          ],
+          "normalization": {
+            "method": "min-max-known-values",
+            "minimum": 3.3975,
+            "maximum": 25.859,
+            "constant": false,
+            "constantResult": null,
+            "knownCount": 12,
+            "missingCount": 0
+          },
+          "consequence": {
+            "includedCount": 12,
+            "excludedCount": 16,
+            "resampled": false,
+            "excludedValuesRetained": true
+          },
+          "retained": {
+            "included": [
+              0.34245264118602936,
+              0.12350021147296485,
+              0.1739865992921221,
+              0.7187632170603032,
+              0.36457939140306744,
+              0.5362286579257841,
+              1,
+              0.18841128152616698,
+              0.23500211472964852,
+              0.7820270240188767,
+              0.18669723749526967,
+              0
+            ],
+            "includedShape": [
+              3,
+              4
+            ],
+            "excluded": [
+              {
+                "index": 0,
+                "value": 3.4025000000000003
+              },
+              {
+                "index": 1,
+                "value": 4.808
+              },
+              {
+                "index": 2,
+                "value": 9.6065
+              },
+              {
+                "index": 3,
+                "value": 9.743
+              },
+              {
+                "index": 4,
+                "value": 5.883
+              },
+              {
+                "index": 5,
+                "value": 4.928
+              },
+              {
+                "index": 6,
+                "value": 6.7825
+              },
+              {
+                "index": 7,
+                "value": 6.8165
+              },
+              {
+                "index": 11,
+                "value": 10.5735
+              },
+              {
+                "index": 15,
+                "value": 16.569499999999998
+              },
+              {
+                "index": 19,
+                "value": 18.8355
+              },
+              {
+                "index": 23,
+                "value": 12.2785
+              },
+              {
+                "index": 24,
+                "value": 13.9085
+              },
+              {
+                "index": 25,
+                "value": 5.867500000000001
+              },
+              {
+                "index": 26,
+                "value": 2.579
+              },
+              {
+                "index": 27,
+                "value": 7.9350000000000005
+              }
+            ]
+          },
+          "sourceLocation": {
+            "line": 4,
+            "column": 24
+          }
+        },
+        "ids": [
+          "trace:3"
+        ],
+        "accessTraceId": "trace:7"
+      }
+    },
+    "liveQuery": {
+      "ok": true,
+      "status": "live",
+      "retrievedAt": "2026-09-15T07:46:17.229Z",
+      "tick": 3
+    },
+    "provenance": {
+      "open": true,
+      "text": "STATUS       LIVE\nPROVIDER     NASA POWER\nREPORTED BY  MERRA2\nVARIABLE     PRECTOTCORR — Precipitation Corrected [mm/day]\nOBSERVED     20250115 / UTC\nRETRIEVED    2026-09-15T07:46:17.229Z\nGRID         4 × 7 / 0.625,0.625,0.625° lon / 0.5,0.5,0.5,0.5,0.5,0.5° lat\nUNKNOWN      0\nORIGINAL     https://power.larc.nasa.gov/api/temporal/daily/regional?latitude-min=-17&latitude-max=-14&longitude-min=-49&longitude-max=-46.5&parameters=PRECTOTCORR&community=AG&start=20250115&end=20250115&format=JSON&time-standard=UTC\nATTRIBUTION  NASA POWER; underlying meteorological source reported by the response.\nRIGHTS       https://www.earthdata.nasa.gov/engage/open-data-services-software/data-use-policy",
+      "status": "LIVE / PRECTOTCORR / 20250115"
+    },
+    "removal": {
+      "ok": true,
+      "tick": 4,
+      "visual": {
+        "renderer": "Canvas2D territorial field",
+        "state": "absent",
+        "frameAspect": 0.75,
+        "tick": 4,
+        "includedIndices": [],
+        "excludedIndices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          11,
+          15,
+          19,
+          23,
+          24,
+          25,
+          26,
+          27
+        ],
+        "absentIndices": [
+          8,
+          9,
+          10,
+          12,
+          13,
+          14,
+          16,
+          17,
+          18,
+          20,
+          21,
+          22
+        ],
+        "historicalTraceId": "trace:10",
+        "sourceStatus": "live",
+        "adapter": "nasa-power-daily-regional-v0",
+        "missingCount": 0,
+        "drawnCells": 0,
+        "dataDerived": true
+      },
+      "losses": 12,
+      "exterior": 16,
+      "lossRecord": {
+        "kind": "trace",
+        "id": "trace:16",
+        "operation": "discard",
+        "tick": 4,
+        "revision": 4,
+        "sourceIds": [
+          "field:retrato"
+        ],
+        "sourceProvenance": [
+          {
+            "source": "NASA POWER",
+            "originalSource": "https://power.larc.nasa.gov/api/temporal/daily/regional?latitude-min=-17&latitude-max=-14&longitude-min=-49&longitude-max=-46.5&parameters=PRECTOTCORR&community=AG&start=20250115&end=20250115&format=JSON&time-standard=UTC",
+            "observedAt": "2025-01-15",
+            "retrievedAt": "2026-09-15T07:46:18.133Z",
+            "status": "live",
+            "attribution": "NASA POWER; underlying meteorological source reported by the response.",
+            "reportedSources": [
+              "MERRA2"
+            ],
+            "variable": {
+              "id": "PRECTOTCORR",
+              "longName": "Precipitation Corrected",
+              "unit": "mm/day"
+            },
+            "fieldId": "field:territorio_brasilia"
+          }
+        ],
+        "sourceTime": {
+          "tick": 4,
+          "sourceTime": {
+            "tick": 4,
+            "observations": [
+              "2025-01-15"
+            ]
+          }
+        },
+        "scale": "bbox -49,-17,-46.5,-14",
+        "domain": "PRECTOTCORR mm/day",
+        "shape": [
+          3,
+          4
+        ],
+        "parameters": {
+          "reason": "resultado explicitamente excluído"
+        },
+        "loss": {
+          "count": 12,
+          "fingerprint": "a535f3f3",
+          "recoverableFromLossRecord": false
+        },
+        "consequence": "current-value-removed-historical-snapshots-retained",
+        "sourceLocation": {
+          "line": 7,
+          "column": 12
+        }
+      }
+    },
+    "rollback": {
+      "ok": false,
+      "diagnostic": {
+        "code": "E_FRAME_EMPTY",
+        "message": "Não cabe um retângulo inteiro desta proporção no campo.",
+        "line": 4,
+        "column": 24
+      },
+      "before": {
+        "tick": 4,
+        "source": "# TERRITORY — Brasília is the declared regional window; change 0.35 or 1 below, then RUN again.\nterritorio_brasilia = source \"NASA POWER / live\" \"2025-01-15\" \"bbox -49,-17,-46.5,-14\" \"PRECTOTCORR mm/day\" [4 7] nasa_power_brasilia\ncampo_precipitacao = relate blend [0.72 2] territorio_brasilia territorio_brasilia\nretrato fora recorte = frame 3:4 0 0.5 campo_precipitacao\nanterior = trace frame\n# REMOVE — delete the leading # on the next line, then RUN; the outside residue remains.\nausencia = discard \"resultado explicitamente excluído\" retrato\nobserve [territorio_brasilia campo_precipitacao retrato fora recorte anterior]\n",
+        "visual": {
+          "renderer": "Canvas2D territorial field",
+          "state": "absent",
+          "frameAspect": 0.75,
+          "tick": 4,
+          "includedIndices": [],
+          "excludedIndices": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            11,
+            15,
+            19,
+            23,
+            24,
+            25,
+            26,
+            27
+          ],
+          "absentIndices": [
+            8,
+            9,
+            10,
+            12,
+            13,
+            14,
+            16,
+            17,
+            18,
+            20,
+            21,
+            22
+          ],
+          "historicalTraceId": "trace:10",
+          "sourceStatus": "live",
+          "adapter": "nasa-power-daily-regional-v0",
+          "missingCount": 0,
+          "drawnCells": 0,
+          "dataDerived": true
+        },
+        "observation": "{\"kind\":\"observation\",\"tick\":4,\"revision\":4,\"entries\":[{\"name\":\"territorio_brasilia\",\"value\":{\"kind\":\"field\",\"active\":true,\"discarded\":false,\"history\":[\"trace:1\",\"trace:8\",\"trace:12\"],\"id\":\"field:territorio_brasilia\",\"name\":\"territorio_brasilia\",\"value\":[3.49,3.24,7.72,13.11,6.94,3.92,6.8,6.75,13.83,6,6.49,8.82,25.52,8.44,17.43,11.75,35.82,7.36,8.13,9.69,26.78,10.16,2.82,4.47,17.23,7.74,2.39,2.93],\"shape\":[4,7],\"domain\":\"PRECTOTCORR mm/day\",\"scale\":\"bbox -49,-17,-46.5,-14\",\"time\":\"2025-01-15\",\"origin\":\"situate\",\"seed\":{\"source\":\"NASA POWER\",\"time\":\"2025-01-15\",\"scale\":\"bbox -49,-17,-46.5,-14\",\"domain\":\"PRECTOTCORR mm/day\",\"shape\":[4,7],\"values\":[3.49,3.24,7.72,13.11,6.94,3.92,6.8,6.75,13.83,6,6.49,8.82,25.52,8.44,17.43,11.75,35.82,7.36,8.13,9.69,26.78,10.16,2.82,4.47,17.23,7.74,2.39,2.93],\"declaredSource\":\"NASA POWER / live\"},\"environment\":{\"kind\":\"environmental-observation\",\"adapter\":\"nasa-power-daily-regional-v0\",\"mode\":\"live\",\"status\":\"live\",\"declaration\":{\"source\":\"NASA POWER / live\",\"time\":\"2025-01-15\",\"scale\":\"bbox -49,-17,-46.5,-14\",\"domain\":\"PRECTOTCORR mm/day\",\"shape\":[4,7]},\"source\":{\"provider\":\"NASA POWER\",\"endpoint\":\"https://power.larc.nasa.gov/api/temporal/daily/regional\",\"requestUrl\":\"https://power.larc.nasa.gov/api/temporal/daily/regional?latitude-min=-17&latitude-max=-14&longitude-min=-49&longitude-max=-46.5&parameters=PRECTOTCORR&community=AG&start=20250115&end=20250115&format=JSON&time-standard=UTC\",\"documentation\":\"https://power.larc.nasa.gov/docs/services/api/temporal/daily/\",\"rights\":\"https://www.earthdata.nasa.gov/engage/open-data-services-software/data-use-policy\",\"attribution\":\"NASA POWER; underlying meteorological source reported by the response.\",\"reportedSources\":[\"MERRA2\"]},\"retrieval\":{\"retrievedAt\":\"2026-09-15T07:46:18.133Z\",\"httpStatus\":200},\"variable\":{\"id\":\"PRECTOTCORR\",\"longName\":\"Precipitation Corrected\",\"unit\":\"mm/day\"},\"time\":{\"start\":\"20250115\",\"end\":\"20250115\",\"standard\":\"UTC\"},\"space\":{\"requestedBounds\":{\"longitudeMin\":-49,\"latitudeMin\":-17,\"longitudeMax\":-46.5,\"latitudeMax\":-14},\"longitudes\":[-48.75,-48.125,-47.5,-46.875],\"latitudes\":[-17,-16.5,-16,-15.5,-15,-14.5,-14],\"coordinates\":[[-48.75,-17],[-48.125,-17],[-47.5,-17],[-46.875,-17],[-48.75,-16.5],[-48.125,-16.5],[-47.5,-16.5],[-46.875,-16.5],[-48.75,-16],[-48.125,-16],[-47.5,-16],[-46.875,-16],[-48.75,-15.5],[-48.125,-15.5],[-47.5,-15.5],[-46.875,-15.5],[-48.75,-15],[-48.125,-15],[-47.5,-15],[-46.875,-15],[-48.75,-14.5],[-48.125,-14.5],[-47.5,-14.5],[-46.875,-14.5],[-48.75,-14],[-48.125,-14],[-47.5,-14],[-46.875,-14]],\"elevations\":[863.54,859.68,900.86,715.91,970.61,908.39,916.35,725.93,979.72,984.96,945.25,809.43,820.1,886.8,947.71,817.69,628.01,852.58,799.69,690.07,575.84,757.28,853.34,525.63,589.02,614.37,901.99,607.82],\"longitudeSteps\":[0.625,0.625,0.625],\"latitudeSteps\":[0.5,0.5,0.5,0.5,0.5,0.5]},\"shape\":[4,7],\"values\":[3.49,3.24,7.72,13.11,6.94,3.92,6.8,6.75,13.83,6,6.49,8.82,25.52,8.44,17.43,11.75,35.82,7.36,8.13,9.69,26.78,10.16,2.82,4.47,17.23,7.74,2.39,2.93],\"missing\":[],\"sourceMetadata\":{\"title\":\"NASA/POWER Source Native Resolution Daily Data\",\"api\":{\"version\":\"v2.9.7\",\"name\":\"POWER Daily API\"},\"fillValue\":-999,\"messages\":[]}},\"provenance\":[{\"source\":\"NASA POWER\",\"originalSource\":\"https://power.larc.nasa.gov/api/temporal/daily/regional?latitude-min=-17&latitude-max=-14&longitude-min=-49&longitude-max=-46.5&parameters=PRECTOTCORR&community=AG&start=20250115&end=20250115&format=JSON&time-standard=UTC\",\"observedAt\":\"2025-01-15\",\"retrievedAt\":\"2026-09-15T07:46:18.133Z\",\"status\":\"live\",\"attribution\":\"NASA POWER; underlying meteorological source reported by the response.\",\"reportedSources\":[\"MERRA2\"],\"variable\":{\"id\":\"PRECTOTCORR\",\"longName\":\"Precipitation Corrected\",\"unit\":\"mm/day\"},\"fieldId\":\"field:territorio_brasilia\"}]}},{\"name\":\"campo_precipitacao\",\"value\":{\"kind\":\"field\",\"active\":true,\"discarded\":false,\"history\":[\"trace:1\",\"trace:8\",\"trace:12\",\"trace:2\",\"trace:5\",\"trace:9\",\"trace:13\"],\"id\":\"field:campo_precipitacao\",\"name\":\"campo_precipitacao\",\"origin\":\"relate\",\"value\":[6.5356,10.3464,4.6744,6.0036000000000005,6.8392,5.957599999999999,6.9008,4.712400000000001,8.5452,8.0304,11.774799999999999,6.7896,19.6952,10.8232,23.2548,9.3668,15.8832,9.0376,28.0668,8.0124,9.5288,6.0632,20.0712,8.5668,6.545200000000001,4.2768,13.0748,6.3932],\"shape\":[4,7],\"domain\":\"PRECTOTCORR mm/day\",\"scale\":\"bbox -49,-17,-46.5,-14\",\"time\":{\"tick\":4,\"observations\":[\"2025-01-15\"]},\"provenance\":[{\"source\":\"NASA POWER\",\"originalSource\":\"https://power.larc.nasa.gov/api/temporal/daily/regional?latitude-min=-17&latitude-max=-14&longitude-min=-49&longitude-max=-46.5&parameters=PRECTOTCORR&community=AG&start=20250115&end=20250115&format=JSON&time-standard=UTC\",\"observedAt\":\"2025-01-15\",\"retrievedAt\":\"2026-09-15T07:46:18.133Z\",\"status\":\"live\",\"attribution\":\"NASA POWER; underlying meteorological source reported by the response.\",\"reportedSources\":[\"MERRA2\"],\"variable\":{\"id\":\"PRECTOTCORR\",\"longName\":\"Precipitation Corrected\",\"unit\":\"mm/day\"},\"fieldId\":\"field:territorio_brasilia\"}],\"relationId\":\"relation:campo_precipitacao\",\"environment\":{\"kind\":\"environmental-observation\",\"adapter\":\"nasa-power-daily-regional-v0\",\"mode\":\"live\",\"status\":\"live\",\"declaration\":{\"source\":\"NASA POWER / live\",\"time\":\"2025-01-15\",\"scale\":\"bbox -49,-17,-46.5,-14\",\"domain\":\"PRECTOTCORR mm/day\",\"shape\":[4,7]},\"source\":{\"provider\":\"NASA POWER\",\"endpoint\":\"https://power.larc.nasa.gov/api/temporal/daily/regional\",\"requestUrl\":\"https://power.larc.nasa.gov/api/temporal/daily/regional?latitude-min=-17&latitude-max=-14&longitude-min=-49&longitude-max=-46.5&parameters=PRECTOTCORR&community=AG&start=20250115&end=20250115&format=JSON&time-standard=UTC\",\"documentation\":\"https://power.larc.nasa.gov/docs/services/api/temporal/daily/\",\"rights\":\"https://www.earthdata.nasa.gov/engage/open-data-services-software/data-use-policy\",\"attribution\":\"NASA POWER; underlying meteorological source reported by the response.\",\"reportedSources\":[\"MERRA2\"]},\"retrieval\":{\"retrievedAt\":\"2026-09-15T07:46:18.133Z\",\"httpStatus\":200},\"variable\":{\"id\":\"PRECTOTCORR\",\"longName\":\"Precipitation Corrected\",\"unit\":\"mm/day\"},\"time\":{\"start\":\"20250115\",\"end\":\"20250115\",\"standard\":\"UTC\"},\"space\":{\"requestedBounds\":{\"longitudeMin\":-49,\"latitudeMin\":-17,\"longitudeMax\":-46.5,\"latitudeMax\":-14},\"longitudes\":[-48.75,-48.125,-47.5,-46.875],\"latitudes\":[-17,-16.5,-16,-15.5,-15,-14.5,-14],\"coordinates\":[[-48.75,-17],[-48.125,-17],[-47.5,-17],[-46.875,-17],[-48.75,-16.5],[-48.125,-16.5],[-47.5,-16.5],[-46.875,-16.5],[-48.75,-16],[-48.125,-16],[-47.5,-16],[-46.875,-16],[-48.75,-15.5],[-48.125,-15.5],[-47.5,-15.5],[-46.875,-15.5],[-48.75,-15],[-48.125,-15],[-47.5,-15],[-46.875,-15],[-48.75,-14.5],[-48.125,-14.5],[-47.5,-14.5],[-46.875,-14.5],[-48.75,-14],[-48.125,-14],[-47.5,-14],[-46.875,-14]],\"elevations\":[863.54,859.68,900.86,715.91,970.61,908.39,916.35,725.93,979.72,984.96,945.25,809.43,820.1,886.8,947.71,817.69,628.01,852.58,799.69,690.07,575.84,757.28,853.34,525.63,589.02,614.37,901.99,607.82],\"longitudeSteps\":[0.625,0.625,0.625],\"latitudeSteps\":[0.5,0.5,0.5,0.5,0.5,0.5]},\"shape\":[4,7],\"values\":[3.49,3.24,7.72,13.11,6.94,3.92,6.8,6.75,13.83,6,6.49,8.82,25.52,8.44,17.43,11.75,35.82,7.36,8.13,9.69,26.78,10.16,2.82,4.47,17.23,7.74,2.39,2.93],\"missing\":[],\"sourceMetadata\":{\"title\":\"NASA/POWER Source Native Resolution Daily Data\",\"api\":{\"version\":\"v2.9.7\",\"name\":\"POWER Daily API\"},\"fillValue\":-999,\"messages\":[]}}}},{\"name\":\"retrato\",\"value\":{\"kind\":\"field\",\"active\":true,\"discarded\":true,\"history\":[\"trace:1\",\"trace:8\",\"trace:12\",\"trace:2\",\"trace:5\",\"trace:9\",\"trace:13\",\"trace:3\",\"trace:6\",\"trace:10\",\"trace:14\",\"trace:16\"],\"id\":\"field:retrato\",\"name\":\"retrato\",\"origin\":\"frame\",\"domain\":\"PRECTOTCORR mm/day\",\"scale\":\"bbox -49,-17,-46.5,-14\",\"time\":{\"tick\":4,\"sourceTime\":{\"tick\":4,\"observations\":[\"2025-01-15\"]}},\"provenance\":[{\"source\":\"NASA POWER\",\"originalSource\":\"https://power.larc.nasa.gov/api/temporal/daily/regional?latitude-min=-17&latitude-max=-14&longitude-min=-49&longitude-max=-46.5&parameters=PRECTOTCORR&community=AG&start=20250115&end=20250115&format=JSON&time-standard=UTC\",\"observedAt\":\"2025-01-15\",\"retrievedAt\":\"2026-09-15T07:46:18.133Z\",\"status\":\"live\",\"attribution\":\"NASA POWER; underlying meteorological source reported by the response.\",\"reportedSources\":[\"MERRA2\"],\"variable\":{\"id\":\"PRECTOTCORR\",\"longName\":\"Precipitation Corrected\",\"unit\":\"mm/day\"},\"fieldId\":\"field:territorio_brasilia\"}],\"environment\":{\"kind\":\"environmental-observation\",\"adapter\":\"nasa-power-daily-regional-v0\",\"mode\":\"live\",\"status\":\"live\",\"declaration\":{\"source\":\"NASA POWER / live\",\"time\":\"2025-01-15\",\"scale\":\"bbox -49,-17,-46.5,-14\",\"domain\":\"PRECTOTCORR mm/day\",\"shape\":[4,7]},\"source\":{\"provider\":\"NASA POWER\",\"endpoint\":\"https://power.larc.nasa.gov/api/temporal/daily/regional\",\"requestUrl\":\"https://power.larc.nasa.gov/api/temporal/daily/regional?latitude-min=-17&latitude-max=-14&longitude-min=-49&longitude-max=-46.5&parameters=PRECTOTCORR&community=AG&start=20250115&end=20250115&format=JSON&time-standard=UTC\",\"documentation\":\"https://power.larc.nasa.gov/docs/services/api/temporal/daily/\",\"rights\":\"https://www.earthdata.nasa.gov/engage/open-data-services-software/data-use-policy\",\"attribution\":\"NASA POWER; underlying meteorological source reported by the response.\",\"reportedSources\":[\"MERRA2\"]},\"retrieval\":{\"retrievedAt\":\"2026-09-15T07:46:18.133Z\",\"httpStatus\":200},\"variable\":{\"id\":\"PRECTOTCORR\",\"longName\":\"Precipitation Corrected\",\"unit\":\"mm/day\"},\"time\":{\"start\":\"20250115\",\"end\":\"20250115\",\"standard\":\"UTC\"},\"space\":{\"requestedBounds\":{\"longitudeMin\":-49,\"latitudeMin\":-17,\"longitudeMax\":-46.5,\"latitudeMax\":-14},\"longitudes\":[-48.75,-48.125,-47.5,-46.875],\"latitudes\":[-17,-16.5,-16,-15.5,-15,-14.5,-14],\"coordinates\":[[-48.75,-17],[-48.125,-17],[-47.5,-17],[-46.875,-17],[-48.75,-16.5],[-48.125,-16.5],[-47.5,-16.5],[-46.875,-16.5],[-48.75,-16],[-48.125,-16],[-47.5,-16],[-46.875,-16],[-48.75,-15.5],[-48.125,-15.5],[-47.5,-15.5],[-46.875,-15.5],[-48.75,-15],[-48.125,-15],[-47.5,-15],[-46.875,-15],[-48.75,-14.5],[-48.125,-14.5],[-47.5,-14.5],[-46.875,-14.5],[-48.75,-14],[-48.125,-14],[-47.5,-14],[-46.875,-14]],\"elevations\":[863.54,859.68,900.86,715.91,970.61,908.39,916.35,725.93,979.72,984.96,945.25,809.43,820.1,886.8,947.71,817.69,628.01,852.58,799.69,690.07,575.84,757.28,853.34,525.63,589.02,614.37,901.99,607.82],\"longitudeSteps\":[0.625,0.625,0.625],\"latitudeSteps\":[0.5,0.5,0.5,0.5,0.5,0.5]},\"shape\":[4,7],\"values\":[3.49,3.24,7.72,13.11,6.94,3.92,6.8,6.75,13.83,6,6.49,8.82,25.52,8.44,17.43,11.75,35.82,7.36,8.13,9.69,26.78,10.16,2.82,4.47,17.23,7.74,2.39,2.93],\"missing\":[],\"sourceMetadata\":{\"title\":\"NASA/POWER Source Native Resolution Daily Data\",\"api\":{\"version\":\"v2.9.7\",\"name\":\"POWER Daily API\"},\"fillValue\":-999,\"messages\":[]}},\"value\":null,\"shape\":[3,4],\"partition\":{\"traceId\":\"trace:14\",\"sourceId\":\"field:campo_precipitacao\",\"role\":\"included\",\"counterpartId\":\"field:fora\",\"sourceIndices\":[8,9,10,12,13,14,16,17,18,20,21,22],\"bounds\":{\"x\":0,\"y\":2,\"width\":3,\"height\":4}},\"lossId\":\"trace:16\"}},{\"name\":\"fora\",\"value\":{\"kind\":\"field\",\"active\":true,\"discarded\":false,\"history\":[\"trace:1\",\"trace:8\",\"trace:12\",\"trace:2\",\"trace:5\",\"trace:9\",\"trace:13\",\"trace:3\",\"trace:6\",\"trace:10\",\"trace:14\"],\"id\":\"field:fora\",\"name\":\"fora\",\"origin\":\"frame\",\"domain\":\"PRECTOTCORR mm/day\",\"scale\":\"bbox -49,-17,-46.5,-14\",\"time\":{\"tick\":4,\"sourceTime\":{\"tick\":4,\"observations\":[\"2025-01-15\"]}},\"provenance\":[{\"source\":\"NASA POWER\",\"originalSource\":\"https://power.larc.nasa.gov/api/temporal/daily/regional?latitude-min=-17&latitude-max=-14&longitude-min=-49&longitude-max=-46.5&parameters=PRECTOTCORR&community=AG&start=20250115&end=20250115&format=JSON&time-standard=UTC\",\"observedAt\":\"2025-01-15\",\"retrievedAt\":\"2026-09-15T07:46:18.133Z\",\"status\":\"live\",\"attribution\":\"NASA POWER; underlying meteorological source reported by the response.\",\"reportedSources\":[\"MERRA2\"],\"variable\":{\"id\":\"PRECTOTCORR\",\"longName\":\"Precipitation Corrected\",\"unit\":\"mm/day\"},\"fieldId\":\"field:territorio_brasilia\"}],\"environment\":{\"kind\":\"environmental-observation\",\"adapter\":\"nasa-power-daily-regional-v0\",\"mode\":\"live\",\"status\":\"live\",\"declaration\":{\"source\":\"NASA POWER / live\",\"time\":\"2025-01-15\",\"scale\":\"bbox -49,-17,-46.5,-14\",\"domain\":\"PRECTOTCORR mm/day\",\"shape\":[4,7]},\"source\":{\"provider\":\"NASA POWER\",\"endpoint\":\"https://power.larc.nasa.gov/api/temporal/daily/regional\",\"requestUrl\":\"https://power.larc.nasa.gov/api/temporal/daily/regional?latitude-min=-17&latitude-max=-14&longitude-min=-49&longitude-max=-46.5&parameters=PRECTOTCORR&community=AG&start=20250115&end=20250115&format=JSON&time-standard=UTC\",\"documentation\":\"https://power.larc.nasa.gov/docs/services/api/temporal/daily/\",\"rights\":\"https://www.earthdata.nasa.gov/engage/open-data-services-software/data-use-policy\",\"attribution\":\"NASA POWER; underlying meteorological source reported by the response.\",\"reportedSources\":[\"MERRA2\"]},\"retrieval\":{\"retrievedAt\":\"2026-09-15T07:46:18.133Z\",\"httpStatus\":200},\"variable\":{\"id\":\"PRECTOTCORR\",\"longName\":\"Precipitation Corrected\",\"unit\":\"mm/day\"},\"time\":{\"start\":\"20250115\",\"end\":\"20250115\",\"standard\":\"UTC\"},\"space\":{\"requestedBounds\":{\"longitudeMin\":-49,\"latitudeMin\":-17,\"longitudeMax\":-46.5,\"latitudeMax\":-14},\"longitudes\":[-48.75,-48.125,-47.5,-46.875],\"latitudes\":[-17,-16.5,-16,-15.5,-15,-14.5,-14],\"coordinates\":[[-48.75,-17],[-48.125,-17],[-47.5,-17],[-46.875,-17],[-48.75,-16.5],[-48.125,-16.5],[-47.5,-16.5],[-46.875,-16.5],[-48.75,-16],[-48.125,-16],[-47.5,-16],[-46.875,-16],[-48.75,-15.5],[-48.125,-15.5],[-47.5,-15.5],[-46.875,-15.5],[-48.75,-15],[-48.125,-15],[-47.5,-15],[-46.875,-15],[-48.75,-14.5],[-48.125,-14.5],[-47.5,-14.5],[-46.875,-14.5],[-48.75,-14],[-48.125,-14],[-47.5,-14],[-46.875,-14]],\"elevations\":[863.54,859.68,900.86,715.91,970.61,908.39,916.35,725.93,979.72,984.96,945.25,809.43,820.1,886.8,947.71,817.69,628.01,852.58,799.69,690.07,575.84,757.28,853.34,525.63,589.02,614.37,901.99,607.82],\"longitudeSteps\":[0.625,0.625,0.625],\"latitudeSteps\":[0.5,0.5,0.5,0.5,0.5,0.5]},\"shape\":[4,7],\"values\":[3.49,3.24,7.72,13.11,6.94,3.92,6.8,6.75,13.83,6,6.49,8.82,25.52,8.44,17.43,11.75,35.82,7.36,8.13,9.69,26.78,10.16,2.82,4.47,17.23,7.74,2.39,2.93],\"missing\":[],\"sourceMetadata\":{\"title\":\"NASA/POWER Source Native Resolution Daily Data\",\"api\":{\"version\":\"v2.9.7\",\"name\":\"POWER Daily API\"},\"fillValue\":-999,\"messages\":[]}},\"value\":[6.5356,10.3464,4.6744,6.0036000000000005,6.8392,5.957599999999999,6.9008,4.712400000000001,null,null,null,6.7896,null,null,null,9.3668,null,null,null,8.0124,null,null,null,8.5668,6.545200000000001,4.2768,13.0748,6.3932],\"shape\":[4,7],\"partition\":{\"traceId\":\"trace:14\",\"sourceId\":\"field:campo_precipitacao\",\"role\":\"excluded\",\"counterpartId\":\"field:retrato\",\"sourceIndices\":[0,1,2,3,4,5,6,7,11,15,19,23,24,25,26,27],\"bounds\":{\"x\":0,\"y\":2,\"width\":3,\"height\":4}}}},{\"name\":\"recorte\",\"value\":{\"kind\":\"trace\",\"id\":\"trace:14\",\"operation\":\"frame\",\"tick\":4,\"revision\":4,\"sourceIds\":[\"field:campo_precipitacao\"],\"sourceProvenance\":[{\"source\":\"NASA POWER\",\"originalSource\":\"https://power.larc.nasa.gov/api/temporal/daily/regional?latitude-min=-17&latitude-max=-14&longitude-min=-49&longitude-max=-46.5&parameters=PRECTOTCORR&community=AG&start=20250115&end=20250115&format=JSON&time-standard=UTC\",\"observedAt\":\"2025-01-15\",\"retrievedAt\":\"2026-09-15T07:46:18.133Z\",\"status\":\"live\",\"attribution\":\"NASA POWER; underlying meteorological source reported by the response.\",\"reportedSources\":[\"MERRA2\"],\"variable\":{\"id\":\"PRECTOTCORR\",\"longName\":\"Precipitation Corrected\",\"unit\":\"mm/day\"},\"fieldId\":\"field:territorio_brasilia\"}],\"sourceTime\":{\"tick\":4,\"observations\":[\"2025-01-15\"]},\"scale\":\"bbox -49,-17,-46.5,-14\",\"domain\":\"PRECTOTCORR mm/day\",\"inputShape\":[4,7],\"transformation\":[\"integer-rectangular-selection\",\"min-max-normalization\"],\"parameters\":{\"ratio\":[3,4],\"anchor\":[0,0.5],\"bounds\":{\"x\":0,\"y\":2,\"width\":3,\"height\":4}},\"includedId\":\"field:retrato\",\"excludedId\":\"field:fora\",\"includedIndices\":[8,9,10,12,13,14,16,17,18,20,21,22],\"excludedIndices\":[0,1,2,3,4,5,6,7,11,15,19,23,24,25,26,27],\"normalization\":{\"method\":\"min-max-known-values\",\"minimum\":6.0632,\"maximum\":28.0668,\"constant\":false,\"constantResult\":null,\"knownCount\":12,\"missingCount\":0},\"consequence\":{\"includedCount\":12,\"excludedCount\":16,\"resampled\":false,\"excludedValuesRetained\":true},\"retained\":{\"included\":[0.11279972368157935,0.08940355214601248,0.2595757057935974,0.6195349851842425,0.21632823719754948,0.7813085131523934,0.44629060699158324,0.13517787998327543,1,0.15750149975458563,0,0.6366230980385029],\"includedShape\":[3,4],\"excluded\":[{\"index\":0,\"value\":6.5356},{\"index\":1,\"value\":10.3464},{\"index\":2,\"value\":4.6744},{\"index\":3,\"value\":6.0036000000000005},{\"index\":4,\"value\":6.8392},{\"index\":5,\"value\":5.957599999999999},{\"index\":6,\"value\":6.9008},{\"index\":7,\"value\":4.712400000000001},{\"index\":11,\"value\":6.7896},{\"index\":15,\"value\":9.3668},{\"index\":19,\"value\":8.0124},{\"index\":23,\"value\":8.5668},{\"index\":24,\"value\":6.545200000000001},{\"index\":25,\"value\":4.2768},{\"index\":26,\"value\":13.0748},{\"index\":27,\"value\":6.3932}]},\"sourceLocation\":{\"line\":4,\"column\":24}}},{\"name\":\"anterior\",\"value\":{\"kind\":\"trace-view\",\"operation\":\"frame\",\"available\":true,\"latest\":{\"kind\":\"trace\",\"id\":\"trace:10\",\"operation\":\"frame\",\"tick\":3,\"revision\":3,\"sourceIds\":[\"field:campo_precipitacao\"],\"sourceProvenance\":[{\"source\":\"NASA POWER\",\"originalSource\":\"https://power.larc.nasa.gov/api/temporal/daily/regional?latitude-min=-17&latitude-max=-14&longitude-min=-49&longitude-max=-46.5&parameters=PRECTOTCORR&community=AG&start=20250115&end=20250115&format=JSON&time-standard=UTC\",\"observedAt\":\"2025-01-15\",\"retrievedAt\":\"2026-09-15T07:46:17.229Z\",\"status\":\"live\",\"attribution\":\"NASA POWER; underlying meteorological source reported by the response.\",\"reportedSources\":[\"MERRA2\"],\"variable\":{\"id\":\"PRECTOTCORR\",\"longName\":\"Precipitation Corrected\",\"unit\":\"mm/day\"},\"fieldId\":\"field:territorio_brasilia\"}],\"sourceTime\":{\"tick\":3,\"observations\":[\"2025-01-15\"]},\"scale\":\"bbox -49,-17,-46.5,-14\",\"domain\":\"PRECTOTCORR mm/day\",\"inputShape\":[4,7],\"transformation\":[\"integer-rectangular-selection\",\"min-max-normalization\"],\"parameters\":{\"ratio\":[3,4],\"anchor\":[0,0.5],\"bounds\":{\"x\":0,\"y\":2,\"width\":3,\"height\":4}},\"includedId\":\"field:retrato\",\"excludedId\":\"field:fora\",\"includedIndices\":[8,9,10,12,13,14,16,17,18,20,21,22],\"excludedIndices\":[0,1,2,3,4,5,6,7,11,15,19,23,24,25,26,27],\"normalization\":{\"method\":\"min-max-known-values\",\"minimum\":6.0632,\"maximum\":28.0668,\"constant\":false,\"constantResult\":null,\"knownCount\":12,\"missingCount\":0},\"consequence\":{\"includedCount\":12,\"excludedCount\":16,\"resampled\":false,\"excludedValuesRetained\":true},\"retained\":{\"included\":[0.11279972368157935,0.08940355214601248,0.2595757057935974,0.6195349851842425,0.21632823719754948,0.7813085131523934,0.44629060699158324,0.13517787998327543,1,0.15750149975458563,0,0.6366230980385029],\"includedShape\":[3,4],\"excluded\":[{\"index\":0,\"value\":6.5356},{\"index\":1,\"value\":10.3464},{\"index\":2,\"value\":4.6744},{\"index\":3,\"value\":6.0036000000000005},{\"index\":4,\"value\":6.8392},{\"index\":5,\"value\":5.957599999999999},{\"index\":6,\"value\":6.9008},{\"index\":7,\"value\":4.712400000000001},{\"index\":11,\"value\":6.7896},{\"index\":15,\"value\":9.3668},{\"index\":19,\"value\":8.0124},{\"index\":23,\"value\":8.5668},{\"index\":24,\"value\":6.545200000000001},{\"index\":25,\"value\":4.2768},{\"index\":26,\"value\":13.0748},{\"index\":27,\"value\":6.3932}]},\"sourceLocation\":{\"line\":4,\"column\":24}},\"ids\":[\"trace:3\",\"trace:6\",\"trace:10\"],\"accessTraceId\":\"trace:15\"}}]}"
+      },
+      "after": {
+        "tick": 4,
+        "source": "# TERRITORY — Brasília is the declared regional window; change 0.35 or 1 below, then RUN again.\nterritorio_brasilia = source \"NASA POWER / live\" \"2025-01-15\" \"bbox -49,-17,-46.5,-14\" \"PRECTOTCORR mm/day\" [4 7] nasa_power_brasilia\ncampo_precipitacao = relate blend [0.72 2] territorio_brasilia territorio_brasilia\nretrato fora recorte = frame 3:4 0 0.5 campo_precipitacao\nanterior = trace frame\n# REMOVE — delete the leading # on the next line, then RUN; the outside residue remains.\nausencia = discard \"resultado explicitamente excluído\" retrato\nobserve [territorio_brasilia campo_precipitacao retrato fora recorte anterior]\n",
+        "visual": {
+          "renderer": "Canvas2D territorial field",
+          "state": "absent",
+          "frameAspect": 0.75,
+          "tick": 4,
+          "includedIndices": [],
+          "excludedIndices": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            11,
+            15,
+            19,
+            23,
+            24,
+            25,
+            26,
+            27
+          ],
+          "absentIndices": [
+            8,
+            9,
+            10,
+            12,
+            13,
+            14,
+            16,
+            17,
+            18,
+            20,
+            21,
+            22
+          ],
+          "historicalTraceId": "trace:10",
+          "sourceStatus": "live",
+          "adapter": "nasa-power-daily-regional-v0",
+          "missingCount": 0,
+          "drawnCells": 0,
+          "dataDerived": true
+        },
+        "observation": "{\"kind\":\"observation\",\"tick\":4,\"revision\":4,\"entries\":[{\"name\":\"territorio_brasilia\",\"value\":{\"kind\":\"field\",\"active\":true,\"discarded\":false,\"history\":[\"trace:1\",\"trace:8\",\"trace:12\"],\"id\":\"field:territorio_brasilia\",\"name\":\"territorio_brasilia\",\"value\":[3.49,3.24,7.72,13.11,6.94,3.92,6.8,6.75,13.83,6,6.49,8.82,25.52,8.44,17.43,11.75,35.82,7.36,8.13,9.69,26.78,10.16,2.82,4.47,17.23,7.74,2.39,2.93],\"shape\":[4,7],\"domain\":\"PRECTOTCORR mm/day\",\"scale\":\"bbox -49,-17,-46.5,-14\",\"time\":\"2025-01-15\",\"origin\":\"situate\",\"seed\":{\"source\":\"NASA POWER\",\"time\":\"2025-01-15\",\"scale\":\"bbox -49,-17,-46.5,-14\",\"domain\":\"PRECTOTCORR mm/day\",\"shape\":[4,7],\"values\":[3.49,3.24,7.72,13.11,6.94,3.92,6.8,6.75,13.83,6,6.49,8.82,25.52,8.44,17.43,11.75,35.82,7.36,8.13,9.69,26.78,10.16,2.82,4.47,17.23,7.74,2.39,2.93],\"declaredSource\":\"NASA POWER / live\"},\"environment\":{\"kind\":\"environmental-observation\",\"adapter\":\"nasa-power-daily-regional-v0\",\"mode\":\"live\",\"status\":\"live\",\"declaration\":{\"source\":\"NASA POWER / live\",\"time\":\"2025-01-15\",\"scale\":\"bbox -49,-17,-46.5,-14\",\"domain\":\"PRECTOTCORR mm/day\",\"shape\":[4,7]},\"source\":{\"provider\":\"NASA POWER\",\"endpoint\":\"https://power.larc.nasa.gov/api/temporal/daily/regional\",\"requestUrl\":\"https://power.larc.nasa.gov/api/temporal/daily/regional?latitude-min=-17&latitude-max=-14&longitude-min=-49&longitude-max=-46.5&parameters=PRECTOTCORR&community=AG&start=20250115&end=20250115&format=JSON&time-standard=UTC\",\"documentation\":\"https://power.larc.nasa.gov/docs/services/api/temporal/daily/\",\"rights\":\"https://www.earthdata.nasa.gov/engage/open-data-services-software/data-use-policy\",\"attribution\":\"NASA POWER; underlying meteorological source reported by the response.\",\"reportedSources\":[\"MERRA2\"]},\"retrieval\":{\"retrievedAt\":\"2026-09-15T07:46:18.133Z\",\"httpStatus\":200},\"variable\":{\"id\":\"PRECTOTCORR\",\"longName\":\"Precipitation Corrected\",\"unit\":\"mm/day\"},\"time\":{\"start\":\"20250115\",\"end\":\"20250115\",\"standard\":\"UTC\"},\"space\":{\"requestedBounds\":{\"longitudeMin\":-49,\"latitudeMin\":-17,\"longitudeMax\":-46.5,\"latitudeMax\":-14},\"longitudes\":[-48.75,-48.125,-47.5,-46.875],\"latitudes\":[-17,-16.5,-16,-15.5,-15,-14.5,-14],\"coordinates\":[[-48.75,-17],[-48.125,-17],[-47.5,-17],[-46.875,-17],[-48.75,-16.5],[-48.125,-16.5],[-47.5,-16.5],[-46.875,-16.5],[-48.75,-16],[-48.125,-16],[-47.5,-16],[-46.875,-16],[-48.75,-15.5],[-48.125,-15.5],[-47.5,-15.5],[-46.875,-15.5],[-48.75,-15],[-48.125,-15],[-47.5,-15],[-46.875,-15],[-48.75,-14.5],[-48.125,-14.5],[-47.5,-14.5],[-46.875,-14.5],[-48.75,-14],[-48.125,-14],[-47.5,-14],[-46.875,-14]],\"elevations\":[863.54,859.68,900.86,715.91,970.61,908.39,916.35,725.93,979.72,984.96,945.25,809.43,820.1,886.8,947.71,817.69,628.01,852.58,799.69,690.07,575.84,757.28,853.34,525.63,589.02,614.37,901.99,607.82],\"longitudeSteps\":[0.625,0.625,0.625],\"latitudeSteps\":[0.5,0.5,0.5,0.5,0.5,0.5]},\"shape\":[4,7],\"values\":[3.49,3.24,7.72,13.11,6.94,3.92,6.8,6.75,13.83,6,6.49,8.82,25.52,8.44,17.43,11.75,35.82,7.36,8.13,9.69,26.78,10.16,2.82,4.47,17.23,7.74,2.39,2.93],\"missing\":[],\"sourceMetadata\":{\"title\":\"NASA/POWER Source Native Resolution Daily Data\",\"api\":{\"version\":\"v2.9.7\",\"name\":\"POWER Daily API\"},\"fillValue\":-999,\"messages\":[]}},\"provenance\":[{\"source\":\"NASA POWER\",\"originalSource\":\"https://power.larc.nasa.gov/api/temporal/daily/regional?latitude-min=-17&latitude-max=-14&longitude-min=-49&longitude-max=-46.5&parameters=PRECTOTCORR&community=AG&start=20250115&end=20250115&format=JSON&time-standard=UTC\",\"observedAt\":\"2025-01-15\",\"retrievedAt\":\"2026-09-15T07:46:18.133Z\",\"status\":\"live\",\"attribution\":\"NASA POWER; underlying meteorological source reported by the response.\",\"reportedSources\":[\"MERRA2\"],\"variable\":{\"id\":\"PRECTOTCORR\",\"longName\":\"Precipitation Corrected\",\"unit\":\"mm/day\"},\"fieldId\":\"field:territorio_brasilia\"}]}},{\"name\":\"campo_precipitacao\",\"value\":{\"kind\":\"field\",\"active\":true,\"discarded\":false,\"history\":[\"trace:1\",\"trace:8\",\"trace:12\",\"trace:2\",\"trace:5\",\"trace:9\",\"trace:13\"],\"id\":\"field:campo_precipitacao\",\"name\":\"campo_precipitacao\",\"origin\":\"relate\",\"value\":[6.5356,10.3464,4.6744,6.0036000000000005,6.8392,5.957599999999999,6.9008,4.712400000000001,8.5452,8.0304,11.774799999999999,6.7896,19.6952,10.8232,23.2548,9.3668,15.8832,9.0376,28.0668,8.0124,9.5288,6.0632,20.0712,8.5668,6.545200000000001,4.2768,13.0748,6.3932],\"shape\":[4,7],\"domain\":\"PRECTOTCORR mm/day\",\"scale\":\"bbox -49,-17,-46.5,-14\",\"time\":{\"tick\":4,\"observations\":[\"2025-01-15\"]},\"provenance\":[{\"source\":\"NASA POWER\",\"originalSource\":\"https://power.larc.nasa.gov/api/temporal/daily/regional?latitude-min=-17&latitude-max=-14&longitude-min=-49&longitude-max=-46.5&parameters=PRECTOTCORR&community=AG&start=20250115&end=20250115&format=JSON&time-standard=UTC\",\"observedAt\":\"2025-01-15\",\"retrievedAt\":\"2026-09-15T07:46:18.133Z\",\"status\":\"live\",\"attribution\":\"NASA POWER; underlying meteorological source reported by the response.\",\"reportedSources\":[\"MERRA2\"],\"variable\":{\"id\":\"PRECTOTCORR\",\"longName\":\"Precipitation Corrected\",\"unit\":\"mm/day\"},\"fieldId\":\"field:territorio_brasilia\"}],\"relationId\":\"relation:campo_precipitacao\",\"environment\":{\"kind\":\"environmental-observation\",\"adapter\":\"nasa-power-daily-regional-v0\",\"mode\":\"live\",\"status\":\"live\",\"declaration\":{\"source\":\"NASA POWER / live\",\"time\":\"2025-01-15\",\"scale\":\"bbox -49,-17,-46.5,-14\",\"domain\":\"PRECTOTCORR mm/day\",\"shape\":[4,7]},\"source\":{\"provider\":\"NASA POWER\",\"endpoint\":\"https://power.larc.nasa.gov/api/temporal/daily/regional\",\"requestUrl\":\"https://power.larc.nasa.gov/api/temporal/daily/regional?latitude-min=-17&latitude-max=-14&longitude-min=-49&longitude-max=-46.5&parameters=PRECTOTCORR&community=AG&start=20250115&end=20250115&format=JSON&time-standard=UTC\",\"documentation\":\"https://power.larc.nasa.gov/docs/services/api/temporal/daily/\",\"rights\":\"https://www.earthdata.nasa.gov/engage/open-data-services-software/data-use-policy\",\"attribution\":\"NASA POWER; underlying meteorological source reported by the response.\",\"reportedSources\":[\"MERRA2\"]},\"retrieval\":{\"retrievedAt\":\"2026-09-15T07:46:18.133Z\",\"httpStatus\":200},\"variable\":{\"id\":\"PRECTOTCORR\",\"longName\":\"Precipitation Corrected\",\"unit\":\"mm/day\"},\"time\":{\"start\":\"20250115\",\"end\":\"20250115\",\"standard\":\"UTC\"},\"space\":{\"requestedBounds\":{\"longitudeMin\":-49,\"latitudeMin\":-17,\"longitudeMax\":-46.5,\"latitudeMax\":-14},\"longitudes\":[-48.75,-48.125,-47.5,-46.875],\"latitudes\":[-17,-16.5,-16,-15.5,-15,-14.5,-14],\"coordinates\":[[-48.75,-17],[-48.125,-17],[-47.5,-17],[-46.875,-17],[-48.75,-16.5],[-48.125,-16.5],[-47.5,-16.5],[-46.875,-16.5],[-48.75,-16],[-48.125,-16],[-47.5,-16],[-46.875,-16],[-48.75,-15.5],[-48.125,-15.5],[-47.5,-15.5],[-46.875,-15.5],[-48.75,-15],[-48.125,-15],[-47.5,-15],[-46.875,-15],[-48.75,-14.5],[-48.125,-14.5],[-47.5,-14.5],[-46.875,-14.5],[-48.75,-14],[-48.125,-14],[-47.5,-14],[-46.875,-14]],\"elevations\":[863.54,859.68,900.86,715.91,970.61,908.39,916.35,725.93,979.72,984.96,945.25,809.43,820.1,886.8,947.71,817.69,628.01,852.58,799.69,690.07,575.84,757.28,853.34,525.63,589.02,614.37,901.99,607.82],\"longitudeSteps\":[0.625,0.625,0.625],\"latitudeSteps\":[0.5,0.5,0.5,0.5,0.5,0.5]},\"shape\":[4,7],\"values\":[3.49,3.24,7.72,13.11,6.94,3.92,6.8,6.75,13.83,6,6.49,8.82,25.52,8.44,17.43,11.75,35.82,7.36,8.13,9.69,26.78,10.16,2.82,4.47,17.23,7.74,2.39,2.93],\"missing\":[],\"sourceMetadata\":{\"title\":\"NASA/POWER Source Native Resolution Daily Data\",\"api\":{\"version\":\"v2.9.7\",\"name\":\"POWER Daily API\"},\"fillValue\":-999,\"messages\":[]}}}},{\"name\":\"retrato\",\"value\":{\"kind\":\"field\",\"active\":true,\"discarded\":true,\"history\":[\"trace:1\",\"trace:8\",\"trace:12\",\"trace:2\",\"trace:5\",\"trace:9\",\"trace:13\",\"trace:3\",\"trace:6\",\"trace:10\",\"trace:14\",\"trace:16\"],\"id\":\"field:retrato\",\"name\":\"retrato\",\"origin\":\"frame\",\"domain\":\"PRECTOTCORR mm/day\",\"scale\":\"bbox -49,-17,-46.5,-14\",\"time\":{\"tick\":4,\"sourceTime\":{\"tick\":4,\"observations\":[\"2025-01-15\"]}},\"provenance\":[{\"source\":\"NASA POWER\",\"originalSource\":\"https://power.larc.nasa.gov/api/temporal/daily/regional?latitude-min=-17&latitude-max=-14&longitude-min=-49&longitude-max=-46.5&parameters=PRECTOTCORR&community=AG&start=20250115&end=20250115&format=JSON&time-standard=UTC\",\"observedAt\":\"2025-01-15\",\"retrievedAt\":\"2026-09-15T07:46:18.133Z\",\"status\":\"live\",\"attribution\":\"NASA POWER; underlying meteorological source reported by the response.\",\"reportedSources\":[\"MERRA2\"],\"variable\":{\"id\":\"PRECTOTCORR\",\"longName\":\"Precipitation Corrected\",\"unit\":\"mm/day\"},\"fieldId\":\"field:territorio_brasilia\"}],\"environment\":{\"kind\":\"environmental-observation\",\"adapter\":\"nasa-power-daily-regional-v0\",\"mode\":\"live\",\"status\":\"live\",\"declaration\":{\"source\":\"NASA POWER / live\",\"time\":\"2025-01-15\",\"scale\":\"bbox -49,-17,-46.5,-14\",\"domain\":\"PRECTOTCORR mm/day\",\"shape\":[4,7]},\"source\":{\"provider\":\"NASA POWER\",\"endpoint\":\"https://power.larc.nasa.gov/api/temporal/daily/regional\",\"requestUrl\":\"https://power.larc.nasa.gov/api/temporal/daily/regional?latitude-min=-17&latitude-max=-14&longitude-min=-49&longitude-max=-46.5&parameters=PRECTOTCORR&community=AG&start=20250115&end=20250115&format=JSON&time-standard=UTC\",\"documentation\":\"https://power.larc.nasa.gov/docs/services/api/temporal/daily/\",\"rights\":\"https://www.earthdata.nasa.gov/engage/open-data-services-software/data-use-policy\",\"attribution\":\"NASA POWER; underlying meteorological source reported by the response.\",\"reportedSources\":[\"MERRA2\"]},\"retrieval\":{\"retrievedAt\":\"2026-09-15T07:46:18.133Z\",\"httpStatus\":200},\"variable\":{\"id\":\"PRECTOTCORR\",\"longName\":\"Precipitation Corrected\",\"unit\":\"mm/day\"},\"time\":{\"start\":\"20250115\",\"end\":\"20250115\",\"standard\":\"UTC\"},\"space\":{\"requestedBounds\":{\"longitudeMin\":-49,\"latitudeMin\":-17,\"longitudeMax\":-46.5,\"latitudeMax\":-14},\"longitudes\":[-48.75,-48.125,-47.5,-46.875],\"latitudes\":[-17,-16.5,-16,-15.5,-15,-14.5,-14],\"coordinates\":[[-48.75,-17],[-48.125,-17],[-47.5,-17],[-46.875,-17],[-48.75,-16.5],[-48.125,-16.5],[-47.5,-16.5],[-46.875,-16.5],[-48.75,-16],[-48.125,-16],[-47.5,-16],[-46.875,-16],[-48.75,-15.5],[-48.125,-15.5],[-47.5,-15.5],[-46.875,-15.5],[-48.75,-15],[-48.125,-15],[-47.5,-15],[-46.875,-15],[-48.75,-14.5],[-48.125,-14.5],[-47.5,-14.5],[-46.875,-14.5],[-48.75,-14],[-48.125,-14],[-47.5,-14],[-46.875,-14]],\"elevations\":[863.54,859.68,900.86,715.91,970.61,908.39,916.35,725.93,979.72,984.96,945.25,809.43,820.1,886.8,947.71,817.69,628.01,852.58,799.69,690.07,575.84,757.28,853.34,525.63,589.02,614.37,901.99,607.82],\"longitudeSteps\":[0.625,0.625,0.625],\"latitudeSteps\":[0.5,0.5,0.5,0.5,0.5,0.5]},\"shape\":[4,7],\"values\":[3.49,3.24,7.72,13.11,6.94,3.92,6.8,6.75,13.83,6,6.49,8.82,25.52,8.44,17.43,11.75,35.82,7.36,8.13,9.69,26.78,10.16,2.82,4.47,17.23,7.74,2.39,2.93],\"missing\":[],\"sourceMetadata\":{\"title\":\"NASA/POWER Source Native Resolution Daily Data\",\"api\":{\"version\":\"v2.9.7\",\"name\":\"POWER Daily API\"},\"fillValue\":-999,\"messages\":[]}},\"value\":null,\"shape\":[3,4],\"partition\":{\"traceId\":\"trace:14\",\"sourceId\":\"field:campo_precipitacao\",\"role\":\"included\",\"counterpartId\":\"field:fora\",\"sourceIndices\":[8,9,10,12,13,14,16,17,18,20,21,22],\"bounds\":{\"x\":0,\"y\":2,\"width\":3,\"height\":4}},\"lossId\":\"trace:16\"}},{\"name\":\"fora\",\"value\":{\"kind\":\"field\",\"active\":true,\"discarded\":false,\"history\":[\"trace:1\",\"trace:8\",\"trace:12\",\"trace:2\",\"trace:5\",\"trace:9\",\"trace:13\",\"trace:3\",\"trace:6\",\"trace:10\",\"trace:14\"],\"id\":\"field:fora\",\"name\":\"fora\",\"origin\":\"frame\",\"domain\":\"PRECTOTCORR mm/day\",\"scale\":\"bbox -49,-17,-46.5,-14\",\"time\":{\"tick\":4,\"sourceTime\":{\"tick\":4,\"observations\":[\"2025-01-15\"]}},\"provenance\":[{\"source\":\"NASA POWER\",\"originalSource\":\"https://power.larc.nasa.gov/api/temporal/daily/regional?latitude-min=-17&latitude-max=-14&longitude-min=-49&longitude-max=-46.5&parameters=PRECTOTCORR&community=AG&start=20250115&end=20250115&format=JSON&time-standard=UTC\",\"observedAt\":\"2025-01-15\",\"retrievedAt\":\"2026-09-15T07:46:18.133Z\",\"status\":\"live\",\"attribution\":\"NASA POWER; underlying meteorological source reported by the response.\",\"reportedSources\":[\"MERRA2\"],\"variable\":{\"id\":\"PRECTOTCORR\",\"longName\":\"Precipitation Corrected\",\"unit\":\"mm/day\"},\"fieldId\":\"field:territorio_brasilia\"}],\"environment\":{\"kind\":\"environmental-observation\",\"adapter\":\"nasa-power-daily-regional-v0\",\"mode\":\"live\",\"status\":\"live\",\"declaration\":{\"source\":\"NASA POWER / live\",\"time\":\"2025-01-15\",\"scale\":\"bbox -49,-17,-46.5,-14\",\"domain\":\"PRECTOTCORR mm/day\",\"shape\":[4,7]},\"source\":{\"provider\":\"NASA POWER\",\"endpoint\":\"https://power.larc.nasa.gov/api/temporal/daily/regional\",\"requestUrl\":\"https://power.larc.nasa.gov/api/temporal/daily/regional?latitude-min=-17&latitude-max=-14&longitude-min=-49&longitude-max=-46.5&parameters=PRECTOTCORR&community=AG&start=20250115&end=20250115&format=JSON&time-standard=UTC\",\"documentation\":\"https://power.larc.nasa.gov/docs/services/api/temporal/daily/\",\"rights\":\"https://www.earthdata.nasa.gov/engage/open-data-services-software/data-use-policy\",\"attribution\":\"NASA POWER; underlying meteorological source reported by the response.\",\"reportedSources\":[\"MERRA2\"]},\"retrieval\":{\"retrievedAt\":\"2026-09-15T07:46:18.133Z\",\"httpStatus\":200},\"variable\":{\"id\":\"PRECTOTCORR\",\"longName\":\"Precipitation Corrected\",\"unit\":\"mm/day\"},\"time\":{\"start\":\"20250115\",\"end\":\"20250115\",\"standard\":\"UTC\"},\"space\":{\"requestedBounds\":{\"longitudeMin\":-49,\"latitudeMin\":-17,\"longitudeMax\":-46.5,\"latitudeMax\":-14},\"longitudes\":[-48.75,-48.125,-47.5,-46.875],\"latitudes\":[-17,-16.5,-16,-15.5,-15,-14.5,-14],\"coordinates\":[[-48.75,-17],[-48.125,-17],[-47.5,-17],[-46.875,-17],[-48.75,-16.5],[-48.125,-16.5],[-47.5,-16.5],[-46.875,-16.5],[-48.75,-16],[-48.125,-16],[-47.5,-16],[-46.875,-16],[-48.75,-15.5],[-48.125,-15.5],[-47.5,-15.5],[-46.875,-15.5],[-48.75,-15],[-48.125,-15],[-47.5,-15],[-46.875,-15],[-48.75,-14.5],[-48.125,-14.5],[-47.5,-14.5],[-46.875,-14.5],[-48.75,-14],[-48.125,-14],[-47.5,-14],[-46.875,-14]],\"elevations\":[863.54,859.68,900.86,715.91,970.61,908.39,916.35,725.93,979.72,984.96,945.25,809.43,820.1,886.8,947.71,817.69,628.01,852.58,799.69,690.07,575.84,757.28,853.34,525.63,589.02,614.37,901.99,607.82],\"longitudeSteps\":[0.625,0.625,0.625],\"latitudeSteps\":[0.5,0.5,0.5,0.5,0.5,0.5]},\"shape\":[4,7],\"values\":[3.49,3.24,7.72,13.11,6.94,3.92,6.8,6.75,13.83,6,6.49,8.82,25.52,8.44,17.43,11.75,35.82,7.36,8.13,9.69,26.78,10.16,2.82,4.47,17.23,7.74,2.39,2.93],\"missing\":[],\"sourceMetadata\":{\"title\":\"NASA/POWER Source Native Resolution Daily Data\",\"api\":{\"version\":\"v2.9.7\",\"name\":\"POWER Daily API\"},\"fillValue\":-999,\"messages\":[]}},\"value\":[6.5356,10.3464,4.6744,6.0036000000000005,6.8392,5.957599999999999,6.9008,4.712400000000001,null,null,null,6.7896,null,null,null,9.3668,null,null,null,8.0124,null,null,null,8.5668,6.545200000000001,4.2768,13.0748,6.3932],\"shape\":[4,7],\"partition\":{\"traceId\":\"trace:14\",\"sourceId\":\"field:campo_precipitacao\",\"role\":\"excluded\",\"counterpartId\":\"field:retrato\",\"sourceIndices\":[0,1,2,3,4,5,6,7,11,15,19,23,24,25,26,27],\"bounds\":{\"x\":0,\"y\":2,\"width\":3,\"height\":4}}}},{\"name\":\"recorte\",\"value\":{\"kind\":\"trace\",\"id\":\"trace:14\",\"operation\":\"frame\",\"tick\":4,\"revision\":4,\"sourceIds\":[\"field:campo_precipitacao\"],\"sourceProvenance\":[{\"source\":\"NASA POWER\",\"originalSource\":\"https://power.larc.nasa.gov/api/temporal/daily/regional?latitude-min=-17&latitude-max=-14&longitude-min=-49&longitude-max=-46.5&parameters=PRECTOTCORR&community=AG&start=20250115&end=20250115&format=JSON&time-standard=UTC\",\"observedAt\":\"2025-01-15\",\"retrievedAt\":\"2026-09-15T07:46:18.133Z\",\"status\":\"live\",\"attribution\":\"NASA POWER; underlying meteorological source reported by the response.\",\"reportedSources\":[\"MERRA2\"],\"variable\":{\"id\":\"PRECTOTCORR\",\"longName\":\"Precipitation Corrected\",\"unit\":\"mm/day\"},\"fieldId\":\"field:territorio_brasilia\"}],\"sourceTime\":{\"tick\":4,\"observations\":[\"2025-01-15\"]},\"scale\":\"bbox -49,-17,-46.5,-14\",\"domain\":\"PRECTOTCORR mm/day\",\"inputShape\":[4,7],\"transformation\":[\"integer-rectangular-selection\",\"min-max-normalization\"],\"parameters\":{\"ratio\":[3,4],\"anchor\":[0,0.5],\"bounds\":{\"x\":0,\"y\":2,\"width\":3,\"height\":4}},\"includedId\":\"field:retrato\",\"excludedId\":\"field:fora\",\"includedIndices\":[8,9,10,12,13,14,16,17,18,20,21,22],\"excludedIndices\":[0,1,2,3,4,5,6,7,11,15,19,23,24,25,26,27],\"normalization\":{\"method\":\"min-max-known-values\",\"minimum\":6.0632,\"maximum\":28.0668,\"constant\":false,\"constantResult\":null,\"knownCount\":12,\"missingCount\":0},\"consequence\":{\"includedCount\":12,\"excludedCount\":16,\"resampled\":false,\"excludedValuesRetained\":true},\"retained\":{\"included\":[0.11279972368157935,0.08940355214601248,0.2595757057935974,0.6195349851842425,0.21632823719754948,0.7813085131523934,0.44629060699158324,0.13517787998327543,1,0.15750149975458563,0,0.6366230980385029],\"includedShape\":[3,4],\"excluded\":[{\"index\":0,\"value\":6.5356},{\"index\":1,\"value\":10.3464},{\"index\":2,\"value\":4.6744},{\"index\":3,\"value\":6.0036000000000005},{\"index\":4,\"value\":6.8392},{\"index\":5,\"value\":5.957599999999999},{\"index\":6,\"value\":6.9008},{\"index\":7,\"value\":4.712400000000001},{\"index\":11,\"value\":6.7896},{\"index\":15,\"value\":9.3668},{\"index\":19,\"value\":8.0124},{\"index\":23,\"value\":8.5668},{\"index\":24,\"value\":6.545200000000001},{\"index\":25,\"value\":4.2768},{\"index\":26,\"value\":13.0748},{\"index\":27,\"value\":6.3932}]},\"sourceLocation\":{\"line\":4,\"column\":24}}},{\"name\":\"anterior\",\"value\":{\"kind\":\"trace-view\",\"operation\":\"frame\",\"available\":true,\"latest\":{\"kind\":\"trace\",\"id\":\"trace:10\",\"operation\":\"frame\",\"tick\":3,\"revision\":3,\"sourceIds\":[\"field:campo_precipitacao\"],\"sourceProvenance\":[{\"source\":\"NASA POWER\",\"originalSource\":\"https://power.larc.nasa.gov/api/temporal/daily/regional?latitude-min=-17&latitude-max=-14&longitude-min=-49&longitude-max=-46.5&parameters=PRECTOTCORR&community=AG&start=20250115&end=20250115&format=JSON&time-standard=UTC\",\"observedAt\":\"2025-01-15\",\"retrievedAt\":\"2026-09-15T07:46:17.229Z\",\"status\":\"live\",\"attribution\":\"NASA POWER; underlying meteorological source reported by the response.\",\"reportedSources\":[\"MERRA2\"],\"variable\":{\"id\":\"PRECTOTCORR\",\"longName\":\"Precipitation Corrected\",\"unit\":\"mm/day\"},\"fieldId\":\"field:territorio_brasilia\"}],\"sourceTime\":{\"tick\":3,\"observations\":[\"2025-01-15\"]},\"scale\":\"bbox -49,-17,-46.5,-14\",\"domain\":\"PRECTOTCORR mm/day\",\"inputShape\":[4,7],\"transformation\":[\"integer-rectangular-selection\",\"min-max-normalization\"],\"parameters\":{\"ratio\":[3,4],\"anchor\":[0,0.5],\"bounds\":{\"x\":0,\"y\":2,\"width\":3,\"height\":4}},\"includedId\":\"field:retrato\",\"excludedId\":\"field:fora\",\"includedIndices\":[8,9,10,12,13,14,16,17,18,20,21,22],\"excludedIndices\":[0,1,2,3,4,5,6,7,11,15,19,23,24,25,26,27],\"normalization\":{\"method\":\"min-max-known-values\",\"minimum\":6.0632,\"maximum\":28.0668,\"constant\":false,\"constantResult\":null,\"knownCount\":12,\"missingCount\":0},\"consequence\":{\"includedCount\":12,\"excludedCount\":16,\"resampled\":false,\"excludedValuesRetained\":true},\"retained\":{\"included\":[0.11279972368157935,0.08940355214601248,0.2595757057935974,0.6195349851842425,0.21632823719754948,0.7813085131523934,0.44629060699158324,0.13517787998327543,1,0.15750149975458563,0,0.6366230980385029],\"includedShape\":[3,4],\"excluded\":[{\"index\":0,\"value\":6.5356},{\"index\":1,\"value\":10.3464},{\"index\":2,\"value\":4.6744},{\"index\":3,\"value\":6.0036000000000005},{\"index\":4,\"value\":6.8392},{\"index\":5,\"value\":5.957599999999999},{\"index\":6,\"value\":6.9008},{\"index\":7,\"value\":4.712400000000001},{\"index\":11,\"value\":6.7896},{\"index\":15,\"value\":9.3668},{\"index\":19,\"value\":8.0124},{\"index\":23,\"value\":8.5668},{\"index\":24,\"value\":6.545200000000001},{\"index\":25,\"value\":4.2768},{\"index\":26,\"value\":13.0748},{\"index\":27,\"value\":6.3932}]},\"sourceLocation\":{\"line\":4,\"column\":24}},\"ids\":[\"trace:3\",\"trace:6\",\"trace:10\"],\"accessTraceId\":\"trace:15\"}}]}"
+      },
+      "lint": 1
+    },
+    "inspector": {
+      "active": true,
+      "mainHidden": true,
+      "inspectorHidden": false,
+      "canvasHeight": 520
+    }
+  },
+  "captures": [
+    "data-born-01-startup-blank.png",
+    "data-born-02-readable-editor.png",
+    "data-born-03-first-observation.png",
+    "data-born-04-parameter-edit-trace.png",
+    "data-born-05-live-provenance.png",
+    "data-born-06-absence-residue.png"
+  ],
+  "console": {
+    "errors": [],
+    "warnings": []
+  }
+}

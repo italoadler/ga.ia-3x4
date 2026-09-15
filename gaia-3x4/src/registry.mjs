@@ -17,13 +17,13 @@ const entries = [
     'Seleciona uma projeção imutável do mundo. Mudar a observação não muda valores, relações nem rastros.', 'observe'],
 ];
 export const GLYPH_REGISTRY = Object.freeze(entries.map(([id, glyph, name, inputs, outputs, signature, documentation, method], index) => Object.freeze({
-  id, alias: id, aliases: Object.freeze([id, glyph]), glyph, name, inputs, outputs,
+  id, alias: id, aliases: Object.freeze([id, glyph, ...(id === 'situate' ? ['source'] : [])]), glyph, name, inputs, outputs,
   arity: Object.freeze({ inputs, outputs }), signature, shortcut: `Alt-${index + 1}`,
   documentation, status: 'TESTING',
   implementation: (transaction, args, names, location) => transaction[method](args, names, location),
 })));
 
 export const GLYPH_STATUSES = Object.freeze(['PROPOSED', 'TESTING', 'STABLE', 'REJECTED']);
-const aliases = new Map(GLYPH_REGISTRY.flatMap(op => [[op.id, op], [op.glyph, op]]));
+const aliases = new Map(GLYPH_REGISTRY.flatMap(op => op.aliases.map(alias => [alias, op])));
 export const operation = alias => aliases.get(alias);
 export const normalizeOperation = alias => operation(alias)?.id ?? null;

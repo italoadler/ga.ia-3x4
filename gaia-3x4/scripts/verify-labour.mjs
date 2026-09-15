@@ -37,7 +37,7 @@ async function capture(name) {
     imageHash: createHash('sha256').update(Buffer.from(image.data, 'base64')).digest('hex') });
 }
 async function walk(fallback = false) {
-  await cdp('Page.navigate', { url: browser.url + (fallback ? '/?backend=webgl' : '/') });
+  await cdp('Page.navigate', { url: browser.url + (fallback ? '/legacy.html?backend=webgl' : '/legacy.html') });
   await until(() => evaluate('Boolean(window.gaia?.visual()?.renders > 3)'), 'Cena não inicializou');
   await key('p', 'KeyP'); assert.equal(await evaluate('window.gaia.paused'), true);
   movementStart = Date.now();
@@ -146,7 +146,7 @@ try {
   const main = await walk(), fallback = await walk(true);
   // The polished image must depend on the same supports, even before ⋮ opens
   // it. Discard through the full editor while discourse is still observed.
-  await cdp('Page.navigate', { url: browser.url + '/?backend=webgl' });
+  await cdp('Page.navigate', { url: browser.url + '/legacy.html?backend=webgl' });
   await until(() => evaluate('Boolean(window.gaia?.visual()?.renders > 3)'));
   await key('p', 'KeyP'); await execute(null, 'observe');
   await execute('trabalho'); await execute('alvo'); const polished = await execute('terra');

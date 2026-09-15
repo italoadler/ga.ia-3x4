@@ -14,7 +14,7 @@ test('one registry serves aliases, arity, documentation, shortcuts and interpret
   assert.equal(GLYPH_REGISTRY.length, 7);
   assert.deepEqual(GLYPH_REGISTRY.map(op => op.glyph), ['⊙', '⇄', '⧉', '↶', '⋮', '⊘', '◉']);
   for (const op of GLYPH_REGISTRY) {
-    assert.equal(op.alias, op.id); assert.deepEqual(op.aliases, [op.id, op.glyph]);
+    assert.equal(op.alias, op.id); assert.deepEqual(op.aliases, [op.id, op.glyph, ...(op.id === 'situate' ? ['source'] : [])]);
     assert.deepEqual(op.arity, { inputs: op.inputs, outputs: op.outputs });
     assert.ok(op.name && op.signature.includes('→') && op.documentation);
     assert.equal(typeof op.implementation, 'function'); assert.ok(Object.isFrozen(op));

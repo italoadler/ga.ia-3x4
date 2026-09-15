@@ -1,0 +1,8 @@
+# TERRITORY — Brasília is the declared regional window; change 0.35 or 1 below, then RUN again.
+territorio_brasilia = source "NASA POWER / captured" "2025-01-15" "bbox -49,-17,-46.5,-14" "PRECTOTCORR mm/day" [4 7] nasa_power_brasilia
+campo_precipitacao = relate blend [0.35 1] territorio_brasilia territorio_brasilia
+retrato fora recorte = frame 3:4 0 0.5 campo_precipitacao
+anterior = trace frame
+# REMOVE — delete the leading # on the next line, then RUN; the outside residue remains.
+# ausencia = discard "resultado explicitamente excluído" retrato
+observe [territorio_brasilia campo_precipitacao retrato fora recorte anterior]

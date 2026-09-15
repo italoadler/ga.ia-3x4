@@ -10,7 +10,7 @@ const { cdp, evaluate, key, screenshot } = browser;
 const canonical = await readFile(join(root, 'examples/canonical.gaia'), 'utf8');
 const results = [];
 try {
-  await cdp('Page.navigate', { url: browser.url + '/?score=legacy' });
+  await cdp('Page.navigate', { url: browser.url + '/legacy.html?score=legacy' });
   await until(() => evaluate('Boolean(window.gaia?.visual()?.renders > 3)'), 'A cena 3D não desenhou');
   await key('p', 'KeyP');
   assert.equal(await evaluate('window.gaia.paused'), true);
@@ -193,7 +193,7 @@ try {
   assert.equal(await evaluate('window.gaia.visual().planetId'), initial.planetId);
 
   // A separate page verifies Three's actual WebGL 2 backend using the same TSL graph.
-  await cdp('Page.navigate', { url: browser.url + '/?score=legacy&backend=webgl' });
+  await cdp('Page.navigate', { url: browser.url + '/legacy.html?score=legacy&backend=webgl' });
   await until(() => evaluate('Boolean(window.gaia?.visual()?.renders > 3)'), 'Fallback WebGL 2 não desenhou');
   await key('p', 'KeyP'); await key('Enter', 'Enter', 1); await sleep(300);
   const fallback = await evaluate('window.gaia.visual()');

@@ -1,0 +1,18 @@
+{
+  "schema": "gaia-nasa-power-capture/v0",
+  "provider": "NASA POWER",
+  "requestUrl": "https://power.larc.nasa.gov/api/temporal/daily/regional?latitude-min=-17&latitude-max=-14&longitude-min=-49&longitude-max=-46.5&parameters=PRECTOTCORR&community=AG&start=20250115&end=20250115&format=JSON&time-standard=UTC",
+  "retrievedAt": "2026-09-15T07:21:14.744Z",
+  "httpStatus": 200,
+  "responseHeaders": {
+    "contentType": "application/json",
+    "contentLength": "4440",
+    "contentDisposition": "inline; filename=POWER_Regional_Daily_20250115_20250115_017d00S_014d00S_049d00W_046d50W_UTC.json",
+    "apiName": "daily",
+    "apiVersion": "v2.9.7",
+    "dataSources": "merra2"
+  },
+  "fixture": "data/nasa-power-brasilia-2025-01-15.raw.json",
+  "bytes": 4440,
+  "sha256": "0df4509a860984b8cf9d8e91e61fd3730d2eca2619dc3465f954c41e76c5955a"
+}
