@@ -1,6 +1,7 @@
 import * as THREE from 'three/webgpu';
 import { attribute, uniform, float, vec3, positionLocal, normalLocal, mx_noise_float, mix, smoothstep } from 'three/tsl';
 import { portraitObservation } from './observation.mjs';
+import { createLabourScene } from './labour-scene.mjs';
 
 const RADIUS = 1.72;
 const SEGMENTS = 16;
@@ -25,7 +26,7 @@ function fillAttribute(geometry, name, value) {
   attribute.array.fill(value); attribute.needsUpdate = true;
 }
 
-export async function createEarth(container, { onCuePainted = () => {} } = {}) {
+export async function createEarth(container, { onCuePainted = () => {}, labour = false, onSelect = () => {} } = {}) {
   const forceWebGL = new URLSearchParams(location.search).get('backend') === 'webgl';
   const renderer = new THREE.WebGPURenderer({ antialias: true, forceWebGL, alpha: false });
   renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
@@ -103,6 +104,7 @@ export async function createEarth(container, { onCuePainted = () => {} } = {}) {
   let renders = 0, lastUpdate = 0, lastTime = performance.now(), suspended = false;
   let paintedCue = null;
   const witnessKeys = new Set();
+  const labourScene = labour ? createLabourScene(scene, camera, renderer.domElement, { onSelect }) : null;
 
   function rebuild(nextShape) {
     tiles.forEach(tile => { planet.remove(tile.mesh); tile.mesh.geometry.dispose(); });
@@ -141,6 +143,13 @@ export async function createEarth(container, { onCuePainted = () => {} } = {}) {
   }
 
   function update(observation, traces) {
+    if (labourScene) {
+      planet.visible = false; witnesses.visible = false;
+      labourScene.update(observation, traces);
+      const current = labourScene.inspect();
+      portrait.visible = Boolean(current.frame); oldPortrait.visible = Boolean(current.historicalTraceId);
+      lastUpdate = performance.now(); return;
+    }
     projection = portraitObservation(observation, traces);
     if (projection.inputShape && (!shape || shape.join(':') !== projection.inputShape.join(':'))) rebuild(projection.inputShape);
     const included = new Map(projection.included.map(r => [r.index, r.value]));
@@ -196,6 +205,7 @@ export async function createEarth(container, { onCuePainted = () => {} } = {}) {
   renderer.setAnimationLoop(() => {
     const now = performance.now(), delta = Math.min((now - lastTime) / 1000, .05); lastTime = now;
     if (suspended) return;
+    labourScene?.animate(delta);
     const progress = 1 - Math.exp(-delta * 7);
     tiles.forEach(tile => { tile.mesh.position.lerp(tile.target, progress); tile.mesh.rotation.z = tile.excluded ? tile.mesh.position.length() * .027 : 0; });
     const active = Boolean(cue);
@@ -209,7 +219,8 @@ export async function createEarth(container, { onCuePainted = () => {} } = {}) {
   });
 
   return {
-    update, setCue(next) { cue = { ...next, time: performance.now() }; },
+    update, setCue(next) { cue = { ...next, time: performance.now() }; labourScene?.setCue(cue); },
+    inspectFragment: id => labourScene?.inspectFragment(id), selectNext: direction => labourScene?.selectNext(direction),
     suspend(value) { suspended = value; },
     inspect: () => ({ backend: renderer.backend.isWebGPUBackend ? 'webgpu' : 'webgl2',
       renderer: 'WebGPURenderer', shading: 'TSL', planetId: planet.uuid, cellCount: tiles.length,
@@ -225,7 +236,8 @@ export async function createEarth(container, { onCuePainted = () => {} } = {}) {
       cueStrength: { surface: focus.value, memory: ghostFocus.value, trace: traceFocus.value },
       sourceWitnessOpacity: sourceRings.map(r => r.material.opacity),
       geometryVertices: tiles.reduce((n, tile) => n + tile.mesh.geometry.getAttribute('position').count, 0),
+      ...(labourScene?.inspect() ?? {}),
     }),
-    destroy() { resizeObserver.disconnect(); renderer.setAnimationLoop(null); scene.traverse(o => { o.geometry?.dispose(); o.material?.dispose(); }); renderer.dispose(); },
+    destroy() { labourScene?.destroy(); resizeObserver.disconnect(); renderer.setAnimationLoop(null); scene.traverse(o => { o.geometry?.dispose(); o.material?.dispose(); }); renderer.dispose(); },
   };
 }

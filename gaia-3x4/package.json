@@ -14,7 +14,8 @@
     "test": "node --test tests/*.test.mjs",
     "demo": "node scripts/demo.mjs",
     "verify:browser": "npm run build && node scripts/verify-browser.mjs",
-    "verify:performance": "npm run build && node scripts/verify-performance.mjs"
+    "verify:performance": "npm run build && node scripts/verify-performance.mjs",
+    "verify:labour": "npm run build && node scripts/verify-labour.mjs"
   },
   "dependencies": {
     "@codemirror/autocomplete": "^6.20.3",

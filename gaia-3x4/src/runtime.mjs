@@ -1,5 +1,6 @@
 import { Diagnostic, parse } from './parser.mjs';
 import { normalizeOperation, operation } from './registry.mjs';
+import { LABOUR_DOMAIN, validateLabourInput, labourSituation, constructLabourSurface } from './labour.mjs';
 
 export function freeze(value) {
   if (!value || typeof value !== 'object' || Object.isFrozen(value)) return value;
@@ -38,7 +39,9 @@ export class Relation {
 }
 
 export class World {
-  constructor() {
+  constructor({ labourInput = null } = {}) {
+    this.labourInput = labourInput ? freeze(validateLabourInput(labourInput)) : null;
+    this.recordLosses = new Map();
     this.tick = 0;
     this.fields = new Map();
     this.bindings = new Map();
@@ -58,6 +61,7 @@ export class World {
       tick: this.tick, fields: Object.fromEntries(this.fields), bindings: Object.fromEntries(this.bindings),
       relations: Object.fromEntries(this.relations), traces: this.traces,
       revisions: this.revisions, snapshotTicks: [...this.snapshots.keys()],
+      ...(this.labourInput ? { labourInput: this.labourInput, recordLosses: Object.fromEntries(this.recordLosses) } : {}),
     };
   }
 }
@@ -72,6 +76,7 @@ class Transaction {
     this.traces = [...world.traces];
     this.revisions = [...world.revisions];
     this.snapshots = new Map(world.snapshots);
+    this.recordLosses = new Map(world.recordLosses);
     this.program = program;
     this.source = source;
     this.patch = patch;
@@ -142,6 +147,7 @@ class Transaction {
     if (!Array.isArray(values) || values.length !== shape[0] * shape[1] || !values.every(v => typeof v === 'string' || (typeof v === 'number' && Number.isFinite(v))))
       this.fail('E_VALUES', 'Os valores numéricos ou simbólicos devem preencher exatamente a forma.', location);
     const name = names[0], existing = this.fields.get(name);
+    const labour = domain === LABOUR_DOMAIN && values.every(v => typeof v === 'string') ? labourSituation(values, this.base.labourInput, location) : null;
     const seed = freeze({ source, time, scale, domain, shape, values });
     if (existing) {
       if (existing.origin !== 'situate') this.fail('E_INCOMPATIBLE_FIELD', `${name} já é um campo derivado. Use outro nome para esta origem.`, location);
@@ -164,8 +170,9 @@ class Transaction {
       beforeFingerprint: existing ? fingerprint(existing.value) : null, afterFingerprint: fingerprint(values),
     });
     return [this.putField(name, {
-      value: [...values], shape: [...shape], domain, scale, time, origin: 'situate', seed,
-      provenance: [{ source, observedAt: time, fieldId: existing?.id ?? `field:${name}` }],
+      value: labour ? values.map(() => 1) : [...values], shape: [...shape], domain, scale, time, origin: 'situate', seed,
+      ...(labour ? { labour } : {}),
+      provenance: [{ source, observedAt: time, fieldId: existing?.id ?? `field:${name}` }, ...(labour ? labour.records.map(r => ({ recordId: r.id, evidenceStatus: r.evidenceStatus, ...r.provenance, observedAt: r.observedAt })) : [])],
       history: [...(existing?.history ?? []), event.id],
     })];
   }
@@ -209,16 +216,24 @@ class Transaction {
       contributions: transformation === 'blend' ? { leftWeight: 1 - parameters[0], rightWeight: parameters[0] } : { leftWeight: 0, rightWeight: 1 },
       consequence: transformation === 'blend' ? 'weighted-combination-with-toroidal-column-shift' : 'transfer-with-retained-source-distinction',
     });
+    const surface = constructLabourSurface(name, left.shape, left, right, correspondence, event.contributions, this.recordLosses, event.id);
+    if (surface) {
+      // Replace only this newly-created immutable event, retaining its ID.
+      this.traces[this.traces.length - 1] = freeze({ ...event, surface, causalRecordIds: surface.records.map(r => r.id) });
+      value = surface.fragments.map(f => value[f.surfaceIndex]);
+    }
     const field = this.putField(name, {
       origin: 'relate', value, shape: left.shape, domain: left.domain, scale: left.scale,
       time: { tick: this.tick, observations: unique([left.time, right.time].map(t => JSON.stringify(t))).map(t => JSON.parse(t)) },
       provenance: provenanceUnion([left, right]), history: unique([...historyUnion([left, right]), ...(oldField?.history ?? []), event.id]),
       relationId,
+      ...(surface ? { surface } : {}),
     });
     this.relations.set(relationId, new Relation({
       id: relationId, name, ...config, configuration: freeze(config),
       revisionHistory: [...(previous?.revisionHistory ?? []), ...(changed ? [{ revision: this.revision, tick: this.tick, before: previous?.configuration ?? null, after: config }] : [])],
       consequences: [...(previous?.consequences ?? []), event.id],
+      ...(surface ? { causalRecordIds: surface.records.map(r => r.id), fragmentIds: surface.fragments.map(f => f.id), projection: surface.projection } : {}),
     }));
     this.usedRelations.add(relationId);
     return [field];
@@ -261,6 +276,13 @@ class Transaction {
       transformation: ['integer-rectangular-selection', 'min-max-normalization'],
       parameters: { ratio: [ratio.width, ratio.height], anchor: [anchorX, anchorY], bounds: { x, y, width: cropWidth, height: cropHeight } },
       includedId, excludedId, includedIndices: indices, excludedIndices: outside,
+      ...(input.surface ? {
+        includedFragmentIds: indices.map(i => input.surface.fragments[i].id), excludedFragmentIds: outside.map(i => input.surface.fragments[i].id),
+        projection: input.surface.projection, viewpoint: input.surface.projection.viewpoint,
+        sourceRecordIds: input.surface.records.map(r => r.id),
+        chain: ['situated-records', input.relationId, input.id, 'viewpoint', 'ranked-orthographic-projection', '3:4-frame'],
+        retainedSurface: input.surface,
+      } : {}),
       normalization: { method: 'min-max', minimum: min, maximum: max, constant: min === max, constantResult: min === max ? 0 : null },
       consequence: { includedCount: indices.length, excludedCount: outside.length, resampled: false, excludedValuesRetained: true },
       // Enough retained material to inspect a prior portrait without recomputing it.
@@ -271,28 +293,37 @@ class Transaction {
       ...common, value: normalized, shape: [cropWidth, cropHeight],
       history: unique([...input.history, ...(this.fields.get(includedName)?.history ?? []), event.id]),
       partition: { traceId: event.id, sourceId: input.id, role: 'included', counterpartId: excludedId, sourceIndices: indices, bounds: event.parameters.bounds },
+      ...(input.surface ? { surface: { ...input.surface, fragments: indices.map(i => ({ ...input.surface.fragments[i], state: input.surface.fragments[i].state === 'discarded' ? 'discarded' : 'included' })) } } : {}),
     });
     const excluded = this.putField(excludedName, {
       ...common, value: input.value.map((v, i) => mask[i] ? null : v), shape: input.shape,
       history: unique([...input.history, ...(this.fields.get(excludedName)?.history ?? []), event.id]),
       partition: { traceId: event.id, sourceId: input.id, role: 'excluded', counterpartId: includedId, sourceIndices: outside, bounds: event.parameters.bounds },
+      ...(input.surface ? { surface: { ...input.surface, fragments: outside.map(i => ({ ...input.surface.fragments[i], state: input.surface.fragments[i].state === 'discarded' ? 'discarded' : 'excluded' })) } } : {}),
     });
     return [included, excluded, event];
   }
 
-  remember(args, _names, location) {
+  remember(args, names, location) {
     const ticks = this.literal(args[0], location), reference = args[1];
     if (!Number.isSafeInteger(ticks) || ticks < 1) this.fail('E_TEMPORAL_BOUNDARY', 'remember exige um número inteiro de ticks ≥ 1.', location);
     if (reference?.kind !== 'reference') this.fail('E_MEMORY_REFERENCE', 'remember exige o nome explícito de um campo.', location);
-    const requestedTick = this.tick - ticks;
+    const previous = this.bindings.get(names[0]);
+    const retainedWitness = previous?.kind === 'memory' && previous.field?.surface && previous.witness?.ticks === ticks && previous.name === reference.name;
+    // A situated surface witness is persistent, like an unchanged situated seed.
+    // Generic v0 memories retain their original sliding-tick semantics.
+    // Editing the literal distance explicitly captures a different witness.
+    const requestedTick = retainedWitness ? previous.requestedTick : this.tick - ticks;
     const state = this.snapshots.get(requestedTick)?.bindings.get(reference.name);
     const available = state?.kind === 'field';
     const event = this.trace('remember', {
       sourceIds: available ? [state.id] : [], parameters: { ticks, name: reference.name },
       boundary: { from: this.tick, to: requestedTick }, available,
       consequence: available ? 'historical-state-accessed' : 'historical-state-unavailable',
+      ...(state?.surface ? { witnessMode: 'persistent-situated-snapshot', capturedAtTick: retainedWitness ? previous.witness.capturedAtTick : this.tick } : {}),
     });
-    return [freeze({ kind: 'memory', name: reference.name, requestedTick, available, field: available ? state : null, traceId: event.id })];
+    return [freeze({ kind: 'memory', name: reference.name, requestedTick, available, field: available ? state : null, traceId: event.id,
+      ...(state?.surface ? { witness: { mode: 'persistent-situated-snapshot', ticks, capturedAtTick: retainedWitness ? previous.witness.capturedAtTick : this.tick } } : {}) })];
   }
 
   history(args, _names, location) {
@@ -319,6 +350,22 @@ class Transaction {
       consequence: 'current-value-removed-historical-snapshots-retained',
     });
     this.putField(resolved.name, { ...resolved, value: null, discarded: true, lossId: event.id, history: [...resolved.history, event.id] });
+    if (resolved.labour) {
+      const recordIds = [...new Set(resolved.labour.recordIds)];
+      recordIds.forEach(id => this.recordLosses.set(id, event.id));
+      const fragmentIds = new Set();
+      for (const [name, field] of this.fields) if (field.surface) {
+        const fragments = field.surface.fragments.map(f => {
+          if (!f.recordIds.some(id => recordIds.includes(id))) return f;
+          fragmentIds.add(f.id);
+          return { ...f, state: 'discarded', lossIds: unique([...f.lossIds, event.id]) };
+        });
+        if (fragments.some((f, i) => f !== field.surface.fragments[i])) this.putField(name, { ...field, surface: { ...field.surface, fragments }, history: unique([...field.history, event.id]) });
+      }
+      const loss = freeze({ ...event, recordIds, fragmentIds: [...fragmentIds], loss: { ...event.loss, distinctRecordCount: recordIds.length, supportedFragmentCount: fragmentIds.size }, retainedRecords: resolved.labour.records });
+      this.traces[this.traces.length - 1] = loss;
+      return [loss];
+    }
     return [event];
   }
 
@@ -386,14 +433,15 @@ class Transaction {
     Object.assign(this.base, {
       tick: this.tick, fields: this.fields, bindings: this.bindings, relations: this.relations,
       traces: this.traces, revisions: this.revisions, snapshots: this.snapshots,
+      recordLosses: this.recordLosses,
     });
     return this.base.observe(this.observedNames);
   }
 }
 
 export class Interpreter {
-  constructor() {
-    this.world = new World();
+  constructor(options = {}) {
+    this.world = new World(options);
     this.program = null;
     this.source = '';
     this.observation = this.world.observe([]);

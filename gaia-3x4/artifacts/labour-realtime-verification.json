@@ -1,0 +1,128 @@
+{
+  "ok": true,
+  "main": {
+    "backend": "webgl2",
+    "preLossTick": 9,
+    "currentTick": 15,
+    "finalFragments": 144,
+    "lossFragments": 24,
+    "ghostFragments": 144
+  },
+  "fallback": {
+    "backend": "webgl2",
+    "preLossTick": 9,
+    "currentTick": 14,
+    "finalFragments": 144,
+    "lossFragments": 24,
+    "ghostFragments": 144
+  },
+  "glyphs": [
+    "observe",
+    "situate",
+    "relate",
+    "trace",
+    "discard",
+    "frame",
+    "remember"
+  ],
+  "synthetic": true,
+  "movementSeconds": [
+    40,
+    45,
+    45,
+    70,
+    40
+  ],
+  "durationSeconds": 240,
+  "realtime": true,
+  "checks": [
+    "real CodeMirror + Score AST execution",
+    "42–64px glyph",
+    "synthetic warning",
+    "six records sustain 144 fragments",
+    "every fragment has causal record support",
+    "real trace opens surface",
+    "runtime framing identities",
+    "live centre preserves previous cut",
+    "one record removes all 24 fragments",
+    "loss provenance retained",
+    "pre-loss ghosts coexist with damaged current state",
+    "polished smoke surface also loses supported geometry",
+    "full editor highlights the actual AST glyph",
+    "inspection and Inspector do not mutate world",
+    "invalid edit preserves visual and running program",
+    "keyboard-only score",
+    "all seven glyphs",
+    "complete WebGL 2 fallback",
+    "world continues without reset",
+    "no shader/browser errors"
+  ],
+  "stages": [
+    {
+      "name": "labour-01-smoke.png",
+      "tick": 2,
+      "included": 0,
+      "excluded": 0,
+      "discarded": 0,
+      "remembered": 0,
+      "imageHash": "9913e4ac894e85b6fc6f5aa4f93092d0ec7698b9eae955d48fdc4e214d1a2cd0"
+    },
+    {
+      "name": "labour-02-situation-relation.png",
+      "tick": 5,
+      "included": 144,
+      "excluded": 0,
+      "discarded": 0,
+      "remembered": 0,
+      "imageHash": "d68b345f9bb8f8564980d41753d6d5eba52ba744dde16bc51e30072e482348db"
+    },
+    {
+      "name": "labour-03-open-portraits.png",
+      "tick": 6,
+      "included": 144,
+      "excluded": 0,
+      "discarded": 0,
+      "remembered": 0,
+      "imageHash": "7093e18ad8d6142107565ed7096e79367515cdfcbd8bdd5e0258d9b2f18ed17f"
+    },
+    {
+      "name": "labour-04-frame-residue.png",
+      "tick": 9,
+      "included": 108,
+      "excluded": 36,
+      "discarded": 0,
+      "remembered": 0,
+      "imageHash": "9cb83b3e5d50aeeb1c570f635647aebcba33ec8bb4d285e29160bc7818b0d0bc"
+    },
+    {
+      "name": "labour-05-material-absence.png",
+      "tick": 10,
+      "included": 96,
+      "excluded": 24,
+      "discarded": 24,
+      "remembered": 0,
+      "imageHash": "93e0fb0ba7d9e7fb8c30e9f6bd6da58bce9dec303ea34fa59440da73df8ae325"
+    },
+    {
+      "name": "labour-06-memory-damaged-present.png",
+      "tick": 12,
+      "included": 96,
+      "excluded": 24,
+      "discarded": 24,
+      "remembered": 144,
+      "imageHash": "6eced64bd4e66075ce3336ed0e57502c53e9aa8433e42453c4028a321fb58473"
+    },
+    {
+      "name": "labour-09-webgl2-complete.png",
+      "tick": 14,
+      "included": 96,
+      "excluded": 24,
+      "discarded": 24,
+      "remembered": 144,
+      "imageHash": "580ae73f0c90db94e77ffc66816dd93407def966ba21e3a202d2a05c37142e4d"
+    }
+  ],
+  "warnings": [
+    "THREE.WebGPURenderer: WebGPU is not available, running under WebGL2 backend."
+  ]
+}

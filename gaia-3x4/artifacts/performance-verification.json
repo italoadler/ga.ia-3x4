@@ -31,7 +31,7 @@
       "editor": "Alt-1",
       "consequence": "duas testemunhas de origem distintas, mesmo vetor",
       "tick": 3,
-      "stageHash": "2c7e9c46aa0b4da20dbd69cf2e0df475919b1b95f520a53166bceb74fe77d618"
+      "stageHash": "5ad1afbdfad80f8f659a4aa266a7540ead1e3d3a403c7474dbfdb87fe5c455e8"
     },
     {
       "glyph": "⇄",
@@ -39,7 +39,7 @@
       "editor": "Alt-2",
       "consequence": "superfície alterada, identidade persistente",
       "tick": 4,
-      "stageHash": "454c293354704590fbc9dd3f4fa2a4299e024b3c03397422c74ce97e2f51de13"
+      "stageHash": "e9e4636378cb98bb36e7eb15efab3f32e76e18d1fca48d7bba0b16c7f20809d2"
     },
     {
       "glyph": "⧉",
@@ -47,7 +47,7 @@
       "editor": "paleta",
       "consequence": "centro alterado; células entram/saem; recorte anterior retido",
       "tick": 5,
-      "stageHash": "f6e835586b51b6f422eaf2181089e533db4804884f5284aafa37861b6f3eaa39"
+      "stageHash": "777b9a399b6ceb569f456f2b8e648d46e8dcc4635930b66d2fbbee310e7f17b7"
     },
     {
       "glyph": "↶",
@@ -55,7 +55,7 @@
       "editor": "Alt-4",
       "consequence": "fantasma corresponde ao snapshot de dois ticks atrás",
       "tick": 6,
-      "stageHash": "ca3a2946962ea4e1258876094c4ce6b4250c71e56ca52244af1d9d6c9bd5d83e"
+      "stageHash": "efc9b010f87bcf979bcab1789c72aff08f12fba91fa4653d859ec9bc4124d4a6"
     },
     {
       "glyph": "⋮",
@@ -63,7 +63,7 @@
       "editor": "autocomplete de tr",
       "consequence": "malha retida e contorno anterior associados ao ID histórico",
       "tick": 7,
-      "stageHash": "40c9c5d46dc860dc5e4cc9ec55da3c2fe5619d149509f1a436390b37fc77ae9c"
+      "stageHash": "23c64e0040b80c2bc1ec67dc038c3b823996dd12761614b8f217145e43fcd0b9"
     },
     {
       "glyph": "⊘",
@@ -71,7 +71,7 @@
       "editor": "Alt-6",
       "consequence": "108 superfícies ausentes, 36 fragmentos e fantasma permanecem, perda registrada",
       "tick": 8,
-      "stageHash": "3a03e94f1a719d3ba3cf85bc519b0d1d5e4788f15f3c4393be6b4b5ffc1bde9b"
+      "stageHash": "374ba80a4113d5d881aff159d64f764d27f8c3dee6735c7cd73eb7a0e91dc11f"
     },
     {
       "glyph": "◉",
@@ -79,7 +79,7 @@
       "editor": "Alt-7",
       "consequence": "observação deixa de selecionar memória; fantasma some, snapshot permanece",
       "tick": 9,
-      "stageHash": "d47c09e890853eb267979c7beede633d9f94f11c4dc15770f1c0f056b49ba6f7"
+      "stageHash": "0fbe6451c7a66f97f442903fedee0eb43c0ea7f779e4acdee4b8cd00aa5c5724"
     }
   ],
   "vertices": 41616,

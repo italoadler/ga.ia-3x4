@@ -1,0 +1,38 @@
+# 1 / CORTINA — observação de uma imagem aparentemente autônoma
+solo = ⊙ "superficie/sintetica" "2026-09-14T08:00:00Z" "relacional" "superficie-trabalho" [12 12] [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]
+discurso = ⊙ "discurso/sem-atribuicao" "2026-09-14T08:00:00Z" "camada" "discurso" [4 1] ["AGI" "EXTINCTION" "INEVITABLE" "SUPERINTELLIGENCE"]
+◉ [solo discurso]
+# 2 / SITUAÇÃO
+trabalho = ⊙ "demonstracao/trabalho" "2026-09-14T08:00:00Z" "relacional" "superficie-trabalho" [12 12] [
+  "work-demo01" "work-demo01" "work-demo02" "work-demo02" "work-demo03" "work-demo03" "work-demo04" "work-demo04" "work-demo05" "work-demo05" "work-demo06" "work-demo06"
+  "work-demo01" "work-demo01" "work-demo02" "work-demo02" "work-demo03" "work-demo03" "work-demo04" "work-demo04" "work-demo05" "work-demo05" "work-demo06" "work-demo06"
+  "work-demo01" "work-demo01" "work-demo02" "work-demo02" "work-demo03" "work-demo03" "work-demo04" "work-demo04" "work-demo05" "work-demo05" "work-demo06" "work-demo06"
+  "work-demo01" "work-demo01" "work-demo02" "work-demo02" "work-demo03" "work-demo03" "work-demo04" "work-demo04" "work-demo05" "work-demo05" "work-demo06" "work-demo06"
+  "work-demo01" "work-demo01" "work-demo02" "work-demo02" "work-demo03" "work-demo03" "work-demo04" "work-demo04" "work-demo05" "work-demo05" "work-demo06" "work-demo06"
+  "work-demo01" "work-demo01" "work-demo02" "work-demo02" "work-demo03" "work-demo03" "work-demo04" "work-demo04" "work-demo05" "work-demo05" "work-demo06" "work-demo06"
+  "work-demo01" "work-demo01" "work-demo02" "work-demo02" "work-demo03" "work-demo03" "work-demo04" "work-demo04" "work-demo05" "work-demo05" "work-demo06" "work-demo06"
+  "work-demo01" "work-demo01" "work-demo02" "work-demo02" "work-demo03" "work-demo03" "work-demo04" "work-demo04" "work-demo05" "work-demo05" "work-demo06" "work-demo06"
+  "work-demo01" "work-demo01" "work-demo02" "work-demo02" "work-demo03" "work-demo03" "work-demo04" "work-demo04" "work-demo05" "work-demo05" "work-demo06" "work-demo06"
+  "work-demo01" "work-demo01" "work-demo02" "work-demo02" "work-demo03" "work-demo03" "work-demo04" "work-demo04" "work-demo05" "work-demo05" "work-demo06" "work-demo06"
+  "work-demo01" "work-demo01" "work-demo02" "work-demo02" "work-demo03" "work-demo03" "work-demo04" "work-demo04" "work-demo05" "work-demo05" "work-demo06" "work-demo06"
+  "work-demo01" "work-demo01" "work-demo02" "work-demo02" "work-demo03" "work-demo03" "work-demo04" "work-demo04" "work-demo05" "work-demo05" "work-demo06" "work-demo06"
+]
+◉ [solo trabalho discurso]
+alvo = ⊙ "demonstracao/selecionado" "2026-09-14T08:00:00Z" "relacional" "superficie-trabalho" [1 1] ["work-demo03"]
+# 2 / RELAÇÃO — a construção muda materialmente
+terra = ⇄ blend [1 0] trabalho solo
+◉ [terra trabalho discurso]
+# 3 / ABERTURA DO RASTRO
+abertura = ⋮ relate
+◉ [terra trabalho abertura discurso]
+cortina = ⊘ "retirar a superfície de discurso" discurso
+◉ [terra trabalho abertura cortina]
+# 4 / ENQUADRAMENTO E PERDA
+retrato fora corte = ⧉ 3:4 0.5 0.5 terra
+◉ [terra retrato fora corte abertura]
+perda = ⊘ "retirada do registro sintético work-demo03" alvo
+◉ [terra retrato fora corte abertura perda]
+# 5 / MEMÓRIA — ajuste a distância para alcançar o tick anterior à perda
+anterior = ⋮ frame
+antes = ↶ 3 terra
+◉ [terra retrato fora corte perda antes anterior abertura]

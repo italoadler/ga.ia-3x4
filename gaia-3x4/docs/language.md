@@ -95,3 +95,38 @@ Omissões só ocorrem quando a revisão completa realmente omite declarações.
 As regras visuais da esfera são observações documentadas no registro JSON.
 Não são novos operadores ou datasets. A grade Canvas 2D continua como Inspector.
 Ver [a partitura de quatro minutos](microperformance.md).
+
+## Superfície sustentada por trabalho
+
+Extensão aditiva, com os mesmos sete IDs e aridades. O domínio explícito
+`superficie-trabalho` aceita IDs simbólicos da entrada validada gaia.labour/1.
+`⊙` conserva registros, evidência, proveniência e derivação no campo situado.
+Valores materiais constantes não simulam produtividade ou valor humano.
+`⇄` produz a correspondência causal registro → fragmento → Terra, posições
+esféricas e um chart ortográfico relacional ordenado no runtime. `⧉` age
+nesse campo e devolve IDs incluídos/excluídos, registros, projection, viewpoint,
+tick/revision e o rastro com superfície retida.
+
+`⊘` de um campo de registros remove seu valor atual e marca como descartados
+todos os fragmentos apoiados nesses recordIds, em cada superfície e partição.
+O ledger persistente de perdas participa das relações seguintes: reexecutar
+o programa não reativa suportes descartados. Rastros e snapshots conservam
+proveniência, derivação e o estado anterior para inspeção.
+
+Uma memória de superfície de trabalho conserva o primeiro snapshot disponível
+como testemunho situado no runtime enquanto nome e distância permanecem iguais.
+Editar a distância captura outro testemunho. O modo e o tick de captura constam
+do rastro e da memória. Campos v0 sem surface mantêm a semântica original de
+distância relativa a cada tick; todos os testes antigos permanecem compatíveis.
+O renderer não faz consultas temporais próprias nem conserva um estado inventado.
+
+Um `trace-view` real de relate, selecionado por `◉`, abre a pele da Terra.
+O renderer usa apenas estados, suportes e identidades já comprometidos.
+Na fase polida e na fase de retratos, os mesmos suportes produzem lacunas
+quando perdidos. Observar continua puro; executar o programa ainda avança
+o tick e suas demais operações, sem atribuir essas mutações ao próprio observe.
+
+Score é uma apresentação de ASTs reais, com patches de fonte, CodeMirror e
+o mesmo Interpreter. Uma operação seguida imediatamente por `◉` pode ser
+executada como bloco literal da partitura. Não há comandos semânticos novos.
+Ver [dados e privacidade](labour-data.md) e [partitura principal](labour-performance.md).

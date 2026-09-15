@@ -3,6 +3,36 @@
 **GA.IA/3x4: retratos computacionais de uma Terra em trabalho**
 
 Instrumento de live coding com mundo persistente e recorte responsável.
+O resultado principal atual é uma Terra materialmente sustentada por registros
+de trabalho computacional. Seis registros **sintéticos** sustentam 144 fragmentos
+3:4 com derivação rastreável. `⋮ relate` abre a cortina; `⧉` seleciona identidades
+no chart projetado do runtime; `⊘` em work-demo03 retira seus 24 fragmentos e
+deixa lacunas; `↶` conserva um testemunho espectral enquanto o presente roda.
+Mesmo a superfície polida recebe ausências por perda de suporte.
+
+O modo Score exibe o glifo ativo a 64px, seus operandos, nome, assinatura e
+o bloco executável. **←/→ Enter**, **F2** para CodeMirror, **1/2/3** para
+Score/World/Split, **I** Inspector, **[ / ]** seleção de fragmentos e **T** registro.
+O aviso sintético está sempre visível com dados synthetic.
+
+- [Partitura principal de quatro minutos e ensaio manual](docs/labour-performance.md).
+- [Formato JSON, evidência e checklist de privacidade](docs/labour-data.md).
+- [Fonte executável](examples/labour-score.gaia).
+- [Verificação do percurso e capturas reais](artifacts/labour-verification.json).
+
+`npm run verify:labour` verifica todos os sete glifos, edição real pelo teclado,
+perda geométrica, memória persistente, Inspector, revisão recusada e performance
+completa no fallback WebGL 2. **49 testes**, incluindo os 35 anteriores.
+`GAIA_REHEARSAL_REALTIME=1` conserva os 240 segundos dos cinco movimentos;
+o modo padrão comprime as pausas de palco.
+O [ensaio em tempo real](artifacts/labour-realtime-verification.json) também
+foi executado, com os cinco intervalos de 40/45/45/70/40 segundos.
+
+As seções abaixo preservam também a documentação técnica da milestone anterior,
+disponível em `/?score=legacy`; a nova partitura não a substitui nem apaga seus
+testes ou a branch local de backup. Não foram introduzidos novos glifos,
+dependências, mapas reais ou relações com empresas/território/infraestrutura/guerra.
+
 Nesta milestone, CodeMirror 6 e uma Terra 3D sintética substituem a grade como
 superfície principal. O runtime, a gramática, o programa canônico e os 26
 testes semânticos originais foram preservados.

@@ -1,5 +1,9 @@
 # Uma identificação que não fecha — 4 minutos
 
+Partitura preservada da milestone anterior. Abra
+http://127.0.0.1:3034/?score=legacy para esse instrumento.
+A partitura principal atual é [Uma Terra sustentada](labour-performance.md).
+
 Partitura executável de GA.IA/3x4. Usa somente os 144 valores de
 [canonical.gaia](../examples/canonical.gaia), os campos existentes e os sete
 glifos. Não requer áudio, textura cartográfica ou dados externos. A Terra
@@ -7,7 +11,7 @@ sintética emerge da observação esférica.
 
 ## Preparação
 
-Execute `npm ci`, `npm start`; abra http://127.0.0.1:3034. Use tela cheia,
+Execute `npm ci`, `npm start`; abra http://127.0.0.1:3034/?score=legacy. Use tela cheia,
 preferencialmente 1680×1080. Aguarde a cena. Fora do editor, pressione **P**
 para suspender o relógio e **Alt+Enter** para formar uma memória anterior.
 A performance usa ticks manuais: tempo de apresentação e tick não são

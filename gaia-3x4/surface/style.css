@@ -1,4 +1,20 @@
 :root { color-scheme: dark; --paper: #dddddd; --muted: #858585; --line: #333333; --black: #090909; }
+#synthetic-warning { padding: 12px 38px; color: #fff; background: #282828; border-bottom: 1px solid #777; font: 14px/1.5 Consolas, monospace; letter-spacing: .05em; }
+#score-mode { min-height: 545px; padding: 28px 12px 20px; position: relative; }
+.score-progress { color: #929292; font-size: 12px; letter-spacing: .1em; }
+.score-operator { font: 64px/1.3 "Segoe UI Symbol", "DejaVu Sans Mono", monospace; margin: 42px 0 20px; color: #fff; }
+.score-name { font-size: 19px; letter-spacing: .13em; margin-bottom: 15px; }
+.score-signature { font-size: 11px; color: #aaa; line-height: 1.8; }
+.score-operands { font-size: 16px; line-height: 1.7; margin: 25px 0; color: #ccc; overflow-wrap: anywhere; }
+.score-operands p { margin: 3px 0; }.score-binding { font-size: 12px; color: #999; }
+.score-execution { font-size: 11px; color: #bbb; margin-top: 25px; }.score-navigation { font-size: 10px; color: #858585; margin-top: 28px; }
+#score-mode.executed .score-operator { text-shadow: 0 0 1px #fff; }#score-mode.executed .score-execution { color: #fff; }
+.labour-performance .stage-folio, .labour-performance .stage-ratio, .labour-performance .stage-left, .labour-performance .stage-right { display: none; }
+#record-inscription { position: absolute; left: 4%; bottom: 55px; margin: 0; white-space: pre-wrap; color: #eee; background: #090909e8; font: 15px/1.75 Consolas, monospace; padding: 8px 0; max-width: 94%; }
+body[data-view="WORLD"] .instrument { grid-template-columns: 1fr; }body[data-view="WORLD"] .score-space { display: none; }
+body[data-view="SCORE"] .instrument { grid-template-columns: 1fr; }body[data-view="SCORE"] .field-space { display: none; }body[data-view="SCORE"] .score-space { border-left: 0; }
+body[data-view="SCORE"] #score-mode { max-width: 850px; margin: auto; }body[data-view="SCORE"] .score-operands { font-size: 20px; }
+.cm-ast-operation { color: white; font-size: 20px; font-weight: bold; }
 * { box-sizing: border-box; } [hidden] { display: none !important; }
 body { margin: 0; background: var(--black); color: var(--paper); font-family: "Consolas", "DejaVu Sans Mono", "Segoe UI Symbol", monospace; }
 .inscription { display: flex; align-items: start; padding: 31px 38px 28px; gap: 30px; border-bottom: 1px solid var(--line); }

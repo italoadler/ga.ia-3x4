@@ -18,9 +18,13 @@ const consequenceField = StateField.define({
       const cue = effect.value;
       if (!cue) { value = Decoration.none; continue; }
       const line = tr.state.doc.line(Math.min(tr.state.doc.lines, Math.max(1, cue.line)));
-      value = Decoration.set([Decoration.line({ class: 'cm-consequence', attributes: {
+      const from = Math.min(line.to, line.from + Math.max(0, (cue.column ?? 1) - 1));
+      const length = line.text.slice(from - line.from).match(/^(?:[⊙⇄⧉↶⋮⊘◉]|[\p{L}_]+)/u)?.[0].length ?? 0;
+      const decorations = [Decoration.line({ class: 'cm-consequence', attributes: {
         'data-operation': cue.id, 'data-trace': cue.traceIds.join(' '), 'data-tick': String(cue.tick),
-      } }).range(line.from)]);
+      } }).range(line.from)];
+      if (length) decorations.push(Decoration.mark({ class: 'cm-ast-operation', attributes: { 'data-operation': cue.id } }).range(from, from + length));
+      value = Decoration.set(decorations, true);
     }
     return value;
   },
@@ -174,7 +178,7 @@ export function createEditor(parent, source, callbacks) {
     get text() { return view.state.doc.toString(); },
     get selection() { return view.state.selection.main; },
     setText(text) { clearTimeout(syntaxTimer); view.dispatch({ changes: { from: 0, to: view.state.doc.length, insert: text } }); },
-    cue(cue) { view.dispatch({ effects: consequenceEffect.of(cue) }); },
+    cue(cue) { const effects = [consequenceEffect.of(cue)]; if (cue) effects.push(EditorView.scrollIntoView(view.state.doc.line(Math.min(view.state.doc.lines, Math.max(1, cue.line))).from, { y: 'center' })); view.dispatch({ effects }); },
     diagnosticCount: () => diagnosticCount(view.state),
     destroy() { clearTimeout(syntaxTimer); view.destroy(); },
   };

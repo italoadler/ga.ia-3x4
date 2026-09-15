@@ -26,3 +26,33 @@ export function portraitObservation(observation, traces) {
     selectedNames: observation.entries.map(e => e.name),
   };
 }
+
+// Labour states and identities have already been computed in the transaction.
+// Selection is pure: no new frame, loss, temporal lookup or provenance decision.
+export function labourObservation(observation, traces) {
+  const values = observation.entries.map(e => e.value), byId = new Map(traces.map(t => [t.id, t]));
+  const earth = values.find(v => v?.surface && !v.partition);
+  const inside = values.find(v => v?.surface && v.partition?.role === 'included');
+  const outside = values.find(v => v?.surface && v.partition?.role === 'excluded');
+  const selectedSurface = earth?.surface ?? inside?.surface ?? outside?.surface;
+  const frame = byId.get(inside?.partition?.traceId ?? outside?.partition?.traceId);
+  const selected = [...(inside?.surface.fragments ?? []), ...(outside?.surface.fragments ?? [])];
+  const fragments = selected.length ? selected : earth?.surface.fragments ?? [];
+  const memory = values.find(v => v?.kind === 'memory' && v.available && v.field?.surface);
+  const opening = values.find(v => v?.kind === 'trace-view' && v.available && v.operation === 'relate' && v.latest?.surface);
+  const priorFrame = values.find(v => v?.kind === 'trace-view' && v.available && v.operation === 'frame');
+  const discourse = values.find(v => v?.domain === 'discurso');
+  const situated = values.filter(v => v?.labour && !v.discarded);
+  const losses = values.filter(v => v?.operation === 'discard');
+  const allRecords = [...(selectedSurface?.records ?? []), ...(memory?.field.surface.records ?? []), ...situated.flatMap(v => v.labour.records), ...losses.flatMap(v => v.retainedRecords ?? [])];
+  const records = [...new Map(allRecords.map(r => [r.id, r])).values()];
+  return { tick: observation.tick, revision: observation.revision, earthId: selectedSurface?.earthId ?? null,
+    fragments, records, situated, frame: frame ?? null, openingTraceId: opening?.latest.id ?? null,
+    accessTraceId: opening?.accessTraceId ?? null, exposed: Boolean(opening),
+    discourse: discourse && !discourse.discarded ? discourse.value : [], smoke: Boolean(discourse && !discourse.discarded),
+    baseVisible: values.some(v => v?.domain === 'superficie-trabalho' && !v.discarded),
+    ghosts: memory?.field.surface.fragments.filter(f => f.state !== 'discarded').map(f => ({ ...f, state: 'remembered' })) ?? [],
+    memoryTick: memory?.requestedTick ?? null, historicalFrame: priorFrame?.latest ?? null,
+    losses, projection: selectedSurface?.projection ?? null, derivation: selectedSurface?.derivation ?? null,
+    selectedNames: observation.entries.map(e => e.name) };
+}

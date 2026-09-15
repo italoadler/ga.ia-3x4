@@ -1,0 +1,138 @@
+{
+  "schema": "gaia.labour/1",
+  "title": "DADOS SINTÉTICOS — seis registros inventados; nenhum trabalhador real",
+  "records": [
+    {
+      "id": "work-demo01",
+      "activity": "classificação",
+      "observedAt": "2026-09-14T08:00:00Z",
+      "durationSeconds": 900,
+      "location": {
+        "label": "Região fictícia A",
+        "scale": "synthetic-region"
+      },
+      "compensation": {
+        "value": 1,
+        "currency": "XXX"
+      },
+      "paymentRegime": "por tarefa; espera sem pagamento",
+      "status": "waiting",
+      "provenance": {
+        "source": "demonstração artística sintética",
+        "reference": "gaia.labour/demo/1#1"
+      },
+      "note": "Registro inventado para ensaio; não representa uma pessoa, empresa ou remuneração real.",
+      "evidenceStatus": "synthetic"
+    },
+    {
+      "id": "work-demo02",
+      "activity": "revisão de rótulos",
+      "observedAt": "2026-09-14T09:00:00Z",
+      "durationSeconds": 900,
+      "location": {
+        "label": "Região fictícia B",
+        "scale": "synthetic-region"
+      },
+      "compensation": {
+        "value": 1,
+        "currency": "XXX"
+      },
+      "paymentRegime": "por lote; sujeito à aprovação",
+      "status": "active",
+      "provenance": {
+        "source": "demonstração artística sintética",
+        "reference": "gaia.labour/demo/1#2"
+      },
+      "note": "Registro inventado para ensaio; não representa uma pessoa, empresa ou remuneração real.",
+      "evidenceStatus": "synthetic"
+    },
+    {
+      "id": "work-demo03",
+      "activity": "avaliação de resposta",
+      "observedAt": "2026-09-14T10:00:00Z",
+      "durationSeconds": 900,
+      "location": {
+        "label": "Região fictícia C",
+        "scale": "synthetic-region"
+      },
+      "compensation": {
+        "value": 1,
+        "currency": "XXX"
+      },
+      "paymentRegime": "por tarefa; revisão não remunerada",
+      "status": "approved",
+      "provenance": {
+        "source": "demonstração artística sintética",
+        "reference": "gaia.labour/demo/1#3"
+      },
+      "note": "Registro inventado para ensaio; não representa uma pessoa, empresa ou remuneração real.",
+      "evidenceStatus": "synthetic"
+    },
+    {
+      "id": "work-demo04",
+      "activity": "validação",
+      "observedAt": "2026-09-14T11:00:00Z",
+      "durationSeconds": 900,
+      "location": {
+        "label": "Região fictícia D",
+        "scale": "synthetic-region"
+      },
+      "compensation": {
+        "value": 1,
+        "currency": "XXX"
+      },
+      "paymentRegime": "por lote; prazo de expiração",
+      "status": "expired",
+      "provenance": {
+        "source": "demonstração artística sintética",
+        "reference": "gaia.labour/demo/1#4"
+      },
+      "note": "Registro inventado para ensaio; não representa uma pessoa, empresa ou remuneração real.",
+      "evidenceStatus": "synthetic"
+    },
+    {
+      "id": "work-demo05",
+      "activity": "moderação sintética",
+      "observedAt": "2026-09-14T12:00:00Z",
+      "durationSeconds": 900,
+      "location": {
+        "label": "Região fictícia E",
+        "scale": "synthetic-region"
+      },
+      "compensation": {
+        "value": 1,
+        "currency": "XXX"
+      },
+      "paymentRegime": "por tarefa; aprovação pendente",
+      "status": "unpaid",
+      "provenance": {
+        "source": "demonstração artística sintética",
+        "reference": "gaia.labour/demo/1#5"
+      },
+      "note": "Registro inventado para ensaio; não representa uma pessoa, empresa ou remuneração real.",
+      "evidenceStatus": "synthetic"
+    },
+    {
+      "id": "work-demo06",
+      "activity": "transcrição sintética",
+      "observedAt": "2026-09-14T13:00:00Z",
+      "durationSeconds": 900,
+      "location": {
+        "label": "Região fictícia F",
+        "scale": "synthetic-region"
+      },
+      "compensation": {
+        "value": 1,
+        "currency": "XXX"
+      },
+      "paymentRegime": "por tarefa; valor recusado",
+      "status": "rejected",
+      "provenance": {
+        "source": "demonstração artística sintética",
+        "reference": "gaia.labour/demo/1#6"
+      },
+      "note": "Registro inventado para ensaio; não representa uma pessoa, empresa ou remuneração real.",
+      "evidenceStatus": "synthetic"
+    }
+  ]
+}

@@ -27,6 +27,7 @@ export function renderField(canvas, observation) {
     return;
   }
   const [sourceWidth, sourceHeight] = outside.shape, bounds = cut.parameters.bounds;
+  const exteriorStates = new Map(outside.surface?.fragments.map(f => [f.projectedIndex, f.state]) ?? []);
   const cell = Math.min((height - 70) / sourceHeight, (width - 85) / sourceWidth);
   const squareWidth = sourceWidth * cell, squareHeight = sourceHeight * cell;
   const originX = (width - squareWidth) / 2, originY = 35;
@@ -39,6 +40,7 @@ export function renderField(canvas, observation) {
     const index = row * sourceWidth + col, value = outside.value?.[index];
     if (value === null || value === undefined) continue;
     const x = originX + col * cell, y = originY + row * cell;
+    if (exteriorStates.get(index) === 'discarded') { rule(ctx, x + 8, y + 8, x + cell - 8, y + cell - 8, '#898989'); rule(ctx, x + cell - 8, y + 8, x + 8, y + cell - 8, '#898989'); continue; }
     ctx.strokeStyle = '#434343'; ctx.lineWidth = .5; ctx.strokeRect(x + 3, y + 3, cell - 6, cell - 6);
     // Exterior is never renormalized: a constant witness mark plus the raw numeric label.
     rule(ctx, x + 8, y + 9, x + cell - 8, y + 9, '#a7a7a7');
@@ -50,6 +52,7 @@ export function renderField(canvas, observation) {
   for (let row = 0; row < ih; row++) for (let col = 0; col < iw; col++) {
     const value = inside.value?.[row * iw + col];
     const x = portraitX + col * cell, y = portraitY + row * cell;
+    if (inside.surface?.fragments[row * iw + col]?.state === 'discarded') { rule(ctx, x + 8, y + 8, x + cell - 8, y + cell - 8, '#898989'); rule(ctx, x + cell - 8, y + 8, x + 8, y + cell - 8, '#898989'); continue; }
     if (value === undefined) { ctx.strokeStyle = '#252525'; ctx.lineWidth = .5; ctx.strokeRect(x + .6, y + .6, cell - 1.2, cell - 1.2); continue; }
     // One declared observation encoding: normalized value → linear grayscale (0…255).
     const tone = Math.round(value * 255);
@@ -74,7 +77,8 @@ export function renderField(canvas, observation) {
   ctx.textAlign = 'right';
   ctx.fillText('fora: valores originais', originX + squareWidth, originY + squareHeight + 24);
   ctx.textAlign = 'left';
-  canvas.setAttribute('aria-label', `Retrato ${iw} por ${ih}, ${inside.value?.length ?? 0} células incluídas${inside.discarded ? '; valor descartado, perda registrada' : ''}; ${cut.excludedIndices.length} células externas preservadas. ${cut.id}, tick ${cut.tick}.`);
+  const lostFragments = [...(inside.surface?.fragments ?? []), ...(outside.surface?.fragments ?? [])].filter(f => f.state === 'discarded').length;
+  canvas.setAttribute('aria-label', `Retrato ${iw} por ${ih}, ${inside.value?.length ?? 0} células incluídas${inside.discarded ? '; valor descartado, perda registrada' : ''}; ${cut.excludedIndices.length} células externas preservadas.${lostFragments ? ` ${lostFragments} fragmentos descartados, sem suporte material; cruzes marcam ausência.` : ''} ${cut.id}, tick ${cut.tick}.`);
 }
 
 export function renderHistory(canvas, traces, currentTick) {

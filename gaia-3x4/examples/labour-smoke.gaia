@@ -1,0 +1,5 @@
+# 1 / CORTINA — observação de uma imagem aparentemente autônoma
+solo = ⊙ "superficie/sintetica" "2026-09-14T08:00:00Z" "relacional" "superficie-trabalho" [12 12] [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]
+terra = ⇄ blend [1 0] solo solo
+discurso = ⊙ "discurso/sem-atribuicao" "2026-09-14T08:00:00Z" "camada" "discurso" [4 1] ["AGI" "EXTINCTION" "INEVITABLE" "SUPERINTELLIGENCE"]
+◉ [terra discurso]
