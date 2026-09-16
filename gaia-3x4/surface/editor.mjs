@@ -31,6 +31,18 @@ const consequenceField = StateField.define({
   provide: field => EditorView.decorations.from(field),
 });
 
+const glyphMarks = state => {
+  const ranges = [];
+  for (const match of state.doc.toString().matchAll(/[⊙⇄⧉↶⋮⊘◉]/gu))
+    ranges.push(Decoration.mark({ class: 'cm-glyph-token' }).range(match.index, match.index + match[0].length));
+  return Decoration.set(ranges, true);
+};
+const glyphField = StateField.define({
+  create: glyphMarks,
+  update(value, transaction) { return transaction.docChanged ? glyphMarks(transaction.state) : value.map(transaction.changes); },
+  provide: field => EditorView.decorations.from(field),
+});
+
 const language = StreamLanguage.define({
   token(stream) {
     if (stream.eatSpace()) return null;
@@ -81,7 +93,7 @@ function documentation(op) {
   dom.append(title, signature, detail, shortcut); return dom;
 }
 
-function completion(context) {
+function completion(context, callbacks) {
   const line = context.state.doc.lineAt(context.pos);
   if (inCommentOrString(line.text.slice(0, context.pos - line.from))) return null;
   const match = context.matchBefore(/[\p{L}\p{N}_⊙⇄⧉↶⋮⊘◉]*/u);
@@ -89,7 +101,7 @@ function completion(context) {
   const options = GLYPH_REGISTRY.flatMap(op => op.aliases.map(alias => ({
     label: alias, displayLabel: `${op.glyph}  ${op.alias}`, type: 'keyword',
     detail: `${op.inputs} → ${op.outputs}`, info: () => documentation(op), boost: 2,
-    apply: op.glyph,
+    apply: callbacks.operationToken?.(op) ?? op.glyph,
   })));
   const names = [...context.state.doc.toString().matchAll(/^\s*([\p{L}\p{N}_ ]+)\s*=/gmu)].flatMap(m => m[1].trim().split(/\s+/));
   options.push(...[...new Set(names)].map(label => ({ label, type: 'variable' })));
@@ -118,7 +130,7 @@ export function createEditor(parent, source, callbacks) {
     }, { dark: true }),
     lineNumbers(), history(), drawSelection(), highlightActiveLine(), highlightActiveLineGutter(),
     EditorView.lineWrapping, highlightSelectionMatches(), bracketMatching(), closeBrackets(), foldGutter(),
-    lintGutter(), consequenceField, language,
+    lintGutter(), consequenceField, glyphField, language,
     foldService.of((state, lineStart, lineEnd) => {
       const text = state.doc.toString(), opening = text.indexOf('[', lineStart);
       if (opening < 0 || opening > lineEnd) return null;
@@ -132,7 +144,7 @@ export function createEditor(parent, source, callbacks) {
       { tag: tags.number, color: '#d7d7d7' }, { tag: tags.variableName, color: '#dedede' },
       { tag: tags.atom, color: '#bfbfbf' },
     ])),
-    autocompletion({ override: [completion], activateOnTyping: true }),
+    autocompletion({ override: [context => completion(context, callbacks)], activateOnTyping: true }),
     hoverTooltip((editor, pos) => {
       const found = glyphAt(editor, pos);
       return found ? { pos: found.from, end: found.to, above: true, create: () => ({ dom: documentation(found.op) }) } : null;
@@ -150,6 +162,14 @@ export function createEditor(parent, source, callbacks) {
     ]),
     EditorView.contentAttributes.of({ 'aria-label': 'Partitura GA.IA/3x4, editor CodeMirror 6', spellcheck: 'false' }),
     EditorView.updateListener.of(update => {
+      if (update.docChanged || update.selectionSet) {
+        const line = update.state.doc.lineAt(update.state.selection.main.head);
+        const found = GLYPH_REGISTRY.find(op => op.aliases.some(alias => {
+          const at = line.text.indexOf(alias); if (at < 0) return false;
+          return alias === op.glyph || (!/[\p{L}\p{N}_]/u.test(line.text[at - 1] ?? '') && !/[\p{L}\p{N}_]/u.test(line.text[at + alias.length] ?? ''));
+        }));
+        callbacks.selection?.({ line: line.number, text: line.text, operation: found ?? null });
+      }
       if (!update.docChanged) return;
       callbacks.change();
       clearTimeout(syntaxTimer);
@@ -161,7 +181,8 @@ export function createEditor(parent, source, callbacks) {
   ] }) });
   const insert = op => {
     const range = view.state.selection.main;
-    view.dispatch({ changes: { from: range.from, to: range.to, insert: op.glyph }, selection: { anchor: range.from + op.glyph.length } });
+    const token = callbacks.operationToken?.(op) ?? op.glyph;
+    view.dispatch({ changes: { from: range.from, to: range.to, insert: token }, selection: { anchor: range.from + token.length } });
     view.focus();
   };
   function showDiagnostic(error) {

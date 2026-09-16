@@ -15,7 +15,7 @@ async function viewportShot(name) {
 async function fullShot(name) { await session.screenshot(name); report.captures.push(name); }
 
 try {
-  await session.cdp('Page.navigate', { url: session.url });
+  await session.cdp('Page.navigate', { url: `${session.url}/data.html` });
   await until(() => session.evaluate('Boolean(window.gaia?.ready)'), 'GA.IA não iniciou');
   const startup = await session.evaluate(`({
     tick: gaia.inspect().tick, visual: gaia.visual(), earthCanvas: Boolean(document.querySelector('#earth-canvas')),

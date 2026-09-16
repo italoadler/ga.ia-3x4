@@ -1,15 +1,8 @@
 # GA.IA/3x4
 
-**Data-born Earth v0** é um único corte vertical: uma observação ambiental
-pública entra na linguagem, atravessa o runtime transacional e constrói um
-retrato territorial incompleto em proporção `3:4`.
+**Living Portraits v0** é uma prova visual performável em que observações reais de plantas e insetos entram no runtime como retratos computacionais situados. A abertura é incompleta; depois de `RUN`, uma foto verificada ocupa uma moldura 3×4, suas partes excluídas permanecem como resíduos espectrais e o enquadramento anterior pode reaparecer como fantasma.
 
-A abertura padrão mostra CodeMirror 6 com cinco linhas executáveis e uma
-moldura ainda sem dados. `RUN` executa a captura real offline da API regional
-diária NASA POWER. Trocar `captured` por `live` consulta o mesmo endpoint no
-navegador e identifica o resultado como `LIVE`. A fonte anterior, baseada em
-dados sintéticos de trabalho, e o renderer Three.js/WebGPU continuam
-preservados em [`legacy.html`](legacy.html).
+A precipitação NASA POWER permanece no programa. `relate` liga o campo ambiental aos registros iNaturalist como **situated computational approximation**, sempre marcada `causal: false`. O programa não usa o campo contra ele mesmo e não afirma causalidade biológica.
 
 ## Executar
 
@@ -22,110 +15,62 @@ npm test
 npm start
 ```
 
-Abra `http://127.0.0.1:3034` e pressione **RUN**. O caminho offline não exige
-conta, chave ou rede. Os comandos de verificação são:
+Abra `http://127.0.0.1:3034`. A apresentação padrão é integralmente offline: a resposta iNaturalist, as quatro fotos e a captura NASA POWER estão locais e são verificadas por SHA-256 antes da transação.
 
 ```powershell
-npm test
+npm run verify:living
 npm run verify:data-born
+npm run verify:browser
+npm run verify:performance
+npm run verify:labour
 ```
 
-`npm run capture:power` renova deliberadamente a única captura. Ele faz uma
-consulta real e sobrescreve somente os dois arquivos NASA POWER nomeados em
-`data/`; não é executado por `npm test` nem pela demonstração offline.
+`npm run capture:living` e `npm run capture:power` consultam a rede e renovam deliberadamente as capturas. Eles não fazem parte da inicialização, dos testes unitários ou da apresentação offline.
 
-## Programa inicial
+## Programa canônico
 
-[`examples/data-born-earth.gaia`](examples/data-born-earth.gaia) contém cinco
-linhas executáveis:
+[`examples/living-portraits.gaia`](examples/living-portraits.gaia) contém sete declarações executáveis:
 
 ```text
-territorio_brasilia = source "NASA POWER / captured" "2025-01-15" "bbox -49,-17,-46.5,-14" "PRECTOTCORR mm/day" [4 7] nasa_power_brasilia
-campo_precipitacao = relate blend [0.35 1] territorio_brasilia territorio_brasilia
-retrato fora recorte = frame 3:4 0 0.5 campo_precipitacao
+chuva = situate "NASA POWER / captured" "2025-01-15" "bbox -49,-17,-46.5,-14" "PRECTOTCORR mm/day" [4 7] nasa_power_brasilia
+organismos = situate "iNaturalist / captured" "per-record observed dates" "bbox -49,-17,-46.5,-14" "selected iNaturalist observation records" [4 7] inaturalist_brasilia
+aproximacao = relate blend [0.32 0] chuva organismos
+retrato fora recorte = frame 3:4 0.5 0.5 aproximacao
+memoria = remember 1 retrato
 anterior = trace frame
-observe [territorio_brasilia campo_precipitacao retrato fora recorte anterior]
+observe [chuva organismos aproximacao retrato fora recorte memoria anterior]
 ```
 
-`source` é apenas um alias textual adicional de `situate`/`⊙`. O registro
-continua contendo exatamente os sete glifos `⊙ ⇄ ⧉ ↶ ⋮ ⊘ ◉`; nenhum operador
-ou avaliador temático foi criado. `nasa_power_brasilia` é o único nome externo
-autorizado para aquela transação.
+Uma oitava declaração comentada ativa `discard` durante a performance. O vocabulário continua limitado aos sete glifos `⊙ ⇄ ⧉ ↶ ⋮ ⊘ ◉`. `TEXTUAL` e `GLYPHIC` alternam apenas a representação dos operadores; as duas vistas usam os mesmos IDs do registro, parser, transação e consequência visual.
 
-Altere `0.35` ou o deslocamento inteiro `1` em `blend`, selecione a linha e use
-Ctrl+Enter, ou pressione RUN. O mesmo objeto `World` e as mesmas identidades
-compatíveis permanecem; `trace frame` passa a expor o recorte anterior. Para
-remover o retrato, retire `#` da linha `ausencia = discard ...` já visível e
-execute novamente. As doze células internas desaparecem; os dezesseis
-fragmentos exteriores e o registro de perda permanecem.
+## Interface
 
-## Uma fonte, um percurso
+- `RUN` ou `Ctrl+Shift+Enter` executa toda a partitura.
+- `Ctrl+Enter` aplica a linha ou bloco selecionado na mesma transação do programa.
+- `Alt+1…7` insere operações pela paleta; autocomplete, hover, atalho, documentação, aridade e implementação vêm de [`src/registry.mjs`](src/registry.mjs).
+- A linha selecionada descreve em português o que recebe, transforma, conserva e exclui.
+- `L`, `D` e `I` alternam `LIVING PORTRAIT`, `DATA` e `INSPECTOR`.
+- `F` alterna tela cheia; `T` abre o registro completo.
+- Uma edição inválida conserva o último mundo, a última observação e o último retrato válidos.
 
-A resposta bruta legítima está em
-[`data/nasa-power-brasilia-2025-01-15.raw.json`](data/nasa-power-brasilia-2025-01-15.raw.json).
-O manifesto ao lado registra URL, horário de recuperação, status HTTP,
-cabeçalhos, tamanho e SHA-256. A resposta declara `MERRA2`, `PRECTOTCORR`,
-`mm/day`, UTC e `fill_value = -999`. O adaptador converte fill values e pontos
-ausentes em `null` com razões distintas; não inventa estimativas.
+## Fontes e modos preservados
 
-O percurso inspecionável é:
+A nova fonte é exclusivamente o iNaturalist. A resposta bruta, o manifesto, os JPEGs e os créditos ficam separados em [`data/inaturalist`](data/inaturalist/ATTRIBUTION.md). São quatro observações `CAPTURED-REAL`, duas plantas e dois insetos, todas com atribuição explícita e foto CC BY 4.0.
 
-```text
-resposta bruta + manifesto
-→ src/nasa-power.mjs
-→ environmental-observation imutável
-→ input externo da transação
-→ SituatedField + provenance + sourceObservations
-→ relate
-→ frame (índices, normalização e exterior retido)
-→ observe
-→ surface/observation.mjs
-→ surface/territory.mjs
-```
+NASA POWER continua em [`src/nasa-power.mjs`](src/nasa-power.mjs) e em sua captura regional. `DATA` reutiliza [`surface/territory.mjs`](surface/territory.mjs); `INSPECTOR` reutiliza [`surface/render.mjs`](surface/render.mjs). A versão verificada `data-born Earth v0` continua executável em [`data.html`](data.html), e a microperformance Three.js anterior permanece em [`legacy.html`](legacy.html).
 
-O renderer não lê a resposta externa. Ele recebe somente a projeção já
-comprometida pelo runtime. O valor normalizado controla luminância, quantidade
-e altura dos traços; o índice de origem e as coordenadas retornadas controlam a
-posição; `null` produz uma célula aberta; a partição `excluded` produz marcas
-deslocadas; o frame anterior produz níveis tracejados; `discard` produz vazios
-cruzados.
-
-A janela `bbox -49,-17,-46.5,-14` é uma janela de observação declarada ao redor
-de Brasília. Ela não é um limite administrativo, mapa municipal ou afirmação
-de cobertura local precisa. A grade retornada tem `4 × 7` pontos, passos de
-`0,625°` em longitude e `0,5°` em latitude. O frame seleciona `3 × 4` células
-sem reamostrar.
-
-Veja [`docs/data-born-earth.md`](docs/data-born-earth.md) para a seleção da
-fonte, direitos, contrato do adaptador, mapeamento visual, limites e a partitura
-de aproximadamente quatro minutos.
-
-## Interface e compatibilidade
-
-- **RUN** ou Ctrl+Shift+Enter executa a fonte visível.
-- Ctrl+Enter executa a linha ou seleção contra o último programa válido.
-- Alt+1…7 insere os sete glifos; a paleta, autocomplete e hover vêm do registro.
-- **INSPECT PROVENANCE** mostra modo, fonte, variável, tempo, grade, URL e captura.
-- `I`, fora do editor, abre a grade Canvas 2D anterior como Inspector.
-- `T`, fora do editor, abre o registro completo.
-- Um erro mantém mundo, observação, programa, fonte externa e imagem válidos.
-
-O build padrão usa [`surface/data-app.mjs`](surface/data-app.mjs). A página
-[`legacy.html`](legacy.html) carrega o instrumento anterior e o renderer
-Three.js por [`dist/legacy-instrument.mjs`](dist/legacy-instrument.mjs). Nenhum
-segundo provedor, conta, banco de dados, backend, GIS ou áudio foi adicionado.
+O desenho, a proveniência completa, os limites e os roteiros de 90 segundos e 3–5 minutos estão em [`docs/living-portraits.md`](docs/living-portraits.md). A documentação anterior continua em [`docs/data-born-earth.md`](docs/data-born-earth.md).
 
 ## Evidência
 
-`npm test` executa 57 testes: os 49 preservados e oito focados na NASA POWER,
-normalização, atribuição, status live/captured, desconhecidos, fixture, alias,
-persistência relacional, resíduo e rollback. `npm run verify:data-born` usa
-Chrome real, faz também uma consulta live e grava:
+`npm run verify:living` usa um navegador real, percorre os sete glifos do CodeMirror até a consequência visual, testa hashes/licenças/atribuição, troca de enquadramento, memória, ausência, rollback, execução offline, modos e console. Ele grava:
 
-- [`data-born-01-startup-blank.png`](artifacts/data-born-01-startup-blank.png)
-- [`data-born-02-readable-editor.png`](artifacts/data-born-02-readable-editor.png)
-- [`data-born-03-first-observation.png`](artifacts/data-born-03-first-observation.png)
-- [`data-born-04-parameter-edit-trace.png`](artifacts/data-born-04-parameter-edit-trace.png)
-- [`data-born-05-live-provenance.png`](artifacts/data-born-05-live-provenance.png)
-- [`data-born-06-absence-residue.png`](artifacts/data-born-06-absence-residue.png)
-- [`data-born-verification.json`](artifacts/data-born-verification.json)
+- [`living-01-before.png`](artifacts/living-01-before.png)
+- [`living-02-first-organism.png`](artifacts/living-02-first-organism.png)
+- [`living-03-outside.png`](artifacts/living-03-outside.png)
+- [`living-04-trace.png`](artifacts/living-04-trace.png)
+- [`living-05-absence.png`](artifacts/living-05-absence.png)
+- [`living-microperformance.gif`](artifacts/living-microperformance.gif) — percurso condensado pelos cinco estados.
+- [`living-verification.json`](artifacts/living-verification.json)
+
+As capturas `data-born`, `labour` e `microperformance` continuam no mesmo diretório para comparação e regressão visual.

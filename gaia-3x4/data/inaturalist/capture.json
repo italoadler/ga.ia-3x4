@@ -1,0 +1,84 @@
+{
+  "schema": "gaia-3x4/inaturalist-capture/v0",
+  "source": "iNaturalist API v1",
+  "capturedAt": "2026-09-15T09:56:42.577Z",
+  "requestUrl": "https://api.inaturalist.org/v1/observations?id=399498913%2C397768311%2C393600054%2C388807360&photos=true&per_page=4&order_by=id&order=desc",
+  "response": {
+    "httpStatus": 200,
+    "contentType": "application/json; charset=utf-8",
+    "rawPath": "/data/inaturalist/observations.raw.json",
+    "bytes": 361508,
+    "sha256": "5b6a73b6852fc856bf685aa9f43dac2f3dc5ef5bf7cda0a56e2bcac68defd581"
+  },
+  "selectionPolicy": {
+    "count": 4,
+    "categories": {
+      "Plantae": 2,
+      "Insecta": 2
+    },
+    "acceptedPhotoLicenses": [
+      "cc0",
+      "cc-by"
+    ],
+    "qualityGrade": "research",
+    "region": "bbox -49,-17,-46.5,-14"
+  },
+  "records": [
+    {
+      "observationId": 399498913,
+      "photoId": 732969051,
+      "status": "CAPTURED-REAL",
+      "originalUrl": "https://www.inaturalist.org/observations/399498913",
+      "mediaOriginalUrl": "https://inaturalist-open-data.s3.amazonaws.com/photos/732969051/large.jpg",
+      "localPath": "/data/inaturalist/media/399498913-732969051.jpg",
+      "bytes": 255498,
+      "sha256": "605d205e136bfcdd83734b83e918efecb8d9a622a32b2af7dfb644d9e3a3a3f2",
+      "contentType": "image/jpeg",
+      "license": "cc-by",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "(c) Mario Barroso, some rights reserved (CC BY)"
+    },
+    {
+      "observationId": 397768311,
+      "photoId": 729588883,
+      "status": "CAPTURED-REAL",
+      "originalUrl": "https://www.inaturalist.org/observations/397768311",
+      "mediaOriginalUrl": "https://inaturalist-open-data.s3.amazonaws.com/photos/729588883/large.jpg",
+      "localPath": "/data/inaturalist/media/397768311-729588883.jpg",
+      "bytes": 263760,
+      "sha256": "55cd6cf63d6fb46ca2387cfc1c38c036d6da489599b52a00e72e1792563462cc",
+      "contentType": "image/jpeg",
+      "license": "cc-by",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "(c) Mario Barroso, some rights reserved (CC BY)"
+    },
+    {
+      "observationId": 393600054,
+      "photoId": 721458676,
+      "status": "CAPTURED-REAL",
+      "originalUrl": "https://www.inaturalist.org/observations/393600054",
+      "mediaOriginalUrl": "https://inaturalist-open-data.s3.amazonaws.com/photos/721458676/large.jpg",
+      "localPath": "/data/inaturalist/media/393600054-721458676.jpg",
+      "bytes": 869060,
+      "sha256": "7959232220a518ce1f38df0667afed9c5d80c8ff49063d59633a2b1cbe4811b5",
+      "contentType": "image/jpeg",
+      "license": "cc-by",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "(c) André Ambrozio, some rights reserved (CC BY)"
+    },
+    {
+      "observationId": 388807360,
+      "photoId": 712138947,
+      "status": "CAPTURED-REAL",
+      "originalUrl": "https://www.inaturalist.org/observations/388807360",
+      "mediaOriginalUrl": "https://inaturalist-open-data.s3.amazonaws.com/photos/712138947/large.jpg",
+      "localPath": "/data/inaturalist/media/388807360-712138947.jpg",
+      "bytes": 623153,
+      "sha256": "862b0d2d47b62a82da614d863ea27c25a7f908c4a00f410d0a8a3f2d9ecf8c83",
+      "contentType": "image/jpeg",
+      "license": "cc-by",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "(c) Libris Simas Ferraz, some rights reserved (CC BY)"
+    }
+  ]
+}

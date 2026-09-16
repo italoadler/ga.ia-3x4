@@ -8,7 +8,14 @@ export function portraitObservation(observation, traces) {
   const frame = values.find(v => v?.kind === 'trace' && v.operation === 'frame') ?? records.get(inside?.partition?.traceId ?? outside?.partition?.traceId);
   const memory = values.find(v => v?.kind === 'memory' && v.available && v.field?.partition?.role === 'included');
   const history = values.find(v => v?.kind === 'trace-view' && v.operation === 'frame' && v.available);
-  const environment = inside?.environment ?? outside?.environment ?? values.find(v => v?.environment)?.environment ?? null;
+  const sourceObservations = new Map();
+  for (const value of values) for (const source of value?.observations ?? (value?.environment ? [value.environment] : []))
+    sourceObservations.set(source.adapter, source);
+  for (const source of frame?.sourceObservations ?? []) sourceObservations.set(source.adapter, source);
+  const observations = [...sourceObservations.values()];
+  const environment = observations.find(source => source.relationContext?.semantic === 'environmental-precipitation-field')
+    ?? inside?.environment ?? outside?.environment ?? values.find(v => v?.environment)?.environment ?? null;
+  const living = observations.find(source => source.relationContext?.semantic === 'observed-organism-records') ?? null;
   const lossIds = new Set([
     ...values.filter(v => v?.operation === 'discard').map(v => v.id),
     ...values.filter(v => v?.discarded).map(v => v.lossId),
@@ -21,7 +28,8 @@ export function portraitObservation(observation, traces) {
     inputShape: frame?.inputShape ?? null, included, excluded, ghosts,
     memoryTick: memory?.requestedTick ?? null, memoryTraceId: memory?.field?.partition?.traceId ?? null,
     historicalFrame: history?.latest ?? null,
-    environment,
+    environment, living, observations,
+    memoryField: memory?.field ?? null,
     absentIndices: inside?.discarded ? inside.partition.sourceIndices : [],
     losses: [...lossIds].map(id => records.get(id)).filter(Boolean),
     sources: values.filter(v => v?.kind === 'field' && v.origin === 'situate').map(v => ({ id: v.id, provenance: v.provenance, shape: v.shape, discarded: v.discarded })),

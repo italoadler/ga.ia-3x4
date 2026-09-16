@@ -138,6 +138,8 @@ export function normalizePowerResponse(raw, context) {
     status: context.mode === 'live' ? 'live' : 'captured-real',
     declaration: { source: context.request.sourceLabel, time: context.request.date,
       scale: context.request.boundsLabel, domain: context.request.domainLabel, shape },
+    relationContext: { id: POWER_BOUNDS_LABEL, semantic: 'environmental-precipitation-field',
+      relationship: 'situated-computational-approximation', causal: false },
     source: { provider: POWER_SOURCE.provider, endpoint: POWER_SOURCE.endpoint, requestUrl: context.requestUrl,
       documentation: POWER_SOURCE.documentation, rights: POWER_SOURCE.rights, attribution: POWER_SOURCE.attribution,
       reportedSources: [...header.sources] },

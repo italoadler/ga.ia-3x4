@@ -16,6 +16,12 @@ const provenanceUnion = fields => {
   return [...result.values()];
 };
 const historyUnion = fields => unique(fields.flatMap(f => f.history));
+const observationUnion = fields => {
+  const result = new Map();
+  for (const field of fields) for (const observed of field.observations ?? (field.environment ? [field.environment] : []))
+    result.set(observed.adapter, observed);
+  return [...result.values()];
+};
 
 // A small deterministic fingerprint identifies a loss. It is not a cryptographic hash.
 function fingerprint(value) {
@@ -182,7 +188,7 @@ class Transaction {
     });
     return [this.putField(name, {
       value: labour ? values.map(() => 1) : [...values], shape: [...shape], domain, scale, time, origin: 'situate', seed,
-      ...(labour ? { labour } : {}), ...(environmental ? { environment: environmental } : {}),
+      ...(labour ? { labour } : {}), ...(environmental ? { environment: environmental, observations: [environmental] } : {}),
       provenance: [environmental ? { source, originalSource: environmental.source.requestUrl, observedAt: time,
         retrievedAt: environmental.retrieval.retrievedAt, status: environmental.status, attribution: environmental.source.attribution,
         reportedSources: environmental.source.reportedSources, variable: environmental.variable, fieldId: existing?.id ?? `field:${name}` }
@@ -198,7 +204,13 @@ class Transaction {
   relate(args, names, location) {
     const transformation = this.literal(args[0], location), parameters = this.literal(args[1], location);
     const right = this.field(args[2], location), left = this.field(args[3], location);
-    if (!same(right.shape, left.shape) || right.domain !== left.domain || right.scale !== left.scale)
+    const sourceObservations = observationUnion([left, right]);
+    const relationContexts = [left, right].map(field => (field.observations ?? (field.environment ? [field.environment] : []))[0]?.relationContext ?? null);
+    const situatedApproximation = left.domain !== right.domain && relationContexts.every(Boolean)
+      && relationContexts[0].id === relationContexts[1].id
+      && relationContexts.every(context => context.relationship === 'situated-computational-approximation' && context.causal === false)
+      && relationContexts[0].semantic !== relationContexts[1].semantic;
+    if (!same(right.shape, left.shape) || right.scale !== left.scale || (right.domain !== left.domain && !situatedApproximation))
       this.fail('E_RELATION_SCHEMA', 'A relação exige formas, domínios e escalas compatíveis; uma conversão precisaria de rastro próprio.', location);
     const name = names[0], oldField = this.fields.get(name);
     if (oldField && oldField.origin !== 'relate') this.fail('E_INCOMPATIBLE_FIELD', `${name} não era o alvo de uma relação. Use outro nome.`, location);
@@ -206,7 +218,7 @@ class Transaction {
     if (transformation === 'blend') {
       if (!Array.isArray(parameters) || parameters.length !== 2 || !Number.isFinite(parameters[0]) || parameters[0] < 0 || parameters[0] > 1 || !Number.isSafeInteger(parameters[1]))
         this.fail('E_PARAMETERS', 'blend exige [peso deslocamento_inteiro], com peso entre 0 e 1.', location);
-      const environmental = Boolean(left.environment && right.environment);
+      const environmental = Boolean(sourceObservations.length);
       if (![left, right].every(f => f.value.every(v => (typeof v === 'number' && Number.isFinite(v)) || (environmental && v === null))))
         this.fail('E_NUMERIC', 'blend exige campos numéricos completos.', location);
       const [weight, shift] = parameters, [width] = left.shape;
@@ -234,6 +246,8 @@ class Transaction {
       parameters, transformation, correspondence, temporalBehaviour,
       contributions: transformation === 'blend' ? { leftWeight: 1 - parameters[0], rightWeight: parameters[0] } : { leftWeight: 0, rightWeight: 1 },
       consequence: transformation === 'blend' ? 'weighted-combination-with-toroidal-column-shift' : 'transfer-with-retained-source-distinction',
+      ...(situatedApproximation ? { relationship: { kind: 'situated-computational-approximation', causal: false,
+        context: relationContexts[0].id, semantics: relationContexts.map(context => context.semantic) } } : {}),
     });
     const surface = constructLabourSurface(name, left.shape, left, right, correspondence, event.contributions, this.recordLosses, event.id);
     if (surface) {
@@ -246,6 +260,7 @@ class Transaction {
       time: { tick: this.tick, observations: unique([left.time, right.time].map(t => JSON.stringify(t))).map(t => JSON.parse(t)) },
       provenance: provenanceUnion([left, right]), history: unique([...historyUnion([left, right]), ...(oldField?.history ?? []), event.id]),
       relationId,
+      ...(sourceObservations.length ? { observations: sourceObservations } : {}),
       ...(left.environment && right.environment && left.environment.adapter === right.environment.adapter ? { environment: left.environment } : {}),
       ...(surface ? { surface } : {}),
     });
@@ -265,7 +280,7 @@ class Transaction {
     if (ratio?.kind !== 'ratio') this.fail('E_RATIO', 'frame exige uma proporção como 3:4.', location);
     if (![anchorX, anchorY].every(v => typeof v === 'number' && Number.isFinite(v) && v >= 0 && v <= 1))
       this.fail('E_ANCHOR', 'As âncoras do recorte devem estar entre 0 e 1.', location);
-    const environmental = Boolean(input.environment);
+    const environmental = Boolean(input.environment || input.observations?.length);
     if (!input.value.every(v => (typeof v === 'number' && Number.isFinite(v)) || (environmental && v === null))) this.fail('E_NUMERIC_FRAME', 'A normalização de frame v0 exige números completos.', location);
     const gcd = (a, b) => b ? gcd(b, a % b) : a;
     const divisor = gcd(ratio.width, ratio.height), rw = ratio.width / divisor, rh = ratio.height / divisor;
@@ -293,6 +308,7 @@ class Transaction {
     const excludedId = this.fields.get(excludedName)?.id ?? `field:${excludedName}`;
     const event = this.trace('frame', {
       sourceIds: [input.id], sourceProvenance: input.provenance, sourceTime: input.time,
+      ...(input.observations?.length ? { sourceObservations: input.observations } : {}),
       scale: input.scale, domain: input.domain, inputShape: input.shape,
       transformation: ['integer-rectangular-selection', 'min-max-normalization'],
       parameters: { ratio: [ratio.width, ratio.height], anchor: [anchorX, anchorY], bounds: { x, y, width: cropWidth, height: cropHeight } },
@@ -311,6 +327,7 @@ class Transaction {
       retained: { included: normalized, includedShape: [cropWidth, cropHeight], excluded: outside.map(i => ({ index: i, value: input.value[i] })) },
     });
     const common = { origin: 'frame', domain: input.domain, scale: input.scale, time: { tick: this.tick, sourceTime: input.time }, provenance: input.provenance,
+      ...(input.observations?.length ? { observations: input.observations } : {}),
       ...(input.environment ? { environment: input.environment } : {}) };
     const included = this.putField(includedName, {
       ...common, value: normalized, shape: [cropWidth, cropHeight],

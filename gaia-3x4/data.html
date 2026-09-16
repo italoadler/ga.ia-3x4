@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090909"><link rel="icon" href="data:,">
+  <title>GA.IA/3x4 — data-born Earth v0</title>
+  <link rel="stylesheet" href="/surface/style.css">
+</head>
+<body class="data-born">
+  <header class="inscription"><div class="work-name">GA.IA<span>/3x4</span></div><div class="work-subtitle">one source<br>one territorial field</div>
+    <div class="clock"><span id="clock">T 0000</span><span id="revision">REV 00</span><span id="pulse">WAITING</span></div></header>
+  <main class="instrument">
+    <section class="field-space" aria-label="Retrato territorial construído pela observação">
+      <div class="field-caption"><span id="mode">DATA-BORN EARTH / 3:4 FIELD</span><span id="backend">CANVAS 2D / RUNTIME</span></div>
+      <div id="territory-space"><canvas id="territory-field" role="img" aria-label="Moldura territorial 3 por 4 incompleta; nenhuma observação foi executada."></canvas></div>
+      <div id="inspector-space" hidden><canvas id="field" role="img" aria-label="Grade 2D do runtime"></canvas>
+        <div class="history-caption"><span>↶ RECORTES RETIDOS</span><span id="history-count"></span></div><canvas id="history" role="img" aria-label="Valores dos recortes anteriores"></canvas></div>
+      <div class="partition-readout"><span id="inside-count">0 INSIDE</span><span id="outside-count">0 OUTSIDE</span><span id="frame-id">NO FRAME TRACE</span></div>
+      <div class="world-readout"><span>NASA POWER / REGIONAL DAILY</span><span id="history-readout">NO PREVIOUS STATE</span></div><p id="consequence" aria-live="polite">RUN CONSTRUCTS THE FIELD</p>
+    </section>
+    <section class="score-space" aria-label="Partitura de live coding">
+      <div class="score-caption"><span>VISIBLE SOURCE / 5 LINES</span><span id="source-state">NO OBSERVATION</span></div><div id="source" class="score-editor"></div>
+      <div class="run-strip"><button id="run" type="button">RUN</button><span>execute the visible program</span></div>
+      <div class="palette-caption"><span>SEVEN GLYPH ALIASES</span><span>ALT 1—7 / INSERT</span></div><div id="glyph-palette" role="group" aria-label="Paleta dos sete glifos"></div>
+      <p id="diagnostic" role="status" aria-live="polite"></p>
+      <button id="provenance-toggle" type="button">INSPECT PROVENANCE</button><pre id="provenance" hidden aria-live="polite"></pre>
+      <div class="consequence-readout"><span>⊘ DECLARED ABSENCE</span><span id="loss-count">NO DECLARED LOSS</span><p id="relation-readout">RELATION NOT EXECUTED</p></div>
+    </section>
+  </main>
+  <footer class="performance-keys"><span><kbd>CTRL ↵</kbd> line / selection</span><span><kbd>CTRL SHIFT ↵</kbd> run all</span>
+    <span><kbd>I</kbd> Inspector</span><span><kbd>T</kbd> full record</span><span class="retention">LIVE AND CAPTURED RUNS ARE LABELED</span></footer>
+  <dialog id="trace-reader" aria-label="Leitura integral dos rastros"><div class="reader-caption"><span>⋮ REGISTRO INTEGRAL DO MUNDO</span><span>ESC FECHA / S SALVA</span></div><pre id="trace-json" tabindex="0"></pre></dialog>
+  <script type="module" src="/dist/data-instrument.mjs"></script>
+</body>
+</html>
