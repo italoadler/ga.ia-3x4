@@ -182,7 +182,19 @@ try {
 
   await setSource(current); await evaluate('window.gaia.editor.select(0)'); await key('Enter', 'Enter', 10);
   assert.equal(await evaluate('window.gaia.diagnostic'), null);
+  // Removing discard cannot rewrite the recorded loss or resurrect its identity.
+  assert.equal(await evaluate('window.gaia.visual().includedIndices.length'), 0);
+  const retainedLossId = await evaluate('window.gaia.inspect().fields.retrato.lossId');
+  const recovery = current
+    .replace('retrato fora corte =', 'retrato_novo fora_novo corte_novo =')
+    .replace('antes = ↶ 1 retrato', 'antes_novo = ↶ 1 retrato_novo')
+    .replace('◉ [retrato fora corte antes anterior perda a b vinculo]', '◉ [retrato_novo fora_novo corte_novo antes_novo anterior perda a b vinculo]');
+  await setSource(recovery); await evaluate('window.gaia.editor.select(0)'); await key('Enter', 'Enter', 10);
+  assert.equal(await evaluate('window.gaia.diagnostic'), null);
   assert.equal(await evaluate('window.gaia.visual().includedIndices.length'), 108);
+  assert.equal(await evaluate('window.gaia.inspect().fields.retrato.discarded'), true);
+  assert.equal(await evaluate('window.gaia.inspect().fields.retrato.lossId'), retainedLossId);
+  assert.notEqual(await evaluate('window.gaia.inspect().fields.retrato_novo.id'), 'field:retrato');
   const beforeInspector = await evaluate('JSON.stringify(window.gaia.inspect())');
   await key('Escape', 'Escape'); await key('i', 'KeyI');
   assert.equal(await evaluate('window.gaia.inspector'), true);

@@ -12,7 +12,7 @@ import { createLivingRenderer } from './living.mjs';
 
 const $ = id => document.getElementById(id);
 const externalNames = [POWER_EXTERNAL_NAME, INATURALIST_EXTERNAL_NAME];
-const example = await fetch('/examples/living-portraits.gaia').then(response => {
+const example = await fetch('/examples/proof-continuous.gaia').then(response => {
   if (!response.ok) throw new Error('Partitura living portraits não encontrada.');
   return response.text();
 });
@@ -96,8 +96,10 @@ function readout() {
   const loss = world.traces.findLast(trace => trace.operation === 'discard');
   const visual = livingRenderer.inspect();
   $('clock').textContent = `T ${String(world.tick).padStart(4, '0')}`;
+  $('logical-time').textContent = `LT ${world.clock.logicalTime.toFixed(3).padStart(7, '0')}`;
   $('revision').textContent = `REV ${String(world.revisions.length).padStart(2, '0')}`;
-  $('pulse').textContent = running ? 'VERIFYING SOURCES' : world.tick ? 'RUNNING' : 'WAITING';
+  $('pulse').textContent = running ? 'VERIFYING SOURCES' : world.clock.state.toUpperCase();
+  $('time-state').textContent = `${world.clock.state.toUpperCase()} / Δ ${world.clock.fixedTimestep.toFixed(3)} S`;
   $('inside-count').textContent = `${inside?.discarded ? 0 : inside?.partition?.sourceIndices?.length ?? 0} INSIDE`;
   $('outside-count').textContent = `${outside?.partition?.sourceIndices?.length ?? 0} OUTSIDE`;
   $('frame-id').textContent = frame ? `${frame.id} / ${frame.parameters.bounds.width}×${frame.parameters.bounds.height}` : 'NO FRAME TRACE';
@@ -109,9 +111,12 @@ function readout() {
   $('history-readout').textContent = visual.ghostVisible ? '↶ PREVIOUS PORTRAIT VISIBLE' : frame ? `${world.traces.filter(trace => trace.operation === 'frame').length} FRAME TRACE(S)` : 'NO PREVIOUS STATE';
   $('organism-readout').textContent = visual.speciesOrTaxon ? `${visual.speciesOrTaxon} / ${visual.imageStatus}` : 'NO OBSERVED ORGANISM';
   const relation = [...world.relations.values()].find(item => item.name === 'aproximacao');
+  $('active-relation').textContent = relation?.active ? `⇄ ${relation.id} / ${relation.temporal?.state.toUpperCase() ?? 'ACTIVE'}` : 'NO ACTIVE RELATION';
   $('relation-readout').textContent = relation
-    ? `${relation.name}: ${relation.transformation} [${relation.parameters.join(' ')}] · situated computational approximation · no causal claim`
+    ? `${relation.name}: ${relation.transformation} target [${relation.parameters.join(' ')}] / current [${relation.temporal.currentParameters.map(value => value.toFixed(3)).join(' ')}] / phase ${relation.temporal.phase.toFixed(3)} · situated computational approximation · no causal claim`
     : 'RELATION NOT EXECUTED';
+  $('play').setAttribute('aria-pressed', String(world.clock.state === 'running'));
+  $('pause').setAttribute('aria-pressed', String(world.clock.state === 'paused'));
   $('provenance').textContent = provenanceText();
   $('provenance-toggle').textContent = provenanceOpen ? 'CLOSE PROVENANCE' : `INSPECT PROVENANCE${organismObservation() ? ' / 4 VERIFIED IMAGES' : ''}`;
 }
@@ -210,12 +215,22 @@ function setSourceView(mode) {
 }
 
 function toggleProvenance() { provenanceOpen = !provenanceOpen; $('provenance').hidden = !provenanceOpen; readout(); }
+function togglePresentation() {
+  const enabled = document.body.classList.toggle('presentation');
+  $('present').setAttribute('aria-pressed', String(enabled));
+  render();
+}
+async function temporalStep() { interpreter.pause(); const result = interpreter.step(); if (result.ok) await render(); return result; }
 function traceReader() {
   if ($('trace-reader').open) $('trace-reader').close();
   else { $('trace-json').textContent = JSON.stringify(fullRecord(), null, 2); $('trace-reader').showModal(); }
 }
 
 $('run').addEventListener('click', () => execute('all'));
+$('play').addEventListener('click', () => { interpreter.play(); readout(); });
+$('pause').addEventListener('click', () => { interpreter.pause(); readout(); });
+$('step').addEventListener('click', temporalStep);
+$('present').addEventListener('click', togglePresentation);
 $('provenance-toggle').addEventListener('click', toggleProvenance);
 $('mode-switch').addEventListener('click', event => { const mode = event.target.closest('[data-mode]')?.dataset.mode; if (mode) setVisualMode(mode); });
 document.querySelector('.source-tools').addEventListener('click', event => { const mode = event.target.closest('[data-source-view]')?.dataset.sourceView; if (mode) setSourceView(mode); });
@@ -223,6 +238,9 @@ document.addEventListener('keydown', event => {
   if ($('trace-reader').open) { if (event.key === 'Escape') { event.preventDefault(); $('trace-reader').close(); } return; }
   if (editor.view.hasFocus) return;
   const key = event.key.toLowerCase();
+  if (event.key === ' ') { event.preventDefault(); interpreter.world.clock.state === 'running' ? interpreter.pause() : interpreter.play(); readout(); return; }
+  if (event.key === '.') { event.preventDefault(); temporalStep(); return; }
+  if (key === 'p') { event.preventDefault(); togglePresentation(); return; }
   if (key === 'i' || key === 'd' || key === 'l') { event.preventDefault(); setVisualMode({ i: 'inspector', d: 'data', l: 'living' }[key]); }
   if (key === 't') { event.preventDefault(); traceReader(); }
   if (key === 'f') { event.preventDefault(); document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
@@ -230,10 +248,28 @@ document.addEventListener('keydown', event => {
 window.addEventListener('resize', () => { if (visualMode === 'inspector') render(); });
 readout();
 
+let lastWallTime = performance.now(), temporalRendering = false;
+async function temporalLoop(now) {
+  const elapsed = Math.min(.5, Math.max(0, (now - lastWallTime) / 1000));
+  lastWallTime = now;
+  if (!running) {
+    const advanced = interpreter.advance(elapsed);
+    if (advanced.steps && !temporalRendering) {
+      temporalRendering = true;
+      try { await render(); } finally { temporalRendering = false; }
+    }
+  }
+  requestAnimationFrame(temporalLoop);
+}
+requestAnimationFrame(temporalLoop);
+
 window.gaia = Object.freeze({
   ready: true, run: execute, inspect: () => interpreter.world.inspect(), observation: () => interpreter.observation,
   world: () => interpreter.world, visual: () => livingRenderer.inspect(), dataVisual: () => territoryRenderer.inspect(),
   sourceObservation, provenance: provenanceText, setMode: setVisualMode, setSourceView,
+  play: () => { const state = interpreter.play(); readout(); return state; },
+  pause: () => { const state = interpreter.pause(); readout(); return state; },
+  step: temporalStep, advance: async seconds => { const result = interpreter.advance(seconds); if (result.steps) await render(); return result; },
   editor: Object.freeze({ setText: text => editor.setText(text), getText: () => editor.text,
     select(from, to = from) { editor.view.dispatch({ selection: { anchor: from, head: to }, scrollIntoView: true }); editor.view.focus(); },
     diagnostics: () => editor.diagnosticCount(), statements: () => statementRanges(editor.text) }),

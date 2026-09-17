@@ -23,6 +23,9 @@ export function portraitObservation(observation, traces) {
   const included = inside?.value ? inside.partition.sourceIndices.map((index, k) => ({ index, value: inside.value[k] })) : [];
   const excluded = outside?.value ? outside.partition.sourceIndices.map(index => ({ index, value: outside.value[index] })) : [];
   const ghosts = memory?.field?.value ? memory.field.partition.sourceIndices.map((index, k) => ({ index, value: memory.field.value[k] })) : [];
+  const temporalFrames = frame?.temporal?.timeline ?? inside?.partition?.motion?.timeline ?? outside?.partition?.motion?.timeline
+    ?? traces.filter(trace => trace.operation === 'frame' && trace.temporal).slice(-24)
+      .map(trace => ({ id: trace.id, tick: trace.tick, revision: trace.revision, ...trace.temporal }));
   return {
     tick: observation.tick, revision: observation.revision, frame: frame ?? null,
     inputShape: frame?.inputShape ?? null, included, excluded, ghosts,
@@ -30,6 +33,14 @@ export function portraitObservation(observation, traces) {
     historicalFrame: history?.latest ?? null,
     environment, living, observations,
     memoryField: memory?.field ?? null,
+    relationTemporal: inside?.relationTemporal ?? outside?.relationTemporal ?? null,
+    organismLifecycle: inside?.sourceLifecycle ?? outside?.sourceLifecycle ?? null,
+    frameTemporal: frame?.temporal ?? inside?.partition?.motion ?? outside?.partition?.motion ?? null,
+    frameTrail: temporalFrames,
+    selectedRecordId: frame?.selectedRecordId ?? inside?.partition?.selectedRecordId ?? outside?.partition?.selectedRecordId ?? null,
+    recordSelector: frame?.recordSelector ?? inside?.partition?.recordSelector ?? outside?.partition?.recordSelector ?? 0,
+    memoryTemporal: memory?.temporal ?? null,
+    lossTransition: inside?.lossLifecycle ?? null,
     absentIndices: inside?.discarded ? inside.partition.sourceIndices : [],
     losses: [...lossIds].map(id => records.get(id)).filter(Boolean),
     sources: values.filter(v => v?.kind === 'field' && v.origin === 'situate').map(v => ({ id: v.id, provenance: v.provenance, shape: v.shape, discarded: v.discarded })),

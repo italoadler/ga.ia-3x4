@@ -1,6 +1,8 @@
 # GA.IA/3x4
 
-**Living Portraits v0** é uma prova visual performável em que observações reais de plantas e insetos entram no runtime como retratos computacionais situados. A abertura é incompleta; depois de `RUN`, uma foto verificada ocupa uma moldura 3×4, suas partes excluídas permanecem como resíduos espectrais e o enquadramento anterior pode reaparecer como fantasma.
+**Continuous World v0** transforma o retrato situado em um processo persistente. Depois de `RUN`, um relógio lógico de passo fixo mantém relações, emergência, enquadramento, memória e retirada em atividade no mesmo `World`; uma edição compatível perturba o processo existente e uma edição inválida deixa o último processo válido vivo.
+
+**Novo na linguagem?** Comece por [Aprender GA.IA/3x4](docs/learn-gaia.md) e use o [índice completo da documentação](docs/README.md). O guia cobre instalação, sintaxe, os sete operadores, tempo, edição ao vivo, diagnósticos, proveniência, API e exercícios.
 
 A precipitação NASA POWER permanece no programa. `relate` liga o campo ambiental aos registros iNaturalist como **situated computational approximation**, sempre marcada `causal: false`. O programa não usa o campo contra ele mesmo e não afirma causalidade biológica.
 
@@ -12,6 +14,7 @@ Requer Node.js 22.15 ou posterior.
 cd "C:\Users\italo\ga.ia-3x4\gaia-3x4"
 npm ci
 npm test
+npm run verify:docs
 npm start
 ```
 
@@ -19,6 +22,7 @@ Abra `http://127.0.0.1:3034`. A apresentação padrão é integralmente offline:
 
 ```powershell
 npm run verify:living
+npm run verify:continuous
 npm run verify:data-born
 npm run verify:browser
 npm run verify:performance
@@ -27,9 +31,9 @@ npm run verify:labour
 
 `npm run capture:living` e `npm run capture:power` consultam a rede e renovam deliberadamente as capturas. Eles não fazem parte da inicialização, dos testes unitários ou da apresentação offline.
 
-## Programa canônico
+## Programa performável atual
 
-[`examples/living-portraits.gaia`](examples/living-portraits.gaia) contém sete declarações executáveis:
+[`examples/proof-continuous.gaia`](examples/proof-continuous.gaia) contém sete declarações executáveis e é carregado pela superfície principal. [`examples/living-portraits.gaia`](examples/living-portraits.gaia) permanece preservado como programa canônico da milestone anterior.
 
 ```text
 chuva = situate "NASA POWER / captured" "2025-01-15" "bbox -49,-17,-46.5,-14" "PRECTOTCORR mm/day" [4 7] nasa_power_brasilia
@@ -45,12 +49,14 @@ Uma oitava declaração comentada ativa `discard` durante a performance. O vocab
 
 ## Interface
 
+- `PLAY` ou `Espaço` retoma o tempo lógico; `PAUSE` ou `Espaço` congela; `STEP` ou `.` avança exatamente 0,125 s.
 - `RUN` ou `Ctrl+Shift+Enter` executa toda a partitura.
 - `Ctrl+Enter` aplica a linha ou bloco selecionado na mesma transação do programa.
 - `Alt+1…7` insere operações pela paleta; autocomplete, hover, atalho, documentação, aridade e implementação vêm de [`src/registry.mjs`](src/registry.mjs).
 - A linha selecionada descreve em português o que recebe, transforma, conserva e exclui.
 - `L`, `D` e `I` alternam `LIVING PORTRAIT`, `DATA` e `INSPECTOR`.
 - `F` alterna tela cheia; `T` abre o registro completo.
+- `P` ativa o modo de apresentação para gravação.
 - Uma edição inválida conserva o último mundo, a última observação e o último retrato válidos.
 
 ## Fontes e modos preservados
@@ -59,9 +65,11 @@ A nova fonte é exclusivamente o iNaturalist. A resposta bruta, o manifesto, os 
 
 NASA POWER continua em [`src/nasa-power.mjs`](src/nasa-power.mjs) e em sua captura regional. `DATA` reutiliza [`surface/territory.mjs`](surface/territory.mjs); `INSPECTOR` reutiliza [`surface/render.mjs`](surface/render.mjs). A versão verificada `data-born Earth v0` continua executável em [`data.html`](data.html), e a microperformance Three.js anterior permanece em [`legacy.html`](legacy.html).
 
-O desenho, a proveniência completa, os limites e os roteiros de 90 segundos e 3–5 minutos estão em [`docs/living-portraits.md`](docs/living-portraits.md). A documentação anterior continua em [`docs/data-born-earth.md`](docs/data-born-earth.md).
+O modelo temporal, os quatro enquadramentos determinísticos, a recuperação após perda e a partitura de gravação de 82 segundos estão em [`docs/continuous-world.md`](docs/continuous-world.md). O roteiro anterior continua em [`docs/living-portraits.md`](docs/living-portraits.md), e a documentação de dados em [`docs/data-born-earth.md`](docs/data-born-earth.md).
 
 ## Evidência
+
+`npm run verify:continuous` prova em navegador real que o mundo segue após o performer parar, congela em pausa, avança um tick, interpola uma edição, desloca o frame, alcança as quatro observações, preserva a perda e continua após um rascunho inválido. Ele também verifica execução offline, resize, atalhos, reload e zero erros de console. As capturas `continuous-01-empty.png` a `continuous-09-presentation.png` e `continuous-verification.json` ficam em [`artifacts`](artifacts).
 
 `npm run verify:living` usa um navegador real, percorre os sete glifos do CodeMirror até a consequência visual, testa hashes/licenças/atribuição, troca de enquadramento, memória, ausência, rollback, execução offline, modos e console. Ele grava:
 

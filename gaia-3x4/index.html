@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#080a08"><link rel="icon" href="data:,">
-  <title>GA.IA/3x4 — living portraits v0</title>
+  <title>GA.IA/3x4 — continuous world v0</title>
   <link rel="stylesheet" href="/surface/style.css">
 </head>
 <body class="living-portraits" data-operation-view="text">
   <header class="inscription"><div class="work-name">GA.IA<span>/3x4</span></div><div class="work-subtitle">observed organism<br>situated computation</div>
-    <div class="clock"><span id="clock">T 0000</span><span id="revision">REV 00</span><span id="pulse">WAITING</span></div></header>
+    <div class="clock"><span id="clock">T 0000</span><span id="logical-time">LT 000.000</span><span id="revision">REV 00</span><span id="pulse">STOPPED</span></div></header>
   <main class="instrument">
     <section class="field-space" aria-label="Retrato computacional situado">
       <div class="field-caption"><span id="mode">LIVING PORTRAIT / 3:4</span><span id="backend">CANVAS 2D / VERIFIED MEDIA</span></div>
@@ -16,6 +16,11 @@
         <button type="button" data-mode="living" aria-pressed="true">LIVING PORTRAIT</button>
         <button type="button" data-mode="data" aria-pressed="false">DATA</button>
         <button type="button" data-mode="inspector" aria-pressed="false">INSPECTOR</button>
+      </div>
+      <div id="temporal-controls" role="group" aria-label="Controles do tempo lógico">
+        <button id="play" type="button">PLAY</button><button id="pause" type="button">PAUSE</button><button id="step" type="button">STEP</button>
+        <button id="present" type="button" aria-pressed="false">PRESENT</button>
+        <span id="time-state">STOPPED</span><span id="active-relation">NO ACTIVE RELATION</span>
       </div>
       <div id="living-space"><canvas id="living-portrait" role="img" aria-label="Moldura 3 por 4 vazia; nenhuma observação foi executada."></canvas></div>
       <div id="territory-space" hidden><canvas id="territory-field" role="img" aria-label="Campo territorial de dados"></canvas></div>
@@ -41,6 +46,7 @@
     </section>
   </main>
   <footer class="performance-keys"><span><kbd>CTRL ↵</kbd> line / selection</span><span><kbd>CTRL SHIFT ↵</kbd> run all</span>
+    <span><kbd>SPACE</kbd> play/pause</span><span><kbd>.</kbd> step</span><span><kbd>P</kbd> present</span>
     <span><kbd>L</kbd> Living</span><span><kbd>D</kbd> Data</span><span><kbd>I</kbd> Inspector</span><span><kbd>F</kbd> Fullscreen</span><span><kbd>T</kbd> full record</span>
     <span class="retention">SITUATED COMPUTATIONAL APPROXIMATION / NO CAUSAL CLAIM</span></footer>
   <dialog id="trace-reader" aria-label="Leitura integral dos rastros"><div class="reader-caption"><span>⋮ REGISTRO INTEGRAL DO MUNDO</span><span>ESC FECHA</span></div><pre id="trace-json" tabindex="0"></pre></dialog>

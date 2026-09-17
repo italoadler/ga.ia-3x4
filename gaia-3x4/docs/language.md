@@ -54,8 +54,18 @@ constantes viram zero, com uma consequência explícita no rastro.
 
 ## Tempo e revisão
 
-O mundo começa em tick 0. Uma revisão válida ou um passo avança exatamente
-um tick. `remember n field` consulta o snapshot de `tick − n`; `n ≥ 1`.
+O mundo começa em tick 0, tempo lógico 0 e relógio `stopped`. Uma revisão
+válida ou um passo avança exatamente um tick transacional. Somente passos
+temporais avançam o tempo lógico, em incrementos fixos configurados no `World`
+(0,125 s na superfície principal). Um acumulador converte tempo de parede em
+passos inteiros; o renderer solicita avanço, mas não implementa fases,
+interpolação ou transições.
+
+O relógio pode estar `running`, `paused` ou `stopped`. Pausa conserva mundo,
+acumulador e progresso; `step()` executa exatamente um tick temporal; retomar
+continua as mesmas identidades. Relações situadas ativas são reavaliadas a
+cada tick sem criar revisões de programa. `remember n field` consulta o
+snapshot de `tick − n`; `n ≥ 1`.
 Uma memória ausente é um resultado marcado como indisponível e deixa um
 rastro. Não existe fallback silencioso para o presente. `trace frame`
 consulta o último recorte anterior ao tick atual. A primeira consulta
@@ -74,6 +84,12 @@ Memória ausente pode ser observada, mas não alimenta uma relação numérica.
 Toda revisão é transacional: erro de sintaxe, tipo ou compatibilidade deixa
 o último mundo e programa válidos intactos. `observe` retorna uma projeção
 imutável; o renderizador não executa operações nem modifica o mundo.
+
+Na fatia `Continuous World`, fontes têm ciclo `emerging → present`, parâmetros
+compatíveis de `relate blend` interpolam no mesmo `Relation`, `frame` conserva
+início/alvo/percurso e `discard` registra `withdrawing → absent-record`.
+Playback comum reutiliza IDs de rastros instalados e limita as janelas de
+trajetória. Snapshots transacionais continuam preservados por tick.
 
 Esses metadados descrevem operações computacionais. Não constituem uma
 representação total de território.
@@ -95,6 +111,8 @@ Omissões só ocorrem quando a revisão completa realmente omite declarações.
 As regras visuais da esfera são observações documentadas no registro JSON.
 Não são novos operadores ou datasets. A grade Canvas 2D continua como Inspector.
 Ver [a partitura de quatro minutos](microperformance.md).
+
+Para um percurso didático completo, veja [Aprender GA.IA/3x4](learn-gaia.md).
 
 ## Superfície sustentada por trabalho
 

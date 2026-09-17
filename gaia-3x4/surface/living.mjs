@@ -35,16 +35,7 @@ function livingObservation(sources) {
   return (sources ?? []).find(source => source.relationContext?.semantic === 'observed-organism-records') ?? null;
 }
 
-function selectRecord(living, sourceIndices, bounds, inputShape) {
-  if (!living?.records?.length || !sourceIndices?.length || !bounds || !inputShape) return null;
-  const included = new Set(sourceIndices), [width] = inputShape;
-  const center = [bounds.x + (bounds.width - 1) / 2, bounds.y + (bounds.height - 1) / 2];
-  return living.records.filter(record => included.has(record.gridIndex)).sort((a, b) => {
-    const point = record => [record.gridIndex % width, Math.floor(record.gridIndex / width)];
-    const distance = record => { const [x, y] = point(record); return (x - center[0]) ** 2 + (y - center[1]) ** 2; };
-    return distance(a) - distance(b) || a.observationId - b.observationId;
-  })[0] ?? null;
-}
+const recordByIdentity = (living, id) => living?.records?.find(record => record.id === id) ?? null;
 
 function photoCrop(image, bounds, inputShape) {
   const [sourceWidth, sourceHeight] = inputShape;
@@ -64,6 +55,30 @@ function drawPhoto(context, image, crop, frame, alpha, filter, offset = { x: 0, 
   context.drawImage(image, crop.x, crop.y, crop.width, crop.height,
     frame.x + offset.x, frame.y + offset.y, frame.width, frame.height);
   context.restore();
+}
+
+function drawWithdrawal(context, image, crop, frame, progress, alpha, filter) {
+  const bands = 12, bandHeight = frame.height / bands;
+  for (let band = 0; band < bands; band++) {
+    const stagger = ((band % 3) - 1) * progress * 34;
+    context.save();
+    context.beginPath(); context.rect(frame.x - 48, frame.y + band * bandHeight, frame.width + 96, bandHeight + 1); context.clip();
+    drawPhoto(context, image, crop, frame, alpha * (1 - progress * .78), filter, { x: stagger, y: progress * band * .7 });
+    context.restore();
+  }
+}
+
+function drawFrameTrail(context, frame, trail, inputShape) {
+  if (!inputShape || trail.length < 2) return;
+  const [sourceWidth, sourceHeight] = inputShape;
+  trail.slice(0, -1).forEach((state, index, list) => {
+    const bounds = state.currentBounds;
+    if (!bounds) return;
+    const age = (index + 1) / list.length;
+    const dx = sourceWidth === bounds.width ? 0 : (bounds.x / (sourceWidth - bounds.width) - .5) * 42;
+    const dy = sourceHeight === bounds.height ? 0 : (bounds.y / (sourceHeight - bounds.height) - .5) * 34;
+    corners(context, { ...frame, x: frame.x + dx, y: frame.y + dy }, `rgba(157,174,154,${.025 + age * .075})`, 10 + age * 8);
+  });
 }
 
 function drawFragments(context, image, crop, frame, emphasis = 1) {
@@ -156,40 +171,46 @@ export function createLivingRenderer(canvas) {
       return;
     }
     const absent = projection.absentIndices.length > 0;
-    activeRecord = selectRecord(living, projection.frame.includedIndices, bounds, projection.inputShape);
+    const lossProgress = projection.lossTransition?.progress ?? (absent ? 1 : 0);
+    const withdrawing = absent && projection.lossTransition?.state === 'withdrawing' && lossProgress < 1;
+    activeRecord = recordByIdentity(living, projection.selectedRecordId);
     const fallback = activeRecord ?? living.records[0];
     const image = images.get(fallback?.image.localPath);
     if (!image) {
       drawBlank(context, frame); state = decodeError ? 'missing' : 'loading'; canvas.dataset.state = state;
       canvas.setAttribute('aria-label', 'Observação situada; arquivo visual ainda está sendo decodificado.'); return;
     }
-    const relation = traces.findLast(trace => trace.operation === 'relate' && trace.tick === projection.tick)
-      ?? traces.findLast(trace => trace.operation === 'relate');
-    const relationshipWeight = relation?.parameters?.[0] ?? 0;
-    const crop = photoCrop(image, bounds, projection.inputShape);
+    const relation = projection.relationTemporal;
+    const relationshipWeight = relation?.exposure ?? relation?.currentParameters?.[0] ?? 0;
+    const visualBounds = projection.frameTemporal?.currentBounds ?? bounds;
+    const crop = photoCrop(image, visualBounds, projection.inputShape);
 
     const rememberedLiving = livingObservation(projection.memoryField?.observations);
     const rememberedBounds = projection.memoryField?.partition?.bounds;
-    const rememberedRecord = selectRecord(rememberedLiving, projection.memoryField?.partition?.sourceIndices,
-      rememberedBounds, projection.inputShape);
+    const rememberedRecord = recordByIdentity(rememberedLiving, projection.memoryField?.partition?.selectedRecordId);
     const rememberedImage = images.get(rememberedRecord?.image.localPath);
     if (rememberedRecord && rememberedImage && rememberedBounds) {
       const rememberedCrop = photoCrop(rememberedImage, rememberedBounds, projection.inputShape);
-      drawPhoto(context, rememberedImage, rememberedCrop, frame, cue?.id === 'remember' ? .34 : .24,
+      const memoryPresence = projection.memoryTemporal?.presence ?? 1;
+      drawPhoto(context, rememberedImage, rememberedCrop, frame, (cue?.id === 'remember' ? .34 : .24) * memoryPresence,
         'grayscale(1) contrast(1.25) brightness(.86)', { x: -52, y: -16 });
       corners(context, { ...frame, x: frame.x - 52, y: frame.y - 16 }, 'rgba(190,202,186,.42)', 20);
       ghostVisible = true;
     }
 
-    if (!absent && activeRecord) {
+    const emergence = projection.organismLifecycle?.progress ?? 1;
+    if ((!absent || withdrawing) && activeRecord) {
       const contrast = 1.03 + relationshipWeight * .28;
       const brightness = .86 + relationshipWeight * .22;
-      drawPhoto(context, image, crop, frame, 1, `saturate(.78) contrast(${contrast}) brightness(${brightness})`);
+      const filter = `saturate(.78) contrast(${contrast}) brightness(${brightness})`;
+      if (withdrawing) drawWithdrawal(context, image, crop, frame, lossProgress, emergence, filter);
+      else drawPhoto(context, image, crop, frame, emergence, filter);
     }
+    drawFrameTrail(context, frame, projection.frameTrail ?? [], projection.inputShape);
     fragmentCount = drawFragments(context, image, crop, frame, cue?.id === 'frame' || absent ? 1.75 : 1);
     drawRainWitness(context, projection.environment, frame, cue?.id === 'relate' || cue?.names?.includes('chuva') ? 1 : relationshipWeight);
     corners(context, frame, absent ? '#7d847b' : '#e3eadf', cue?.id === 'frame' ? 34 : 24);
-    if (absent || !activeRecord) {
+    if ((absent && !withdrawing) || !activeRecord) {
       line(context, frame.x + 19, frame.y + 19, frame.x + frame.width - 19, frame.y + frame.height - 19, '#5e655d', .7, [4, 9]);
       line(context, frame.x + frame.width - 19, frame.y + 19, frame.x + 19, frame.y + frame.height - 19, '#5e655d', .7, [4, 9]);
       context.fillStyle = '#9ba398'; context.font = `11px ${FONT}`; context.textAlign = 'center';
@@ -200,7 +221,7 @@ export function createLivingRenderer(canvas) {
       context.fillStyle = 'rgba(232,239,227,.9)'; context.font = `32px ${FONT}`;
       context.fillText(cue.glyph, frame.x + 13, frame.y + 42);
     }
-    drawMetadata(context, fallback, frame, width, relation, absent ? 'absence' : activeRecord ? 'situated' : 'outside');
+    drawMetadata(context, fallback, frame, width, { parameters: [relationshipWeight] }, withdrawing ? 'withdrawing' : absent ? 'absence' : activeRecord ? 'situated' : 'outside');
     state = absent ? 'absent' : activeRecord ? 'observed' : 'excluded'; canvas.dataset.state = state;
     canvas.setAttribute('aria-label', `${absent ? 'Ausência visível do retrato' : `Retrato enquadrado de ${fallback.taxon.name}`}; foto de ${fallback.image.author}, ${fallback.image.license}; ${fragmentCount} fragmentos externos; ${ghostVisible ? 'estado anterior fantasma visível; ' : ''}aproximação computacional situada sem alegação causal.`);
   }
@@ -222,6 +243,10 @@ export function createLivingRenderer(canvas) {
       recordId: activeRecord?.id ?? null, observationId: activeRecord?.observationId ?? null,
       speciesOrTaxon: activeRecord?.speciesOrTaxon ?? null, frameAspect: .75,
       frameBounds: projection.frame?.parameters?.bounds ?? null, fragmentCount, ghostVisible,
+      frameCurrentBounds: projection.frameTemporal?.currentBounds ?? projection.frame?.parameters?.bounds ?? null,
+      frameTransition: projection.frameTemporal ?? null, relationProcess: projection.relationTemporal ?? null,
+      organismLifecycle: projection.organismLifecycle ?? null, lossTransition: projection.lossTransition ?? null,
+      recordSelector: projection.recordSelector, semanticSource: 'runtime-projection',
       absentIndices: projection.absentIndices, historicalTraceId: projection.historicalFrame?.id ?? null,
       sourceStatus: projection.living?.status ?? null, imageStatus: activeRecord?.status ?? null,
       allMediaVerified: Boolean(projection.living?.records?.length && projection.living.records.every(record => /^[a-f0-9]{64}$/.test(record.image.localSha256))),
