@@ -155,7 +155,7 @@ export function createLivingRenderer(canvas) {
       const image = new Image(); image.decoding = 'async';
       image.onload = () => { images.set(path, image); pending.delete(path); resolve(image); };
       image.onerror = () => { pending.delete(path); reject(new Error(`Não foi possível decodificar ${path}.`)); };
-      image.src = path;
+      image.src = new URL(path.replace(/^\//, ''), document.baseURI).href;
     }));
     return pending.get(path);
   }

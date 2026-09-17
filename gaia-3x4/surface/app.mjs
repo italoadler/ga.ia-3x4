@@ -8,13 +8,15 @@ import { createScore, scorePatch, scoreNodes } from './score.mjs';
 import { LABOUR_VISUAL_ENCODING } from './labour-scene.mjs';
 
 const $ = id => document.getElementById(id);
+const assetUrl = path => new URL(path.replace(/^\//, ''), document.baseURI).href;
+const assetFetch = (resource, options) => fetch(typeof resource === 'string' && resource.startsWith('/') ? assetUrl(resource) : resource, options);
 const legacy = new URLSearchParams(location.search).get('score') === 'legacy';
-const labourInput = legacy ? null : await fetch('/data/labour-demo.json').then(r => r.json());
+const labourInput = legacy ? null : await assetFetch('/data/labour-demo.json').then(r => r.json());
 const interpreter = new Interpreter({ labourInput });
 let score, viewMode = 'SPLIT', viewBeforeInspector = 'SPLIT', fullEditor = legacy, selectedFragment = null;
 let paused = false, inspector = false, draftError = null, visualCue = null, cueTimers = [];
-const source = await fetch(legacy ? '/examples/canonical.gaia' : '/examples/labour-score.gaia').then(r => { if (!r.ok) throw new Error('Partitura não encontrada.'); return r.text(); });
-const committed = legacy ? source : await fetch('/examples/labour-smoke.gaia').then(r => r.text());
+const source = await assetFetch(legacy ? '/examples/canonical.gaia' : '/examples/labour-score.gaia').then(r => { if (!r.ok) throw new Error('Partitura não encontrada.'); return r.text(); });
+const committed = legacy ? source : await assetFetch('/examples/labour-smoke.gaia').then(r => r.text());
 const first = interpreter.apply(committed);
 if (!first.ok) throw new Error(JSON.stringify(first.diagnostic));
 const editor = createEditor($('source'), source, { execute, step, change: readout, palette: focusPalette, inspector: toggleInspector });

@@ -11,8 +11,10 @@ import { createTerritoryRenderer } from './territory.mjs';
 import { createLivingRenderer } from './living.mjs';
 
 const $ = id => document.getElementById(id);
+const assetUrl = path => new URL(path.replace(/^\//, ''), document.baseURI).href;
+const assetFetch = (resource, options) => fetch(typeof resource === 'string' && resource.startsWith('/') ? assetUrl(resource) : resource, options);
 const externalNames = [POWER_EXTERNAL_NAME, INATURALIST_EXTERNAL_NAME];
-const example = await fetch('/examples/proof-continuous.gaia').then(response => {
+const example = await assetFetch('/examples/proof-continuous.gaia').then(response => {
   if (!response.ok) throw new Error('Partitura living portraits não encontrada.');
   return response.text();
 });
@@ -175,7 +177,10 @@ async function execute(scope = 'all') {
     }
     const candidate = patch?.source ?? editor.text;
     const program = parse(candidate, { externalNames });
-    const [power, living] = await Promise.all([loadPowerObservation(program), loadInaturalistObservation(program)]);
+    const [power, living] = await Promise.all([
+      loadPowerObservation(program, { fetchImpl: assetFetch }),
+      loadInaturalistObservation(program, { fetchImpl: assetFetch }),
+    ]);
     const result = interpreter.apply(candidate, { inputs: { [POWER_EXTERNAL_NAME]: power, [INATURALIST_EXTERNAL_NAME]: living } });
     if (!result.ok) {
       draftError = mapDiagnostic(result.diagnostic, patch);

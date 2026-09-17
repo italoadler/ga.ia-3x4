@@ -8,7 +8,9 @@ import { renderField, renderHistory } from './render.mjs';
 import { createTerritoryRenderer } from './territory.mjs';
 
 const $ = id => document.getElementById(id);
-const example = await fetch('/examples/data-born-earth.gaia').then(response => {
+const assetUrl = path => new URL(path.replace(/^\//, ''), document.baseURI).href;
+const assetFetch = (resource, options) => fetch(typeof resource === 'string' && resource.startsWith('/') ? assetUrl(resource) : resource, options);
+const example = await assetFetch('/examples/data-born-earth.gaia').then(response => {
   if (!response.ok) throw new Error('Exemplo data-born Earth não encontrado.');
   return response.text();
 });
@@ -118,7 +120,7 @@ async function execute(scope = 'all') {
     if (scope === 'selection' && interpreter.source) patch = selectionPatch(interpreter.source, editor.text, editor.selection.from, editor.selection.to, { externalNames: [POWER_EXTERNAL_NAME] });
     const candidate = patch?.source ?? editor.text;
     const program = parse(candidate, { externalNames: [POWER_EXTERNAL_NAME] });
-    const external = await loadPowerObservation(program);
+    const external = await loadPowerObservation(program, { fetchImpl: assetFetch });
     const result = interpreter.apply(candidate, { inputs: { [POWER_EXTERNAL_NAME]: external } });
     if (!result.ok) {
       draftError = mapDiagnostic(result.diagnostic, patch);
